@@ -166,4 +166,13 @@ main() {
 	fi
 }
 
-main
+check_privileges() {
+	if [ "$(id -u)" -eq 0 ]; then
+		main
+	else
+		echo "This script requires root privileges to install packages."
+		exit 1
+	fi
+}
+
+check_privileges

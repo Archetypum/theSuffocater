@@ -80,16 +80,20 @@ def the_suffocater_main(suffocater_version: str) -> None:
 
 
 if __name__ == "__main__":
-    current_dir: str = os.path.dirname(__file__)
-    modules_dir: str = os.path.join(current_dir, "modules")
-    py_files: list = glob.glob(os.path.join(modules_dir, "*.py"))
+    if os.geteuid() == 0:
+        current_dir: str = os.path.dirname(__file__)
+        modules_dir: str = os.path.join(current_dir, "modules")
+        py_files: list = glob.glob(os.path.join(modules_dir, "*.py"))
 
-    for py_file in py_files:
-        module_name: str = os.path.splitext(os.path.basename(py_file))[0]
-        spec = importlib.util.spec_from_file_location(module_name, py_file)
-        module = importlib.util.module_from_spec(spec)
-        spec.loader.exec_module(module)
-        globals()[module_name] = module
+        for py_file in py_files:
+            module_name: str = os.path.splitext(os.path.basename(py_file))[0]
+            spec = importlib.util.spec_from_file_location(module_name, py_file)
+            module = importlib.util.module_from_spec(spec)
+            spec.loader.exec_module(module)
+            globals()[module_name] = module
 
-    suffocater_version: str = "6.1.9-stable        "
-    the_suffocater_main(suffocater_version)
+        suffocater_version: str = "6.2.2-stable        "
+        the_suffocater_main(suffocater_version)
+    else:
+        print("This code requires root privilges to run certain modules.")
+        exit()

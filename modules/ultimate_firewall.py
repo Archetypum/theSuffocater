@@ -199,7 +199,7 @@ def ultimate_firewall() -> None:
             "fail2ban_setup": fail2ban_setup,
             "porter": porter
             }
-`
+
     print("+---- Ultimate Firewall ----+")
     print("\nAvaiable Profiles:")
     for profile in profiles.keys():

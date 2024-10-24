@@ -18,7 +18,30 @@ from time import sleep
 
 def openvpn_server_setup() -> None:
     system("clear")
-    ...
+
+    print("We are going to setup your server for OpenVPN.")
+
+    answer: str = input("\nAre you sure you want this? (y/n): ")
+    if answer in ["y", "yes"]:
+        try:
+            print("Updating the system...")
+            subprocess.run(["apt", "update", "&&", "apt", "upgrade", "-y"], check=True, shell=True)
+            sleep(1)
+
+            print("Installing OpenVPN...")
+            subprocess.run(["apt", "install", "openvpn", "-y"], check=True, shell=True)
+            sleep(1)
+
+            print("Installing Curl...")
+            subprocess.run(["apt", "install", "curl", "-y"], check=True, shell=True)
+            sleep(1)
+
+            print("Installing Iptables for future...")
+            subprocess.run(["apt", "install", "iptables", "-y"], check=True, shell=True)
+            sleep(1)
+
+        except subprocess.CalledProcessError as e:
+            print(f"An error occured: {e}")
 
 
 def wireguard_server_setup() -> None:
