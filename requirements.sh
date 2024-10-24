@@ -20,6 +20,14 @@ list_of_platforms() {
 	done
 }
 
+install_python_requirements() {
+	python3 -m venv pkgenv
+	source pkgenv/bin/activate
+	pip install -r python_requirements.txt
+
+	echo "Dont forget to 'source pkgenv/bin/activate' and you're all set."
+}
+
 install_debian_based() {
 	apt update && apt upgrade -y
 	apt install python3 python3-pip net-tools ufw iptables fail2ban openvpn nftables -y
@@ -143,6 +151,19 @@ main() {
 			exit 1
 			;;
 	esac
+
+	sleep 1
+	clear
+	
+	echo -n "Now we need to create virtual env for python3 in $(pwd). Are you wish to proceed? (y/n): "
+	read ANSWER
+	
+	ANSWER=$(echo "$ANSWER" | tr "[:upper:]" "[:lower:]")
+	if [[ $ANSWER == "y"  ]]; then
+		install_python_requirements
+	else
+		exit 0
+	fi
 }
 
 main

@@ -1,4 +1,5 @@
-theSuffocater - ...
+theSuffocater - extensible/flexible module manager that allows you to
+quickly harden your server and deploy services in few clicks.
 
 
 
