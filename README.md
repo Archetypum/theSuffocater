@@ -4,6 +4,7 @@ quickly harden your server and deploy services in few clicks.
 
 
 Having problems with theSuffocater? Read this article:
+
     Init Systems:
         - This build uses sysvinit initialization system. If you use systemd,
           try 'the-suffocater-legacy'. Unfortunately we dont have openrc build yet.
