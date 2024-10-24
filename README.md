@@ -1,8 +1,6 @@
 theSuffocater - extensible module manager that allows you to
 quickly harden your server and deploy services in few clicks.
 
-
-
 Having problems with theSuffocater? Read this article:
 
     === Init Systems ===:
@@ -26,5 +24,6 @@ Having problems with theSuffocater? Read this article:
 
 
 Developer? Read this article:
-
-   (thesuffocater documentation for developers and contributors) 
+    
+    === theSuffocater repository navigation ===:
+        - (blahblahblah)
