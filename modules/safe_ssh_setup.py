@@ -17,8 +17,7 @@ from os import system
 
 def main(distro: str, init_system: str) -> None:
     try:
-        # Install OpenSSH server based on the distribution
-        if distro in ["debian", "devuan"]:
+        if distro in ["debian", "devuan", "ubuntu", "trisquel", "mint", "lmde"]:
             subprocess.run(["apt", "install", "openssh-client", "openssh-server", "-y"], check=True)
         elif distro in ["arch", "artix"]:
             subprocess.run(["pacman", "-S", "openssh", "--noconfirm"], check=True)
@@ -87,12 +86,12 @@ def get_user_distro() -> str:
         with open("/etc/os-release") as release_file:
             for line in release_file:
                 if line.startswith("ID="):
-                    name = line.split("=")[1].strip().lower()
+                    name: str = line.split("=")[1].strip().lower()
                     return name
     except FileNotFoundError:
         print("Cannot detect distribution from /etc/os-release.")
     
-    name = input("Could you write the base of your OS yourself? (debian, arch, freebsd, etc.): ").strip().lower()
+    name: str = input("Could you write the base of your OS yourself? (debian, arch, freebsd, etc.): ").strip().lower()
     return name
 
 

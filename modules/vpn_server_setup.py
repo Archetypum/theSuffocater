@@ -69,7 +69,9 @@ def wireguard_server_setup(init_system: str) -> None:
             ...
         except subprocess.CalledProcessError as e:
             print(f"An error occured: {e}")
-
+    else:
+        print("Operation canceled.")
+        exit(0)
 
 def outlinevpn_server_setup(init_system: str) -> None:
     system("clear")
@@ -99,11 +101,13 @@ def outlinevpn_server_setup(init_system: str) -> None:
         
         except subprocess.CalledProcessError as e:
             print(f"An error occured: {e}")
+    else:
+        print("Operation canceled.")
+        exit(0)
 
-
-def detect_init_system():
+def get_init_system():
     try:
-        output = subprocess.check_output(["systemctl"], stderr=subprocess.STDOUT, text=True)
+        output: str = subprocess.check_output(["systemctl"], stderr=subprocess.STDOUT, text=True)
         if "systemd" in output:
             return "systemd"
     except FileNotFoundError:
@@ -112,20 +116,37 @@ def detect_init_system():
         pass
 
     try:
-        output = subprocess.check_output(["service", "--help"], stderr=subprocess.STDOUT, text=True)
+        output: str = subprocess.check_output(["service", "--help"], stderr=subprocess.STDOUT, text=True)
         if "Usage: service" in output:
             return "sysvinit"
+    except FileNotFoundError:
+        pass
     except subprocess.CalledProcessError:
         pass
 
-    print("This module does not support your init system.")
-    return None
+    return ""
+
+
+def get_user_distro() -> str:
+    try:
+        with open("/etc/os-release") as release_file:
+            for line in release_file:
+                if line.startswith("ID=")
+                name: str = line.split("=")[1].strip().lower()
+                return name
+    except FileNotFoundError:
+        print("Cannot detect distribution from /etc/os-release")
+    
+    name: str = input("Could you write the base of your OS yourself? (debian, arch, freebsd, etc.): ").strip().lower()
+    return name
 
 
 def vpn_server_setup() -> None:
     system("clear")
 
-    init_system = detect_init_system()
+    distro: str = get_user_distro()
+    init_system: str = get_init_system()
+    
     functions: dict = {
             "openvpn_server_setup": openvpn_server_setup,
             "wireguard_server_setup": wireguard_server_setup,
@@ -139,4 +160,8 @@ def vpn_server_setup() -> None:
 
     your_function: str = input("Enter function name (or anything to leave) >>> ").lower()
     if your_function in functions:
-        functions[your_function](init_system)
+        functions[your_function](distro, init_system)
+
+
+if __name__ == "__main__":
+    vpn_server_setup()

@@ -83,6 +83,11 @@ def no_spying() -> None:
         print("\nSuccess!")
 
 
+def fail2ban_setup() -> None:
+    system("clear")
+    ...
+
+
 def iptables_setup() -> None:
     system("clear")
     print("We are going to setup basic iptables rules to secure your machine.")
