@@ -17,82 +17,109 @@ from os import system
 
 def main(distro: str, init_system: str) -> None:
     try:
-        if distro == "debian":
-            subprocess.run(["apt", "install", "openssh-client", "openssh-server", "-y"], check=True, shell=True)
-        elif distro == "arch":
-            subprocess.run(["pacman", "-S", "openssh", "--noconfirm"], check=True, shell=True)
+        # Install OpenSSH server based on the distribution
+        if distro in ["debian", "devuan"]:
+            subprocess.run(["apt", "install", "openssh-client", "openssh-server", "-y"], check=True)
+        elif distro in ["arch", "artix"]:
+            subprocess.run(["pacman", "-S", "openssh", "--noconfirm"], check=True)
         elif distro == "freebsd":
-            subprocess.run(["pkg", "install", "openssh"], check=True, shell=True)
+            subprocess.run(["pkg", "install", "openssh"], check=True)
         else:
-            print("Unsupported disto.")
+            print(f"Unsupported distribution: {distro}")
+            return
 
-        with open("config_files/secure_ssh_config.txt", "r") as config_file:
-            secure_ssh_config_text: str = config_file.read()
+        try:
+            with open("config_files/secure_ssh_config.txt", "r") as config_file:
+                secure_ssh_config_text = config_file.read()
+        except FileNotFoundError:
+            print("Configuration file 'config_files/secure_ssh_config.txt' not found.")
+            return
+        except IOError as e:
+            print(f"An error occurred while reading the config file: {e}")
+            return
 
-        with open("/etc/ssh/sshd_config", "w") as true_config_file:
-            true_config_file.write(secure_ssh_config_text)
-        
+        try:
+            with open("/etc/ssh/sshd_config", "w") as true_config_file:
+                true_config_file.write(secure_ssh_config_text)
+        except IOError as e:
+            print(f"An error occurred while writing to /etc/ssh/sshd_config: {e}")
+            return
+
         if init_system == "sysvinit":
-            subprocess.run(["service", "ssh", "restart"], check=True, shell=True)
-            print("\nSuccess!")
+            subprocess.run(["service", "ssh", "restart"], check=True)
+            print("\nSuccess! SSH service restarted.")
         elif init_system == "systemd":
-            subprocess.run(["systemctl", "enable", "sshd"], check=True, shell=True)
-            subprocess.run(["systemctl", "start", "sshd"], check=True, shell=True)
+            subprocess.run(["systemctl", "enable", "sshd"], check=True)
+            subprocess.run(["systemctl", "start", "sshd"], check=True)
+            print("\nSuccess! SSH service started and enabled.")
         else:
-            print("Unsupported distro.")
+            print("Unsupported init system.")
+            return
 
-    except FileNotFoundError:
-        print("Configuration file not found.")
-    except IOError as e:
-        print(f"An IOError occurred: {e}")
+    except subprocess.CalledProcessError as e:
+        print(f"An error occurred while running a subprocess: {e}")
+    except Exception as e:
+        print(f"An unexpected error occurred: {e}")
 
 
 def get_init_system() -> str:
     try:
-        output: str = subprocess.check_output(["systemctl"], stderr=subprocess.STDOUT, text=True)
-        if "systemd" in output:
-            return "systemd"
+        subprocess.check_output(["systemctl"], stderr=subprocess.STDOUT, text=True)
+        return "systemd"
     except FileNotFoundError:
         pass
     except subprocess.CalledProcessError:
         pass
 
     try:
-        output: str = subprocess.check_output(["service", "--help"], stderr=subprocess.STDOUT, text=True)
-        if "Usage: service" in output:
-            return "sysvinit"
+        subprocess.check_output(["service", "--help"], stderr=subprocess.STDOUT, text=True)
+        return "sysvinit"
     except FileNotFoundError:
         pass
     except subprocess.CalledProcessError:
         pass
+
+    return ""
 
 
 def get_user_distro() -> str:
     try:
         with open("/etc/os-release") as release_file:
             for line in release_file:
-                if line.startswith("ID_LIKE="):
-                    name: str = line.split("=")[1]
+                if line.startswith("ID="):
+                    name = line.split("=")[1].strip().lower()
                     return name
     except FileNotFoundError:
-        print("Cant get your distribution name,")
-        name: str = input("Could you write the base of your OS yourself? (debian, arch, freebsd, etc.): ")
-        return name
+        print("Cannot detect distribution from /etc/os-release.")
+    
+    name = input("Could you write the base of your OS yourself? (debian, arch, freebsd, etc.): ").strip().lower()
+    return name
 
 
 def safe_ssh_setup() -> None:
     system("clear")
 
-    distro: str = get_user_distro()
-    init_system: str = get_init_system()
+    distro = get_user_distro()
+    init_system = get_init_system()
+
+    if not distro or not init_system:
+        print("Failed to detect distribution or init system. Exiting.")
+        exit(1)
 
     print("After running this module, the following changes will be made:")
-    print("0. Install openssh-client and openssh-server;")
-    print("1. Remove password authentication;")
-    print("2. Add Pubkey authentication;")
-    print("3. Permit root login;")
+    print("0. Install openssh-client and openssh-server.")
+    print("1. Remove password authentication.")
+    print("2. Add Pubkey authentication.")
+    print("3. Permit root login.")
     print("4. Set MaxAuthTries to 6.")
 
-    answer: str = input("\nAre you sure you want this? (y/n): ").lower()
+    answer = input("\nAre you sure you want this? (y/n): ").lower()
     if answer in ["y", "yes"]:
         main(distro, init_system)
+    else:
+        print("Operation canceled.")
+        exit(0)
+
+
+if __name__ == "__main__":
+    safe_ssh_setup()
