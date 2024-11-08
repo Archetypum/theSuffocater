@@ -48,7 +48,7 @@ def openvpn_server_setup(init_system: str) -> None:
             sleep(1)
             
             print("Finishing installation...")
-            if init_system == "sysvinit"
+            if init_system == "sysvinit":
                 subprocess.run(["service", "openvpn", "restart"], check=True, shell=True)
             else:
                 subprocess.run(["systemctl", "restart", "openvpn"], check=True, shell=True)

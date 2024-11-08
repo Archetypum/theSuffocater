@@ -103,9 +103,9 @@ if __name__ == "__main__":
     if os.geteuid() == 0:
         current_dir: str = os.path.dirname(__file__)
         modules_dir: str = os.path.join(current_dir, "modules")
-        bash_scripts_dir: str = os.path.join(current_dir, "scripts")  # Directory for bash scripts
+        bash_scripts_dir: str = os.path.join(current_dir, "scripts")
         py_files: list = glob.glob(os.path.join(modules_dir, "*.py"))
-        bash_scripts: list = glob.glob(os.path.join(bash_scripts_dir, "*.sh"))  # Load bash scripts
+        bash_scripts: list = glob.glob(os.path.join(bash_scripts_dir, "*.sh"))
 
         bash_scripts_names = [os.path.basename(script) for script in bash_scripts]
 
@@ -116,7 +116,7 @@ if __name__ == "__main__":
             spec.loader.exec_module(module)
             globals()[module_name] = module
 
-        suffocater_version: str = "7.0.0-testing        "
+        suffocater_version: str = "7.0.1-unstable        "
         the_suffocater_main(suffocater_version)
     else:
         print("This code requires root privileges to run certain modules.")

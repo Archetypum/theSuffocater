@@ -1,7 +1,6 @@
-theSuffocater - extensible module manager that allows you to
-quickly harden your server and deploy services in few clicks.
+# theSuffocater - extensible module manager that allows you to quickly harden your server and deploy services in few clicks.
 
-Having problems with theSuffocater? Read this article:
+#Having problems with theSuffocater? Read this article:
 
     === Init Systems ===
         - This build uses sysvinit initialization system. If you use systemd,
@@ -19,11 +18,10 @@ Having problems with theSuffocater? Read this article:
         - Dont change any configurations files and directories unless you know what you are doing.
     
     === Current existing bugs ===
-        idk
-        mail me if you found any - industrialmachine2000@protonmail.com
+        im sorry but the whole suffocater is a one big bug
 
 
-Developer? Want to contribute? Read this article:
+# Developer? Want to contribute? Read this article:
     
     === theSuffocater repository navigation ===
         - (blahblahblah)
