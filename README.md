@@ -1,6 +1,6 @@
 # theSuffocater - extensible module manager that allows you to quickly harden your server and deploy services in few clicks.
 
-#Having problems with theSuffocater? Read this article:
+# Having problems with theSuffocater? Read this article:
 
     === Init Systems ===
         - This build uses sysvinit initialization system. If you use systemd,
