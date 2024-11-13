@@ -20,17 +20,17 @@ install_python_requirements() {
     python3 -m venv pkgenv
     source pkgenv/bin/activate
     pip install -r python_requirements.txt
-    echo "Don't forget to 'source pkgenv/bin/activate' when you're ready to use theSuffocater."
+    echo "Don't forget to 'source pkgenv/bin/activate' and you are good to go."
 }
 
 install_debian_based() {
     apt update && apt upgrade -y
-    apt install python3 python3-pip net-tools ufw iptables fail2ban openvpn nftables -y
+    apt install python3 python3-pip net-tools ufw iptables fail2ban openvpn nftables lsof -y
 }
 
 install_arch_based() {
     pacman -Syu --noconfirm
-    pacman -S python3 python3-pip net-tools ufw iptables fail2ban openvpn nftables --noconfirm
+    pacman -S python3 python3-pip net-tools ufw iptables fail2ban openvpn nftables lsof --noconfirm
 }
 
 install_gentoo_based() {
@@ -42,51 +42,51 @@ install_gentoo_based() {
 
 install_alpine_based() {
     apk update && apk upgrade
-    apk add python3 py3-pip net-tools ufw iptables fail2ban openvpn nftables
+    apk add python3 py3-pip net-tools ufw iptables fail2ban openvpn nftables lsof
 }
 
 install_void_based() {
     xbps-install -S
-    xbps-install python3 python3-pip net-tools ufw iptables fail2ban openvpn nftables
+    xbps-install python3 python3-pip net-tools ufw iptables fail2ban openvpn nftables lsof
 }
 
 install_fedora_based() {
     dnf update -y
-    dnf install python3 python3-pip net-tools firewalld fail2ban openvpn nftables -y
+    dnf install python3 python3-pip net-tools firewalld fail2ban openvpn nftables lsof -y
 }
 
 install_opensuse_based() {
     zypper refresh
-    zypper install -y python3 python3-pip net-tools firewalld fail2ban openvpn nftables
+    zypper install -y python3 python3-pip net-tools firewalld fail2ban openvpn nftables lsof
 }
 
 install_slackware_based() {
     slackpkg update
-    slackpkg install python3 python3-pip net-tools iptables fail2ban openvpn nftables
+    slackpkg install python3 python3-pip net-tools iptables fail2ban openvpn nftables lsof
 }
 
 
 install_redhat_based() {
     yum update -y
-    yum install python3 python3-pip net-tools firewalld fail2ban openvpn nftables -y
+    yum install python3 python3-pip net-tools firewalld fail2ban openvpn nftables lsof -y
 }
 
 install_freebsd_based() {
     pkg update
-    pkg install -y python3 py37-pip net-tools iptables fail2ban openvpn nftables
+    pkg install -y python3 py37-pip net-tools iptables fail2ban openvpn nftables lsof
 }
 
 install_netbsd_based() {
     pkgin update
-    pkgin install python37 py37-pip net-tools iptables fail2ban openvpn nftables
+    pkgin install python37 py37-pip net-tools iptables fail2ban openvpn nftables lsof
 }
 
 install_openbsd_based() {
-    pkg_add python3 py3-pip net-tools pfctl fail2ban openvpn nftables
+    pkg_add python3 py3-pip net-tools pfctl fail2ban openvpn nftables lsof
 }
 
 install_dragora_based() {
-    pkg add python3 python3-pip net-tools ufw iptables fail2ban openvpn
+    pkg add python3 python3-pip net-tools ufw iptables fail2ban openvpn lsof
 }
 
 to_lowercase() {
