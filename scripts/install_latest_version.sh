@@ -14,13 +14,13 @@ check_internet_connection() {
 
 check_git_installed() {
 	if ! command -v git &>/dev/null; then
-		echo "Error: Git is not installed."
+		echo "[!] Error: Git is not installed."
 		exit 1
 	fi
 }
 
 install_latest_version() {
-	echo "Installing latest theSuffocater versioni..."
+	echo "[*] Installing latest theSuffocater version..."
 	sleep 1
 	
 	git clone https://github.com/Kinderfeld/fear-thesuffocater

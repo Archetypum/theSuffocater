@@ -21,7 +21,7 @@ install_python_requirements() {
 	python3 -m venv pkgenv
 	source pkgenv/bin/activate
 	pip install -r python_requirements.txt
-	
+		
 	echo "Don't forget to 'source pkgenv/bin/activate' and you are good to go."
 }
 

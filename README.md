@@ -3,8 +3,7 @@
 # Having problems with theSuffocater? Read this article:
 
     === Init Systems ===
-        - This build uses sysvinit initialization system. If you use systemd,
-          try 'the-suffocater-legacy'. Unfortunately we dont have openrc build yet.
+        - This build uses sysvinit initialization system as primary, but supports ugly fucking systemd as well. If you talented enough to help me with openrc port, please contact me.
         
     === Notes for BSD users ===
         - *NetBSD*: Ensure that pkgin is installed on NetBSD before running the script. If it’s not
@@ -14,7 +13,7 @@
     
     === Common problems with modules ===
         - Check if "modules" directory exists && Check if "modules" directory has any .py files.
-        - Reinstall theSuffocater from GitHub. Maybe you just have a broken install.
+        - Reinstall theSuffocater using "install_latest_version.sh". Maybe you just have a broken install.
         - Dont change any configurations files and directories unless you know what you are doing.
     
     === Current existing bugs ===
@@ -24,12 +23,14 @@
 # Developer? Want to contribute? Read this article:
     
     === theSuffocater repository navigation ===
-        - (blahblahblah)
+        - scripts/: directory for shell scripts. Used by the_suffocater_cli.py and the_suffocater_gui.py
+	- modules/: directory for python scripts. Used by the_suffocater_cli.py and the_suffocater_gui.py
+            
 
     === Current goals ===
         - Refactor this ugly piece of shit called README.md
         - Add more really useful modules
         - Make GUI version for idiots
-        - Make it support every other geenu slash lenox and not just debian
+        - Make it support every other geenu slash lenox distos and not just debian and sometimes arch
         - Check how it works on BSD systems
         - Become a better programmer
