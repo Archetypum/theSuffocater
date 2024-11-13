@@ -131,9 +131,9 @@ def get_user_distro() -> str:
     try:
         with open("/etc/os-release") as release_file:
             for line in release_file:
-                if line.startswith("ID=")
-                name: str = line.split("=")[1].strip().lower()
-                return name
+                if line.startswith("ID="):
+                    name: str = line.split("=")[1].strip().lower()
+                    return name
     except FileNotFoundError:
         print("Cannot detect distribution from /etc/os-release")
     

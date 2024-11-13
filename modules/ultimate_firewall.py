@@ -90,81 +90,36 @@ def fail2ban_setup() -> None:
 
 def iptables_setup() -> None:
     system("clear")
-    print("We are going to setup basic iptables rules to secure your machine.")
-
-    answer: str = input("\nAre you sure you want this? (y/n): ").lower()
+    print("We are going to set up basic iptables rules to secure your machine.")
+    answer = input("\nAre you sure you want this? (y/n): ").lower()
     if answer in ['y', 'yes']:
-        interfaces: list = os.listdir('/sys/class/net')
-        print(f"Interfaces:\n{[interface for interface in os.listdir('/sys/class/net') if os.path.islink(f'/sys/class/net/{interface}')]}")
-        interface: str = input('\nEnter your interface: ')
+        interfaces = os.listdir("/sys/class/net")
+        print(f"Interfaces:\n{[interface for interface in interfaces if os.path.islink(f'/sys/class/net/{interface}')]}")
+        interface = input('\nEnter your interface: ')
 
-        choice: str = input("\nHIGHLY RECOMMENDED!! Allow Loopback? (y/n): ").lower()
-        if choice in ['y', 'yes']:
-            subprocess.run(['iptables', '-A', 'INPUT', '-i', 'lo', '-j', 'ACCEPT'], check=True)
-            subprocess.run(['iptables', '-A', 'OUTPUT', '-o', 'lo', '-j', 'ACCEPT'], check=True)
+        rules: list = [
+            ("Loopback", ['lo'], ['lo']),
+            ("Ping", ['icmp'], ['icmp']),
+            ("Web", ['80', '443'], ['80', '443']),
+            ("DNS", ['53'], ['53']),
+            ("NTP", ['123'], ['123']),
+            ("CUPS", ['631'], ['631']),
+            ("SSH", ['22'], ['22']),
+            ("DHCP", ['67:68'], ['67:68'])
+        ]
+        
+        for rule_name, input_ports, output_ports in rules:
+            choice: str = input(f"\nAllow {rule_name}? (y/n): ").lower()
+            if choice in ['y', 'yes']:
+                for port in input_ports:
+                    subprocess.run(f"iptables -A INPUT -i {interface} -p tcp --dport {port} -j ACCEPT", check=True)
+                for port in output_ports:
+                    subprocess.run(f"iptables -A OUTPUT -o {interface} -p tcp --dport {port} -j ACCEPT", check=True)
 
-        choice: str = input("\nAllow Ping? (y/n): ").lower()
-        if choice in ['y', 'yes']:
-            subprocess.run(["iptables", "-A", "INPUT", "-i", interface, "-p", "icmp", "-m", "state", "--state", "NEW", "--icmp-type", "8", "-j", "ACCEPT"], check=True, encoding='utf-8')
-            subprocess.run(["iptables", "-A", "INPUT", "-i", interface, "-p", "icmp", "-m", "state", "--state", "ESTABLISHED,RELATED", "-j", "ACCEPT"], check=True, encoding='utf-8')
-            subprocess.run(["iptables", "-A", "OUTPUT", "-o", interface, "-p", "icmp", "-j", "ACCEPT"], check=True, encoding='utf-8')
-
-        choice: str = input("\nAllow connection to the Web? (y/n): ").lower()
-        if choice in ['y', 'yes']:
-            subprocess.run(["iptables", "-A", "INPUT", "-i", interface, "-p", "tcp", "-m", "state", "--state", "ESTABLISHED,RELATED", "--sport", "80", "-j", "ACCEPT"], check=True, encoding='utf-8')
-            subprocess.run(["iptables", "-A", "INPUT", "-i", interface, "-p", "tcp", "-m", "state", "--state", "ESTABLISHED,RELATED", "--sport", "443", "-j", "ACCEPT"], check=True, encoding='utf-8')
-            subprocess.run(["iptables", "-A", "OUTPUT", "-o", interface, "-p", "tcp", "-m", "tcp", "--dport", "80", "-j", "ACCEPT"], check=True, encoding='utf-8')
-            subprocess.run(["iptables", "-A", "OUTPUT", "-o", interface, "-p", "tcp", "-m", "tcp", "--dport", "443", "-j", "ACCEPT"], check=True, encoding='utf-8')
-
-        choice: str = input("\nHIGHLY RECOMMENDED!! Allow DNS? (y/n): ").lower()
-        if choice in ['y', 'yes']:
-            router_ip: str = input("\nEnter your router's IP (default gateway) to allow DNS connections: ")
-            subprocess.run(["iptables", "-A", "INPUT", "-i", interface, "-s", router_ip, "-p", "udp", "--sport", "53", "-m", "state", "--state", "ESTABLISHED,RELATED", "-j", "ACCEPT"], check=True, encoding='utf-8')
-            subprocess.run(["iptables", "-A", "INPUT", "-i", interface, "-s", router_ip, "-p", "tcp", "--sport", "53", "-m", "state", "--state", "ESTABLISHED,RELATED", "-j", "ACCEPT"], check=True, encoding='utf-8')
-            subprocess.run(["iptables", "-A", "OUTPUT", "-o", interface, "-d", router_ip, "-p", "udp", "--dport", "53", "-m", "udp", "-j", "ACCEPT"], check=True, encoding='utf-8')
-            subprocess.run(["iptables", "-A", "OUTPUT", "-o", interface, "-d", router_ip, "-p", "tcp", "--dport", "53", "-m", "tcp", "-j", "ACCEPT"], check=True, encoding='utf-8')
-
-        choice: str = input("\nAllow NTP to set and maintain the system time? (y/n): ").lower()
-        if choice in ['y', 'yes']:
-            subprocess.run(["iptables", "-A", "INPUT", "-i", interface, "-p", "udp", "-m", "state", "--state", "ESTABLISHED,RELATED", "--dport", "123", "-j", "ACCEPT"], check=True, encoding='utf-8')
-            subprocess.run(["iptables", "-A", "OUTPUT", "-o", interface, "-p", "udp", "-m", "udp", "--sport", "123", "-j", "ACCEPT"], check=True, encoding='utf-8')
-
-        choice: str = input("\nUnless you're using printer, allow CUPS connections? (y/n): ").lower()
-        if choice in ['y', 'yes']:
-            subprocess.run(["iptables", "-A", "INPUT", "-p", "udp", "-m", "udp", "--dport", "631", "-j", "ACCEPT"], check=True, encoding='utf-8')
-            subprocess.run(["iptables", "-A", "INPUT", "-p", "tcp", "-m", "tcp", "--dport", "631", "-j", "ACCEPT"], check=True, encoding='utf-8')
-            subprocess.run(["iptables", "-A", "OUTPUT", "-p", "udp", "-m", "udp", "--sport", "631", "-j", "ACCEPT"], check=True, encoding='utf-8')
-            subprocess.run(["iptables", "-A", "OUTPUT", "-p", "tcp", "-m", "tcp", "--sport", "631", "-j", "ACCEPT"], check=True, encoding='utf-8')
-
-        choice: str = input("\nEnable SSH? (y/n): ").lower()
-        if choice in ['y', 'yes']:
-            subprocess.run(["iptables", "-A", "INPUT", "-i", interface, "-p", "tcp", "-m", "state", "--state", "NEW,ESTABLISHED", "--dport", "22", "-j", "ACCEPT"], check=True, encoding='utf-8')
-            subprocess.run(["iptables", "-A", "OUTPUT", "-o", interface, "-p", "tcp", "-m", "state", "--state", "ESTABLISHED", "--sport", "22", "-j", "ACCEPT"], check=True, encoding='utf-8')
-            subprocess.run(["iptables", "-A", "OUTPUT", "-o", interface, "-p", "tcp", "-m", "state", "--state", "NEW,ESTABLISHED", "--dport", "22", "-j", "ACCEPT"], check=True, encoding='utf-8')
-            subprocess.run(["iptables", "-A", "INPUT", "-i", interface, "-p", "tcp", "-m", "state", "--state", "ESTABLISHED", "--sport", "22", "-j", "ACCEPT"], check=True, encoding='utf-8')
-
-        choice: str = input("\nHIGHLY RECOMMENDED!! Enable DHCP? (y/n): ").lower()
-        if choice in ['y', 'yes']:
-            subprocess.run(["iptables", "-A", "INPUT", "-i", interface, "-p", "udp", "-m", "state", "--state", "ESTABLISHED,RELATED", "--sport", "67:68", "-j", "ACCEPT"], check=True, encoding='utf-8')
-            subprocess.run(["iptables", "-A", "OUTPUT", "-o", interface, "-p", "udp", "-m", "udp", "--dport", "67:68", "-j", "ACCEPT"], check=True, encoding='utf-8')
-
-        choice: str = input("\nReject everything else that you didn't explicitly allowed? (y/n): ").lower()
-        if choice in ['y', 'yes']:
-            subprocess.run(["iptables", "-A", "INPUT", "-j", "REJECT"], check=True, encoding='utf-8')
-            subprocess.run(["iptables", "-A", "FORWARD", "-j", "REJECT"], check=True, encoding='utf-8')
-            subprocess.run(["iptables", "-A", "OUTPUT", "-j", "REJECT"], check=True, encoding='utf-8')
-
-        print("Successfully enabled iptables rules!")
-        print("Dont forget to check your connectivity. Iptables can be a little tricky sometimes.")
-
-        restore: str = input("\nIf you belive that something is wrong, enter RESTORE in capital letters: ")
-        if restore == 'RESTORE':
-            subprocess.run(["sudo", "iptables", "-F"], check=True)
-            subprocess.run(["sudo", "iptables", "-X"], check=True)
-            subprocess.run(["iptables", "-P", "INPUT", "ACCEPT"], check=True)
-            subprocess.run(["iptables", "-P", "FORWARD", "ACCEPT"], check=True)
-            subprocess.run(["iptables", "-P", "OUTPUT", "ACCEPT"], check=True)
-            print("Iptables are reset now. Re-check your connectivity.")
+        reject_choice = input("\nReject everything else that was not explicitly allowed? (y/n): ").lower()
+        if reject_choice in ['y', 'yes']:
+            subprocess.run("iptables -A INPUT -j REJECT", check=True)
+            subprocess.run("iptables -A OUTPUT -j REJECT", check=True)
 
         print("\nSuccess!")
 
