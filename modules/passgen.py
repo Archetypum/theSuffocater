@@ -19,7 +19,7 @@ def passgen() -> None:
 
     answer: str = input("\nAre you sure you want this? (y/n): ").lower()
     if answer in ["y", "yes"]:
-        name: str = inut("\nEnter password name: ")
+        name: str = input("\nEnter password name: ")
         password_length: int = int(input("Enter password length: "))
         
         characters: str = string.ascii_letters + string.digits
