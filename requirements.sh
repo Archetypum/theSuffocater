@@ -8,7 +8,7 @@ list_of_platforms() {
 		"fedora" "opensuse" "redhat"
 		"freebsd" "netbsd" "openbsd"
 		"arch" "artix" "manjaro" "hyperbola" "parabola"
-		"debian" "ubuntu" "mint" "lmde" "trisquel" "devuan" "kali" "parrot" "pop" "elementary"
+		"debian" "ubuntu" "xubuntu" "mint" "lmde" "trisquel" "devuan" "kali" "parrot" "pop" "elementary"
 	)
 	
 	echo "Supported Platforms:"
@@ -21,7 +21,7 @@ list_of_packages() {
 	PACKAGES=(
 		"python3" "python3-pip"
 		"net-tools" "ufw" "iptables" "nftables" "fail2ban"
-		"openvpn" "wireguard"  "wireguard-tools"
+		"openvpn" "wireguard/wireguard-tools"
 		"git" "lsof"
 	)
 
@@ -44,9 +44,10 @@ install_debian_based() {
 	sleep 1
 	
 	apt update && apt full-upgrade -y
-	apt install python3 python3-pip
-	apt install net-tools ufw iptables fail2ban nftables lsof git -y
-	apt install openvpn wireguard wireguard-tools
+	apt install python3 python3-pip -y
+	apt install net-tools ufw iptables fail2ban nftables -y
+	apt install openvpn wireguard wireguard-tools -y
+	apt install lsof git -y
 }
 
 install_arch_based() {
@@ -54,9 +55,10 @@ install_arch_based() {
 	sleep 1
 
 	pacman -Syu --noconfirm
-	pacman -S python3 python3-pip --noconfirm
-	pacman -S net-tools ufw iptables fail2ban nftables lsof git --noconfirm
-	pacman -s openvpn wireguard wireguard-tools --noconfirm
+	pacman -S python python-pip --noconfirm
+	pacman -S net-tools ufw iptables nftables fail2ban --noconfirm
+	pacman -s openvpn wireguard-tools --noconfirm
+	pacman -S lsof git --noconfirm
 }
 
 install_gentoo_based() {
@@ -65,7 +67,6 @@ install_gentoo_based() {
 
 	emerge --sync
 	emerge -uDN @world
-	emerge dev-python/pip
 	
 	echo "Gentoo setup is not fully implemented yet. Install it yourself, you are gentoo user after all!"
 }
@@ -76,8 +77,9 @@ install_alpine_based() {
 
 	apk update && apk upgrade
 	apk add python3 py3-pip
-	apk add net-tools ufw iptables fail2ban nftables lsof git
-	apt add wireguard wireguard-tools
+	apk add net-tools ufw iptables nftables fail2ban
+	apk add wireguard-tools openvpn
+	apk add lsof git
 }
 
 install_void_based() {
@@ -86,76 +88,94 @@ install_void_based() {
 
 	xbps-install -Su
 	xbps-install python3 python3-pip
-	xbps-install net-tools ufw iptables fail2ban openvpn nftables lsof git
+	xbps-install net-tools ufw iptables nftables fail2ban
+	xbps-install openvpn wireguard-tools
+	xbps-install lsof git
 }
 
 install_fedora_based() {
 	echo "Installing requirements..."
 	sleep 1
 	
-	dnf update -y
-	dnf install python3 python3-pip net-tools firewalld fail2ban openvpn nftables lsof git -y
+	dnf update -y && dnf upgrade -y
+	dnf install python3 python3-pip -y
+	dnf install net-tools firewalld iptables-services nftables fail2ban -y
+	dnf install openvpn wireguard-tools -y
+	dnf install lsof git -y
 }
 
 install_opensuse_based() {
 	echo "Installing requirements..."
 	sleep 1
 	
-	zypper refresh
+	zypper refresh -y && zypper update -y
 	zypper install -y python3 python3-pip
-	zypper install -y net-tools firewalld fail2ban openvpn nftables lsof git
+	zypper install -y net-tools firewalld iptables nftables fail2ban
+	zypper install -y openvpn wireguard-tools
+	zypper install -y lsof git
 }
 
 install_slackware_based() {
 	echo "Installing requirements..."
 	sleep 1
 
-	slackpkg update
-	slackpkg install python3 python3-pip
-	slackpkg install net-tools iptables fail2ban openvpn nftables lsof git
+	echo "Im sorry but you are on your own."
+	echo "Install packages manually from 'packages'."
 }
 
 install_redhat_based() {
 	echo "Installing requirements..."
 	sleep 1
 
-	yum update -y
+	yum update -y && yum upgrade -y
 	yum install python3 python3-pip -y
-	yum install net-tools firewalld fail2ban openvpn nftables lsof git -y
+	yum install net-tools firewalld iptables-services nftables fail2ban -y
+	yum install openvpn wireguard-tools -y
+	yum install lsof git -y
 }
 
 install_freebsd_based() {
 	echo "Installing requirements..."
 	sleep 1
 
-	pkg update -y
-	pkg install -y python3 py37-pip
-	pkg install -y net-tools iptables fail2ban openvpn nftables lsof git
+	pkg update -y && pkg upgrade -y
+	pkg install -y python3 py3-pip
+	pkg install -y net-tools iptables-legacy nftables fail2ban
+	pkg intsall -y openvpn wireguard-tools
+	pkg install -y lsof git
 }
 
 install_netbsd_based() {
 	echo "Installing requirements..."
 	sleep 1
 
-	pkgin update
-	pkgin install python37 py37-pip
-	pkgin install net-tools iptables fail2ban openvpn nftables lsof git
+	pkgin update -y && pkgin upgrade -y
+	pkgin install python3 py3-pip 
+	pkgin install nettools iptables-legacy nftables fail2ban
+	pkgin install lsof git
 }
 
 install_openbsd_based() {
 	echo "Installing requirements..."
 	sleep 1
-
+	
+	pkg_add -u
+	pkg_add -uf
 	pkg_add python3 py3-pip
-	pkg_add net-tools pfctl fail2ban openvpn nftables lsof git
+	pkg_add nettools pfctl fail2ban nftables
+	pkg_add openvpn wireguard-tools
+	pkg_add lsof git
 }
 
 install_dragora_based() {
 	echo "Installing requirements..."
 	sleep 1
 
-	pkg add python3 python3-pip
-	pkg add net-tools ufw iptables fail2ban openvpn lsof git
+	qi upgrade 
+	qi install python3 python3-pip
+	qi install net-tools ufw iptables nftables fail2ban
+	qi install openvpn wiregurard-tools
+	qi install lsof git
 }
 
 to_lowercase() {
@@ -183,7 +203,7 @@ main() {
 	DISTRO=$(to_lowercase "$DISTRO")
 	
 	case "$DISTRO" in
-		*debian*|*ubuntu*|*mint*|*lmde*|*trisquel*|*devuan*|*kali*|*parrot*|*pop*|*elementary*)
+		*debian*|*ubuntu*|*xubuntu*|*mint*|*lmde*|*trisquel*|*devuan*|*kali*|*parrot*|*pop*|*elementary*)
 			install_debian_based
 			;;
 		*arch*|*manjaro*|*hyperbola*|*parabola*|*artix*)
