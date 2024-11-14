@@ -23,7 +23,9 @@ install_latest_version() {
 	echo "[*] Installing latest theSuffocater version..."
 	sleep 1
 	
-	git clone https://github.com/Kinderfeld/fear-thesuffocater
+	git clone https://github.com/Kinderfeld/fear-thesuffocater $HOME
+
+	echo "Success!"
 }
 
 check_internet_connection

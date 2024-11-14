@@ -17,7 +17,7 @@ from os import system
 from time import sleep
 
 
-def openvpn_server_setup(init_system: str) -> None:
+def openvpn_server_setup(distro: str, init_system: str) -> None:
     system("clear")
 
     print("We are going to setup your server for OpenVPN.")
@@ -59,7 +59,7 @@ def openvpn_server_setup(init_system: str) -> None:
             print(f"An error occured: {e}")
 
 
-def wireguard_server_setup(init_system: str) -> None:
+def wireguard_server_setup(distro: str, init_system: str) -> None:
     system("clear")
     
     print("We are going to setup your server for Wireguard.")
@@ -73,7 +73,8 @@ def wireguard_server_setup(init_system: str) -> None:
         print("Operation canceled.")
         exit(0)
 
-def outlinevpn_server_setup(init_system: str) -> None:
+
+def outlinevpn_server_setup(distro: str, init_system: str) -> None:
     system("clear")
 
     print("We are going to setup your server for OutlineVPN.")
@@ -104,6 +105,7 @@ def outlinevpn_server_setup(init_system: str) -> None:
     else:
         print("Operation canceled.")
         exit(0)
+
 
 def get_init_system():
     try:

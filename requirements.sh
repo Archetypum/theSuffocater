@@ -8,11 +8,25 @@ list_of_platforms() {
 		"fedora" "opensuse" "redhat"
 		"freebsd" "netbsd" "openbsd"
 		"arch" "artix" "manjaro" "hyperbola" "parabola"
-		"debian" "ubuntu" "mint" "lmde" "trisquel" "devuan"
+		"debian" "ubuntu" "mint" "lmde" "trisquel" "devuan" "kali" "parrot" "pop" "elementary"
 	)
 	
 	echo "Supported Platforms:"
 	for ELEMENT in "${DISTRIBUTIONS[@]}"; do
+		echo " - $ELEMENT"
+	done
+}
+
+list_of_packages() {
+	PACKAGES=(
+		"python3" "python3-pip"
+		"net-tools" "ufw" "iptables" "nftables" "fail2ban"
+		"openvpn" "wireguard"  "wireguard-tools"
+		"git" "lsof"
+	)
+
+	echo "Packages to install:"
+	for ELEMENT in "${PACKAGES[@]}"; do
 		echo " - $ELEMENT"
 	done
 }
@@ -31,7 +45,8 @@ install_debian_based() {
 	
 	apt update && apt full-upgrade -y
 	apt install python3 python3-pip
-	apt install net-tools ufw iptables fail2ban openvpn nftables lsof git -y
+	apt install net-tools ufw iptables fail2ban nftables lsof git -y
+	apt install openvpn wireguard wireguard-tools
 }
 
 install_arch_based() {
@@ -40,7 +55,8 @@ install_arch_based() {
 
 	pacman -Syu --noconfirm
 	pacman -S python3 python3-pip --noconfirm
-	pacman -S net-tools ufw iptables fail2ban openvpn nftables lsof git --noconfirm
+	pacman -S net-tools ufw iptables fail2ban nftables lsof git --noconfirm
+	pacman -s openvpn wireguard wireguard-tools --noconfirm
 }
 
 install_gentoo_based() {
@@ -60,7 +76,8 @@ install_alpine_based() {
 
 	apk update && apk upgrade
 	apk add python3 py3-pip
-	apk add net-tools ufw iptables fail2ban openvpn nftables lsof git
+	apk add net-tools ufw iptables fail2ban nftables lsof git
+	apt add wireguard wireguard-tools
 }
 
 install_void_based() {
@@ -97,7 +114,6 @@ install_slackware_based() {
 	slackpkg install python3 python3-pip
 	slackpkg install net-tools iptables fail2ban openvpn nftables lsof git
 }
-
 
 install_redhat_based() {
 	echo "Installing requirements..."
@@ -147,11 +163,17 @@ to_lowercase() {
 }
 
 main() {
-	echo -n "Enter the base of your GNU/Linux or BSD distribution (Or type 'list' to view supported platforms): "
+	echo -n "Enter the base of your GNU/Linux or BSD distribution ('list' to view supported platforms, 'packges' to view requirements): "
 	read DISTRO
 	
 	if [[ "$DISTRO" == "list" ]]; then
 		list_of_platforms
+		main
+		return
+	fi
+
+	if [[ "$DISTRO" == "packages" ]]; then
+		list_of_packages
 		main
 		return
 	fi
@@ -161,7 +183,7 @@ main() {
 	DISTRO=$(to_lowercase "$DISTRO")
 	
 	case "$DISTRO" in
-		*debian*|*ubuntu*|*mint*|*lmde*|*trisquel*|*devuan*)
+		*debian*|*ubuntu*|*mint*|*lmde*|*trisquel*|*devuan*|*kali*|*parrot*|*pop*|*elementary*)
 			install_debian_based
 			;;
 		*arch*|*manjaro*|*hyperbola*|*parabola*|*artix*)

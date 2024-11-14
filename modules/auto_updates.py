@@ -11,11 +11,12 @@ Date: 28.07.2024
 """
 
 import subprocess
+from sys import exit
 from os import system
 
 
 def enable_auto_updates() -> None:
-    os.system("clear")
+    system("clear")
 
     print("Automatic updates help ensure your system is always protected with the latest security patches and improvements.")
     print("By enabling automatic updates, your system will regularly check for updates and install them without manual intervention.")
@@ -43,7 +44,7 @@ def enable_auto_updates() -> None:
 
 
 def disable_auto_updates() -> None:
-    os.system("clear")
+    system("clear")
 
     print("Disabling automatic updates will stop your system from automatically checking for and installing updates.")
     print("This may leave your system vulnerable to unpatched security issues.")
@@ -66,8 +67,31 @@ def disable_auto_updates() -> None:
             print(f"An IOError occurred: {e}")
 
 
+def get_user_distro() -> str:
+    try:
+        with open("/etc/os-release") as release_file:
+            for line in release_file:
+                if line.startswith("ID="):
+                    name: str = line.split("=")[1].strip().lower()
+                    return name
+    except FileNotFoundError:
+        print("Cannot detect distribution from /etc/os-release")
+
+    answer: str = input("Could you enter the base of your OS yourself (debian, arch, freebsd, etc.): ").strip().lower()
+    return answer
+
+
+def is_debian_based() -> str:
+    debian_based_distros: str = ["debian", "ubuntu", "linuxmint", "kali", "pop",]
+
+
 def auto_updates() -> None:
     system("clear")
+
+    distro: str = get_user_distro()
+    if distro != ["debian", "y", "yes"]:
+        print("This module supports only debian based distributions")
+        exit(1)
 
     functions: dict = {
             "enable_auto_updates": enable_auto_updates,
