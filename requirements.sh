@@ -5,8 +5,8 @@ clear
 list_of_platforms() {
 	DISTRIBUTIONS=(
 		"void" "alpine" "gentoo" "dragora" "slackware"
-		"fedora" "opensuse" "redhat"
-		"freebsd" "netbsd" "openbsd"
+		"fedora" "opensuse" "redhat" "centos"
+		"freebsd" "netbsd" "openbsd" "ghostbsd"
 		"arch" "artix" "manjaro" "hyperbola" "parabola"
 		"debian" "ubuntu" "xubuntu" "mint" "lmde" "trisquel" "devuan" "kali" "parrot" "pop" "elementary"
 	)
@@ -40,140 +40,139 @@ install_python_requirements() {
 }
 
 install_debian_based() {
-	echo "Installing requirements..."
+	echo "[*] Installing requirements..."
 	sleep 1
 	
 	apt update && apt full-upgrade -y
 	apt install python3 python3-pip -y
-	apt install net-tools ufw iptables fail2ban nftables -y
+	apt install net-tools iproute2 ufw iptables fail2ban nftables -y
 	apt install openvpn wireguard wireguard-tools -y
 	apt install lsof git -y
 }
 
 install_arch_based() {
-	echo "Installing requirements..."
+	echo "[*] Installing requirements..."
 	sleep 1
 
 	pacman -Syu --noconfirm
 	pacman -S python python-pip --noconfirm
-	pacman -S net-tools ufw iptables nftables fail2ban --noconfirm
+	pacman -S net-tools iproute2 ufw iptables nftables fail2ban --noconfirm
 	pacman -s openvpn wireguard-tools --noconfirm
 	pacman -S lsof git --noconfirm
 }
 
 install_gentoo_based() {
-	echo "Installing requirements..."
+	echo "[*] Installing requirements..."
 	sleep 1
-
-	emerge --sync
-	emerge -uDN @world
 	
-	echo "Gentoo setup is not fully implemented yet. Install it yourself, you are gentoo user after all!"
+	echo "Im sorry but you are on your own."
+	echo "Install packages manually"
+	exit 0
 }
 
 install_alpine_based() {
-	echo "Installing requirements..."
+	echo "[*] Installing requirements..."
 	sleep 1
 
 	apk update && apk upgrade
 	apk add python3 py3-pip
-	apk add net-tools ufw iptables nftables fail2ban
+	apk add net-tools iproute2 ufw iptables nftables fail2ban
 	apk add wireguard-tools openvpn
 	apk add lsof git
 }
 
 install_void_based() {
-	echo "Installing requirements..."
+	echo "[*] Installing requirements..."
 	sleep 1
 
 	xbps-install -Su
 	xbps-install python3 python3-pip
-	xbps-install net-tools ufw iptables nftables fail2ban
+	xbps-install net-tools iproute2 ufw iptables nftables fail2ban
 	xbps-install openvpn wireguard-tools
 	xbps-install lsof git
 }
 
 install_fedora_based() {
-	echo "Installing requirements..."
+	echo "[*] Installing requirements..."
 	sleep 1
 	
 	dnf update -y && dnf upgrade -y
 	dnf install python3 python3-pip -y
-	dnf install net-tools firewalld iptables-services nftables fail2ban -y
+	dnf install net-tools iproute2 firewalld iptables-services nftables fail2ban -y
 	dnf install openvpn wireguard-tools -y
 	dnf install lsof git -y
 }
 
 install_opensuse_based() {
-	echo "Installing requirements..."
+	echo "[*] Installing requirements..."
 	sleep 1
 	
 	zypper refresh -y && zypper update -y
 	zypper install -y python3 python3-pip
-	zypper install -y net-tools firewalld iptables nftables fail2ban
+	zypper install -y net-tools iproute2 firewalld iptables nftables fail2ban
 	zypper install -y openvpn wireguard-tools
 	zypper install -y lsof git
 }
 
 install_slackware_based() {
-	echo "Installing requirements..."
+	echo "[*] Installing requirements..."
 	sleep 1
 
 	echo "Im sorry but you are on your own."
-	echo "Install packages manually from 'packages'."
+	echo "Install packages manually."
 }
 
 install_redhat_based() {
-	echo "Installing requirements..."
+	echo "[*] Installing requirements..."
 	sleep 1
 
 	yum update -y && yum upgrade -y
 	yum install python3 python3-pip -y
-	yum install net-tools firewalld iptables-services nftables fail2ban -y
+	yum install net-tools iproute2 firewalld iptables-services nftables fail2ban -y
 	yum install openvpn wireguard-tools -y
 	yum install lsof git -y
 }
 
 install_freebsd_based() {
-	echo "Installing requirements..."
+	echo "[*] Installing requirements..."
 	sleep 1
 
 	pkg update -y && pkg upgrade -y
 	pkg install -y python3 py3-pip
-	pkg install -y net-tools iptables-legacy nftables fail2ban
+	pkg install -y net-tools iproute2 iptables-legacy nftables fail2ban
 	pkg intsall -y openvpn wireguard-tools
 	pkg install -y lsof git
 }
 
 install_netbsd_based() {
-	echo "Installing requirements..."
+	echo "[*] Installing requirements..."
 	sleep 1
 
 	pkgin update -y && pkgin upgrade -y
 	pkgin install python3 py3-pip 
-	pkgin install nettools iptables-legacy nftables fail2ban
+	pkgin install nettools iproute2 iptables-legacy nftables fail2ban
 	pkgin install lsof git
 }
 
 install_openbsd_based() {
-	echo "Installing requirements..."
+	echo "[*] Installing requirements..."
 	sleep 1
 	
 	pkg_add -u
 	pkg_add -uf
 	pkg_add python3 py3-pip
-	pkg_add nettools pfctl fail2ban nftables
+	pkg_add nettools iproute2 pfctl fail2ban nftables
 	pkg_add openvpn wireguard-tools
 	pkg_add lsof git
 }
 
 install_dragora_based() {
-	echo "Installing requirements..."
+	echo "[*] Installing requirements..."
 	sleep 1
 
 	qi upgrade 
 	qi install python3 python3-pip
-	qi install net-tools ufw iptables nftables fail2ban
+	qi install net-tools iproute2 ufw iptables nftables fail2ban
 	qi install openvpn wiregurard-tools
 	qi install lsof git
 }
@@ -183,7 +182,7 @@ to_lowercase() {
 }
 
 main() {
-	echo -n "Enter the base of your GNU/Linux or BSD distribution ('list' to view supported platforms, 'packges' to view requirements): "
+	echo -n "[*] Enter the base of your GNU/Linux or BSD distribution ('list' to view supported platforms, 'packges' to view requirements): "
 	read DISTRO
 	
 	if [[ "$DISTRO" == "list" ]]; then
@@ -227,10 +226,10 @@ main() {
 		*slackware*)
 			install_slackware_based
 			;;
-		*redhat*)
+		*redhat*|*centos*)
 			install_redhat_based
 			;;
-		*freebsd*)
+		*freebsd*|*ghostbsd*)
 			install_freebsd_based
 			;;
 		*netbsd*)
@@ -243,14 +242,14 @@ main() {
 			install_dragora_based
 			;;
 		*)
-			echo "Error: Unsupported distribution '$DISTRO'."
+			echo "[!] Error: Unsupported distribution '$DISTRO'."
 			exit 1
 			;;
 	esac
 	
 	sleep 1
 	clear
-	echo -n "Now we need to create a virtual environment for Python3 in $(pwd). Do you wish to proceed? (y/n): "
+	echo -n "[*] Now we need to create a virtual environment for python3 in $(pwd). Do you wish to proceed? (y/n): "
 	read ANSWER
 	
 	ANSWER=$(to_lowercase "$ANSWER")
@@ -266,9 +265,37 @@ check_privileges() {
 	if [ "$(id -u)" -eq 0 ]; then
 		main
 	else
-		echo "This script requires root privileges to install packages."
+		echo "[!] Error: This script requires root privileges to install packages."
 		exit 1
 	fi
 }
 
-check_privileges
+parse_args() {
+	if [[ $# -eq 0 ]]; then
+		check_privileges
+		return
+	fi
+
+	while [[ $# -gt 0 ]]; do
+		case "$1" in
+			-l|--list)
+				list_of_platforms
+				exit 0
+				;;
+			-p|--packages)
+				list_of_packages
+				exit 0
+				;;
+			-i|--install)
+				check_privileges
+				;;
+			*)
+				echo "[!] Unknown argument: $1"
+				exit 1
+				;;
+		esac
+		shift
+	done
+}
+
+parse_args "$@"
