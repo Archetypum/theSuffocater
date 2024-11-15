@@ -57,7 +57,7 @@ install_arch_based() {
 	pacman -Syu --noconfirm
 	pacman -S python python-pip --noconfirm
 	pacman -S net-tools iproute2 ufw iptables nftables fail2ban --noconfirm
-	pacman -s openvpn wireguard-tools --noconfirm
+	pacman -S openvpn wireguard-tools --noconfirm
 	pacman -S lsof git --noconfirm
 }
 

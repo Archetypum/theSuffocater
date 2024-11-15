@@ -110,7 +110,8 @@ def safe_ssh_setup() -> None:
     print("1. Remove password authentication.")
     print("2. Add Pubkey authentication.")
     print("3. Permit root login.")
-    print("4. Set MaxAuthTries to 6.")
+    print("4. Set MaxAuthTries to 3.")
+    print("*. Many more.")
 
     answer = input("\nAre you sure you want this? (y/n): ").lower()
     if answer in ["y", "yes"]:

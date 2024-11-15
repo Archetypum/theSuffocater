@@ -73,7 +73,7 @@ def get_user_distro() -> str:
             for line in release_file:
                 if line.startswith("ID="):
                     name: str = line.split("=")[1].strip().lower()
-                    is_debian_based(name)
+                    name: bool = is_debian_based(name)
                     return name
     except FileNotFoundError:
         print("[!] Error: Cannot detect distribution from /etc/os-release")
