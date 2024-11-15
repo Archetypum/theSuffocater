@@ -19,7 +19,7 @@
         - Check if "modules" directory exists && Check if "modules"
         directory has any .py files.
         - Reinstall theSuffocater using "install_latest_version.sh".
-        Maybe you just have a broken install.
+        Maybe you just have a broken installation.
         - Dont change any configurations files and directories unless
         you know what you are doing.
     

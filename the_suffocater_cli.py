@@ -8,7 +8,7 @@ import importlib.util
 
 
 def final_exit() -> None:
-    exit()
+    exit(0)
 
 
 def clear_screen() -> None:
@@ -24,6 +24,8 @@ def the_suffocater_help() -> None:
     print(" scripts - list available bash scripts")
     print(" version - current version of theSuffocater.")
     print(" documentation - ultimate guide to theSuffocater.")
+    print(" license - check the license.")
+    print(" changelog - check whats new in this version.")
     print("\nFor more info, check 'documentation'.")
 
 
@@ -32,7 +34,24 @@ def the_suffocater_version(suffocater_version: str) -> str:
 
 
 def the_suffocater_documentation() -> None:
-    os.system("less README.md")
+    try:
+        os.system("less README.md")
+    except FileNotFoundError:
+        print("[!] Error: README.md file not found.\nBroken installation?")
+
+
+def the_suffocater_license() -> None:
+    try:
+        os.system("less LICENSE.md")
+    except FileNotFoundError:
+        print("[!] Error: LICENSE.md file not found.\nBroken installation?")
+
+
+def the_suffocater_changelog() -> None:
+    try:
+        os.system("less CHANGELOG.md")
+    except FileNotFoundError:
+        print("[!] Error: CHANGELOG.md file not found.\nBroken installation?")
 
 
 def list_imported_modules() -> None:
@@ -58,11 +77,11 @@ def list_available_scripts() -> None:
 
 
 def run_bash_script(script_name: str) -> None:
-    script_path = os.path.join(bash_scripts_dir, script_name)
+    script_path: str = os.path.join(bash_scripts_dir, script_name)
     try:
         subprocess.run(["bash", script_path], check=True)
     except subprocess.CalledProcessError as e:
-        print(f"Error running script '{script_name}': {e}")
+        print(f"[!] Error running script '{script_name}': {e}")
 
 
 def the_suffocater_main(suffocater_version: str) -> None:
@@ -76,9 +95,11 @@ def the_suffocater_main(suffocater_version: str) -> None:
         "clear": clear_screen,
         "help": the_suffocater_help,
         "modules": list_imported_modules,
+        "license": the_suffocater_license,
         "scripts": list_available_scripts,
+        "changelog": the_suffocater_changelog,
         "version": lambda: print(the_suffocater_version(suffocater_version)),
-        "documentation": the_suffocater_documentation,
+        "documentation": the_suffocater_documentation
     }
 
     while True:
@@ -92,11 +113,11 @@ def the_suffocater_main(suffocater_version: str) -> None:
                 function = getattr(program, function_name)
                 function()
             else:
-                print(f"Error: Module '{module}' does not have a function '{function_name}'.")
+                print(f"[!] Error: Module '{module}' does not have a function '{function_name}'.")
         elif module in bash_scripts_names:
             run_bash_script(module)
         else:
-            print("Error: Module or script not found. Please check the name or ensure it is imported and try 'help'.")
+            print("[!] Error: Module or script not found. Please check the name or ensure it is imported and try 'help'.")
 
 
 if __name__ == "__main__":
@@ -107,7 +128,7 @@ if __name__ == "__main__":
         py_files: list = glob.glob(os.path.join(modules_dir, "*.py"))
         bash_scripts: list = glob.glob(os.path.join(bash_scripts_dir, "*.sh"))
 
-        bash_scripts_names = [os.path.basename(script) for script in bash_scripts]
+        bash_scripts_names: list = [os.path.basename(script) for script in bash_scripts]
 
         for py_file in py_files:
             module_name: str = os.path.splitext(os.path.basename(py_file))[0]
@@ -116,8 +137,8 @@ if __name__ == "__main__":
             spec.loader.exec_module(module)
             globals()[module_name] = module
 
-        suffocater_version: str = "7.0.1-unstable        "
+        suffocater_version: str = "8.0.0-unstable      "
         the_suffocater_main(suffocater_version)
     else:
-        print("This code requires root privileges to run certain modules.")
-        exit()
+        print("[!] Error: This code requires root privileges to run certain modules.")
+        exit(1)

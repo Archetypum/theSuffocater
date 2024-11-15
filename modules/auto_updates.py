@@ -22,9 +22,9 @@ def enable_auto_updates() -> None:
     print("By enabling automatic updates, your system will regularly check for updates and install them without manual intervention.")
     print("This reduces the risk of vulnerabilities being exploited and helps keep your system stable and secure.")
 
-    answer: str = input("\nAre you sure you want this? (y/n): ").lower()
+    answer: str = input("\n[*] Are you sure you want this? (y/n): ").lower()
     if answer in ["y", "yes"]:
-        print("Enabling automatic updates...")
+        print("[*] Enabling automatic updates...")
         subprocess.run(["apt", "update", "-y"], check=True)
         subprocess.run(["apt", "install", "unattended-upgrades", "-y"], check=True)
         subprocess.run(["dpkg-reconfigure", "-plow", "unattended-upgrades"], check=True)
@@ -38,9 +38,9 @@ def enable_auto_updates() -> None:
 
             print("\nAutomatic updates have been enabled.")
         except FileNotFoundError:
-            print("Configuration file not found.")
+            print("[!] Error: Configuration file not found.")
         except IOError as e:
-            print(f"An IOError occurred: {e}")
+            print(f"[!] Error: An IOError occurred: {e}")
 
 
 def disable_auto_updates() -> None:
@@ -49,9 +49,9 @@ def disable_auto_updates() -> None:
     print("Disabling automatic updates will stop your system from automatically checking for and installing updates.")
     print("This may leave your system vulnerable to unpatched security issues.")
 
-    answer: str = input("\nAre you sure you want this? (y/n): ").lower()
+    answer: str = input("\n[*] Are you sure you want this? (y/n): ").lower()
     if answer in ["y", "yes"]:
-        print("Disabling automatic updates...")
+        print("[*] Disabling automatic updates...")
 
         try:
             with open("config_files/disable_auto_update_config.txt", "r") as config_file:
@@ -60,11 +60,11 @@ def disable_auto_updates() -> None:
             with open("/etc/apt/apt.conf.d/20auto-upgrades", "w") as true_config_file:
                 true_config_file.write(config_file_text)
 
-            print("\nAutomatic updates have been disabled.")
+            print("\n[*] Automatic updates have been disabled.")
         except FileNotFoundError:
-            print("Configuration file not found.")
+            print("[!] Error: Configuration file not found.")
         except IOError as e:
-            print(f"An IOError occurred: {e}")
+            print(f"[!] Error: An IOError occurred: {e}")
 
 
 def get_user_distro() -> str:
@@ -73,24 +73,27 @@ def get_user_distro() -> str:
             for line in release_file:
                 if line.startswith("ID="):
                     name: str = line.split("=")[1].strip().lower()
+                    is_debian_based(name)
                     return name
     except FileNotFoundError:
-        print("Cannot detect distribution from /etc/os-release")
+        print("[!] Error: Cannot detect distribution from /etc/os-release")
 
-    answer: str = input("Could you enter the base of your OS yourself (debian, arch, freebsd, etc.): ").strip().lower()
-    return answer
+    name: str = input("[*] Could you enter the base of your OS yourself (debian, arch, freebsd, etc.): ").strip().lower()
+    is_debian_based(name)
+    return name
 
 
-def is_debian_based() -> str:
-    debian_based_distros: str = ["debian", "ubuntu", "linuxmint", "kali", "pop",]
+def is_debian_based(distro: str) -> str:
+    debian_based_distros: str = ["debian", "trisqul", "devuan", "ubuntu", "linuxmint", "kali", "parrot", "pop"]
+    return True if distro in debian_based_distros else False
 
 
 def auto_updates() -> None:
     system("clear")
 
     distro: str = get_user_distro()
-    if distro != ["debian", "y", "yes"]:
-        print("This module supports only debian based distributions")
+    if not distro:
+        print("[!] Error: This module supports only debian based distributions.")
         exit(1)
 
     functions: dict = {
@@ -103,6 +106,6 @@ def auto_updates() -> None:
     for function in functions.keys():
         print(f" - {function}")
 
-    your_function: str = input("Enter function name (or anything to leave) >>> ").lower()
+    your_function: str = input("[*] Enter function name (or anything to leave) >>> ").lower()
     if your_function in functions:
         functions[your_function]()
