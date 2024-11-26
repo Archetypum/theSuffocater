@@ -1,26 +1,49 @@
 #!/usr/bin/python3
+#
+# This thing is called the "Carcass" - the heart of theSuffocater.
+# Carcass destiny is to load modules located in the /fear-the-suffocater/modules
+# for further using.
+# 
+# Usually carcass dont receive much updates because its already serving
+# its functionality very good.
+# 
+# Graphical frontend - the_suffocater_gui.py
 
-import os
-import glob
-import subprocess
-from sys import exit
-import importlib.util
+try:
+    # Here we importing python modules, and the most importantly,
+    # we are importing "usr.py" - module with all possible functions,
+    # widely used by theSuffocater modules.
+    import os
+    import sys
+    modules_dir = os.path.join(os.path.dirname(__file__), "modules")
+    sys.path.append(modules_dir)
+    import usr
+    import glob
+    import subprocess
+    import importlib.util
+    from usr import RED, GREEN, RESET
+except ModuleNotFoundError as error:
+    print(f"{RED}[!] Error: module not found:\n{error}{RESET}")
+    sys.exit(1)
 
 
 def final_exit() -> None:
-    exit(0)
+    """Exits theSuffocater."""
+    sys.exit(0)
 
 
 def clear_screen() -> None:
+    """Clears the screen."""
     os.system("clear")
 
 
 def the_suffocater_help() -> None:
+    """Displays help message."""
     print("\nCommands:")
     print(" exit - exit theSuffocater.")
     print(" clear - clear screen.")
     print(" help - this message.")
-    print(" modules - list imported modules")
+    print(" modules [-d] - list imported modules (use -d to include documentation).")
     print(" scripts - list available bash scripts")
     print(" version - current version of theSuffocater.")
     print(" documentation - ultimate guide to theSuffocater.")
@@ -30,31 +53,48 @@ def the_suffocater_help() -> None:
 
 
 def the_suffocater_version(suffocater_version: str) -> str:
+    """Returns current theSuffocater version string."""
     return f"Current version - {suffocater_version}"
 
 
 def the_suffocater_documentation() -> None:
+    """
+    In normal scenario, opens 'README.md' so the user can read brief documentation.
+    Otherwise tells user about broken installation.
+    """
     try:
         os.system("less README.md")
     except FileNotFoundError:
-        print("[!] Error: README.md file not found.\nBroken installation?")
+        print("{RED}[!] Error: README.md file not found.\nBroken installation?{RESET}")
 
 
 def the_suffocater_license() -> None:
+    """
+    In normal scenario, opens 'LICENSE.md' so the user can check theSuffocater license - GNU GPLv3.
+    Otherwise, tells user about broken installation.
+    """
     try:
         os.system("less LICENSE.md")
     except FileNotFoundError:
-        print("[!] Error: LICENSE.md file not found.\nBroken installation?")
+        print("{RED}[!] Error: LICENSE.md file not found.\nBroken installation?{RESET}")
 
 
 def the_suffocater_changelog() -> None:
+    """
+    In normal scenario, opens CHANGELOG.md file so user can check details about the release.
+    Otherwise, tells user about broken installation.
+    """
     try:
         os.system("less CHANGELOG.md")
     except FileNotFoundError:
-        print("[!] Error: CHANGELOG.md file not found.\nBroken installation?")
+        print("{RED}[!] Error: CHANGELOG.md file not found.\nBroken installation?{RESET}")
 
 
-def list_imported_modules() -> None:
+def list_imported_modules(show_docs: bool = True) -> None:
+    """
+    Lists modules imported from 'modules/' directory.
+    '-d' argument shows documentation alongside the modules.
+    """
     print("+-------------------- Imported Modules --------------------+")
     for py_file in py_files:
         module_name: str = os.path.splitext(os.path.basename(py_file))[0]
@@ -63,13 +103,17 @@ def list_imported_modules() -> None:
         if module:
             print(f"\n-> {module_name}:")
 
-            if module.__doc__:
-                print(module.__doc__.strip())
-            else:
-                print("No documentation available for this module.")
+            if show_docs:
+                if module.__doc__:
+                    print(module.__doc__.strip())
+                else:
+                    print("No documentation available for this module.")
 
 
 def list_available_scripts() -> None:
+    """
+    Lists shell scripts from 'scripts/' directory.
+    """
     print("+-------------------- Available Scripts -------------------+")
     for script_file in bash_scripts:
         script_name: str = os.path.basename(script_file)
@@ -77,24 +121,31 @@ def list_available_scripts() -> None:
 
 
 def run_bash_script(script_name: str) -> None:
+    """Runs shell scripts."""
     script_path: str = os.path.join(bash_scripts_dir, script_name)
     try:
         subprocess.run(["bash", script_path], check=True)
     except subprocess.CalledProcessError as e:
-        print(f"[!] Error running script '{script_name}': {e}")
+        print(f"{RED}[!] Error running script '{script_name}': {e}{RESET}")
 
 
 def the_suffocater_main(suffocater_version: str) -> None:
+    """
+    Main function.
+    Provides terminal-like interface to the user and offers
+    9 pre-build functions (default_modules dictionary).
+    """
+
     os.system("clear")
     version = the_suffocater_version(suffocater_version)
     print(f"+---------------- Welcome to theSuffocater ----------------+")
-    print(f"| {version}                   |")
+    print(f"| {version}                 |")
 
     default_modules: dict = {
         "exit": final_exit,
         "clear": clear_screen,
         "help": the_suffocater_help,
-        "modules": list_imported_modules,
+        "modules": lambda: list_imported_modules(show_docs=True),
         "license": the_suffocater_license,
         "scripts": list_available_scripts,
         "changelog": the_suffocater_changelog,
@@ -104,7 +155,11 @@ def the_suffocater_main(suffocater_version: str) -> None:
 
     while True:
         module: str = input("\n# ")
-        if module in default_modules:
+        if module.startswith("modules -d"):
+            list_imported_modules(show_docs=True)
+        elif module == "modules":
+            list_imported_modules(show_docs=False)
+        elif module in default_modules:
             default_modules[module]()
         elif module in globals():
             program = globals()[module]
@@ -113,14 +168,16 @@ def the_suffocater_main(suffocater_version: str) -> None:
                 function = getattr(program, function_name)
                 function()
             else:
-                print(f"[!] Error: Module '{module}' does not have a function '{function_name}'.")
+                print(f"{RED}[!] Error: Module '{module}' does not have a function '{function_name}'.[RESET]")
         elif module in bash_scripts_names:
             run_bash_script(module)
         else:
-            print("[!] Error: Module or script not found. Please check the name or ensure it is imported and try 'help'.")
+            print(f"{RED}[!] Error: Module or script not found. Please check the name or ensure it is imported and try 'help'.{RESET}")
 
 
 if __name__ == "__main__":
+    # Checks if user is root.
+    # Most of theSuffocater modules can't run without root privileges.
     if os.geteuid() == 0:
         current_dir: str = os.path.dirname(__file__)
         modules_dir: str = os.path.join(current_dir, "modules")
@@ -137,8 +194,8 @@ if __name__ == "__main__":
             spec.loader.exec_module(module)
             globals()[module_name] = module
 
-        suffocater_version: str = "8.0.0-unstable      "
+        suffocater_version: str = "8.1.1-unstable        "
         the_suffocater_main(suffocater_version)
     else:
-        print("[!] Error: This code requires root privileges to run certain modules.")
-        exit(1)
+        print("{RED}[!] Error: This code requires root privileges to run certain modules.{RESET}")
+        sys.exit(1)

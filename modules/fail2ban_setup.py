@@ -10,6 +10,14 @@ Date: null
 ---------------------------------------
 """
 
+try:
+    import usr
+    import subprocess
+    from sys import exit
+    from os import system
+    from usr import GREEN, RED, RESET
+except ModuleNotFoundError as error:
+    print(f"{RED}[!] Error: usr.py not found:\n{error}{RESET}")
 
 
 def fail2ban_setup() -> None:

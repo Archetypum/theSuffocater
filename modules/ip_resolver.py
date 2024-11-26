@@ -23,13 +23,14 @@ def get_ip_details(ip_address: str) -> str | None:
         values = json.loads(data)
         print(values)
 
-    except subprocess.CalledProcessError as e:
-        print(f"An error occurred: {e}")
+    except subprocess.CalledProcessError as error:
+        print(f"[!] Error: An error occurred: {error}")
 
 
 def ip_resolver() -> None:
-    print("\nWe are going to resolve IP-Address country, city and company.")
-    answer: str = input("\nAre you sure you want this? (y/n): ")
-    if answer in ["y", "yes"]:
-        ip_address: str = input("Enter IP address: ")
-        get_ip_details(ip_address)
+    ip_address: str = input("[==>] Enter IP address: ")
+    get_ip_details(ip_address)
+
+
+if __name__ == "__main__":
+    ip_resolver()

@@ -17,10 +17,10 @@ import secrets
 def passgen() -> None:
     print("\nWe are going to create a strong password.")
 
-    answer: str = input("\n[*] Are you sure you want this? (y/n): ").lower()
+    answer: str = input("\n[?] Proceed? (y/n): ").lower()
     if answer in ["y", "yes"]:
-        name: str = input("\n[*] Enter password name: ")
-        password_length: int = int(input("[*] Enter password length: "))
+        name: str = input("\n[==>] Enter password name: ")
+        password_length: int = int(input("[==>] Enter password length: "))
         
         characters: str = string.ascii_letters + string.digits
         with open("config_files/passgen_dict.txt", "r") as words_dict:
@@ -32,4 +32,4 @@ def passgen() -> None:
             password_file.write(f"{name} {created_password}")
 
         print(f"[*] Your new password for {name}: {created_password}")
-        print(f"[*] Saving to {name}.txt...")
+        print(f"[<==] Saving to {name}.txt...")
