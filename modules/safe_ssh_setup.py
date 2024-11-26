@@ -43,7 +43,6 @@ def main(distro: str, init_system: str) -> None:
         print(f"{GREEN}[*] Success! {RESET}")
     except (FileNotFoundError, IOError):
         print(f"{RED}[!] Configuration file 'config_files/secure_ssh_config.txt' not found.\nBroken installation?{RESET}")
-        exit(1)
 
 
 def safe_ssh_setup() -> None:

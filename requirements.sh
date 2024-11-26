@@ -105,6 +105,14 @@ install_python_requirements() {
 	echo "Don't forget to 'source pkgenv/bin/activate' and you are good to go."
 }
 
+install_python_requirements_netbsd() {
+	python3.12 -m venv pkgenv
+	. pkgenv/bin/activate
+	pip install -r python_requirements.txt
+
+	echo "Don't forget to 'source' pkgenv/bin/activate and you are good to go."
+}
+
 install_debian_based() {
 	apt update && apt full-upgrade -y
 	apt install python3 python3-pip -y
@@ -181,17 +189,26 @@ install_freebsd_based() {
 }
 
 install_netbsd_based() {
-	pkgin update -y && pkgin upgrade -y
-	pkgin install python3 py3-pip 
-	pkgin install nettools iproute2 iptables-legacy nftables fail2ban
+	pkgin update && pkgin upgrade
+	pkgin install python3.12
+	python3.12 -m ensurepip --upgrade
+	pkgin install fail2ban
 	pkgin install lsof git
+
+	echo "[!] Warning:"
+	echo "    Iptables, nftables, and ufw are GNU/Linux specific tools."
+	echo "    To achieve similar functionality, use tools designed for BSD systems,"
+	echo "    like PF (Packet Filter), IPFilter (ipf), or IPFW."
+	echo -n "[==>] Hit enter to proceed: "
+	read PROCEED
+	install_python_requirements_netbsd
 }
 
 install_openbsd_based() {
 	pkg_add -u
 	pkg_add -uf
 	pkg_add python3 py3-pip
-	pkg_add nettools iproute2 pfctl fail2ban nftables
+	pkg_add iproute2 pfctl fail2ban nftables
 	pkg_add openvpn wireguard-tools
 	pkg_add lsof git
 }
