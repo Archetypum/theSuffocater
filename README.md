@@ -3,9 +3,9 @@
 # Installation:
 	git clone https://github.com/Kinderfeld/fear-the-suffocater
 	cd fear-the-suffocater
-	sudo ./requirements.sh
+	bash requirements.sh
 	source pkgenv/bin/activate
-	sudo ./the_suffocater_cli.py
+	python3 the_suffocater_cli.py
 
 # Having problems with theSuffocater? Read this article:
     === Init Systems ===
@@ -32,11 +32,11 @@
 
 # Developer? Want to contribute? Read this article:	
 	I need people that are smarter than me and can perform:
-		- testing on different operating systems and init systems
-		- adding more scripts and modules
-		- fix bugs
-		- make documentation
-	
+    - testing on different operating systems and init systems
+    - adding more scripts and modules
+    - fix bugs
+    - make documentation
+
     === Current goals ===
         - Refactor this ugly piece of shit called README.md
         - Add more really useful modules

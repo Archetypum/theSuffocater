@@ -33,7 +33,7 @@ def passgen() -> None:
                 word_list: list = [word.strip().strip("'") for word in words_dict.read().split(",")]
 
             created_password: str = "".join(secrets.choice(characters) for _ in range(password_length)) + secrets.choice(word_list)
-            with open(f":{name}.txt", "w") as password_file:
+            with open(f"{name}.txt", "w") as password_file:
                 password_file.write(f"{name} {created_password}")
 
             print(f"[*] Your new password for {name}: {created_password}")

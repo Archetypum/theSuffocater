@@ -122,7 +122,7 @@ def get_init_system() -> str:
     
     if init_system is None:
         try:
-            subprocess.run(["service", "--help"], capture_output=True, check=True)
+            subprocess.run(["service"], capture_output=True, check=True)
             init_system = "sysvinit"
         except (FileNotFoundError, subprocess.CalledProcessError):
             pass
@@ -1058,7 +1058,7 @@ class NetBSDPackageManagement:
 
     def upgrade(self) -> bool:
         try:
-            subprocess.run(["pkgin", "upgrade", "-y"], check=True)
+            subprocess.run(["pkgin", "upgrade"], check=True)
             return True
         except subprocess.CalledProcessError as e:
             print(f"{RED}[!] Error: {e}{RESET}")
@@ -1067,16 +1067,16 @@ class NetBSDPackageManagement:
     def install(self, packages: List[str]) -> bool:
         for package in packages:
             try:
-                subprocess.run(["pkgin", "install", "-y", package], check=True)
+                subprocess.run(["pkgin", "install", package], check=True)
                 return True
-            except subprocess.CalledProcessError as e:
-                print(f"{RED}[!] Error: {e}{RESET}")
+            except subprocess.CalledProcessError as error:
+                print(f"{RED}[!] Error: {error}{RESET}")
                 return False
 
     def remove(self, packages: List[str]) -> bool:
         for package in packages:
             try:
-                subprocess.run(["pkgin", "remove", "-y", package], check=True)
+                subprocess.run(["pkgin", "remove", package], check=True)
                 return True
             except subprocess.CalledProcessError as e:
                 print(f"{RED}[!] Error: {e}{RESET}")

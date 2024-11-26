@@ -17,6 +17,27 @@ check_git_installed() {
 	fi
 }
 
+remove_old_thesuffocater() {
+	echo -n "[?] Remove old theSuffocater related files? (y/N): "
+	read ANSWER
+	if [ "ANSWER" == "y" ]; then
+		# rm -rf .git
+		rm -rf pkgenv
+		rm -rf modules
+		rm -rf scripts
+		rm -rf config_files
+		rm -r requirements.sh
+		rm -r the_suffocater_cli.py
+		rm -r the_suffocater_gui.py
+		rm -r python_requirements.txt
+		rm -r README.md
+		rm -r LICENSE.md
+		rm -r CHANGELOG.md 
+		echo "Success!"
+		exit 0
+	fi
+}
+
 install_latest_version() {
 	if [ $# -eq 0 ]; then
 		echo "[!] WARNING:"
@@ -29,10 +50,12 @@ install_latest_version() {
 			echo "[<==] Installing latest theSuffocater version..."
 			sleep 1
 			
-			git clone https://github.com/Kinderfeld/fear-thesuffocater fear-the-suffocater-new && echo "Success"
+			git clone https://github.com/Kinderfeld/fear-thesuffocater fear-the-suffocater-new && echo "Success!"
 		fi
+
+		remove_old_thesuffocater
 }
 
-# check_internet_connection
+check_internet_connection
 check_git_installed
 install_latest_version
