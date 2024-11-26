@@ -15,8 +15,9 @@ try:
     import subprocess
     from sys import exit
     from os import system
-except ModuleNotFoundError as e:
-    print(f"{usr.RED}[!] Error: usr.py file not found.\n{e}.{usr.RESET}")
+    from usr import GREEN, RED, RESET
+except ModuleNotFoundError as error:
+    print(f"{RED}[!] Error: usr.py file not found.\n{e}.{RESET}")
 
 
 def enable_auto_updates() -> None:
@@ -61,7 +62,7 @@ def disable_auto_updates() -> None:
             with open("/etc/apt/apt.conf.d/20auto-upgrades", "w") as true_config_file:
                 true_config_file.write(config_file_text)
 
-            print(f"\n{usr.GREEN}[*] Automatic updates have been disabled.{usr.RESET}")
+            print(f"\n{GREEN}[*] Automatic updates have been disabled.{RESET}")
         except (FileNotFoundError, IOError):
             print(f"{RED}[!] Error: Configuration files not found.{RESET}")
 

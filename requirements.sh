@@ -194,9 +194,10 @@ install_netbsd_based() {
 	python3.12 -m ensurepip --upgrade
 	pkgin install fail2ban
 	pkgin install lsof git
+	pkgin install openvpn wireguard-tools
 
 	echo "[!] Warning:"
-	echo "    Iptables, nftables, and ufw are GNU/Linux specific tools."
+	echo "    Iptables, nftables, Iproute, and ufw are GNU/Linux specific tools."
 	echo "    To achieve similar functionality, use tools designed for BSD systems,"
 	echo "    like PF (Packet Filter), IPFilter (ipf), or IPFW."
 	echo -n "[==>] Hit enter to proceed: "
@@ -294,7 +295,7 @@ main() {
 	
 	sleep 1
 	clear
-	echo -n "[?] Now we need to create a virtual environment for python3 in $(pwd). Do you wish to proceed? (y/n): "
+	echo -n "[?] Now we need to create a virtual environment for python3 in $(pwd). Do you wish to proceed? (y/N): "
 	read ANSWER
 	
 	ANSWER=$(to_lowercase "$ANSWER")

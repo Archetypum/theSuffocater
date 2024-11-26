@@ -20,7 +20,7 @@ check_git_installed() {
 remove_old_thesuffocater() {
 	echo -n "[?] Remove old theSuffocater related files? (y/N): "
 	read ANSWER
-	if [ "ANSWER" == "y" ]; then
+	if [ "$ANSWER" == "y" ]; then
 		# rm -rf .git
 		rm -rf pkgenv
 		rm -rf modules

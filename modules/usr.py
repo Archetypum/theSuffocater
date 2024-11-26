@@ -108,39 +108,37 @@ def is_arch_based(distro: str) -> str:
 def get_init_system() -> str:
     """
     Detects init system.
-    Can detect ugly fucking systemd,
-    sysvinit, openrc, s6, init, and launchd.
+    Can detect ugly fucking systemd, sysvinit, openrc, s6, init, and launchd.
     """
-    
-    init_system = None
 
+    init_system = None
+    
     try:
         subprocess.run(["systemctl", "--version"], capture_output=True, check=True)
         init_system = "systemd"
     except (FileNotFoundError, subprocess.CalledProcessError):
         pass
-    
+
     if init_system is None:
         try:
-            subprocess.run(["service"], capture_output=True, check=True)
+            subprocess.run(["service", "--status-all"], capture_output=True, check=True)
             init_system = "sysvinit"
         except (FileNotFoundError, subprocess.CalledProcessError):
             pass
-    
+        
     if init_system is None and os.path.exists("/sbin/run"):
         init_system = "openrc"
-    
+
     if init_system is None and os.path.exists("/etc/s6"):
         init_system = "s6"
-    
+
     if init_system is None and os.path.exists("/etc/service"):
-        init_system = "init"
-    
+    	init_system = "openrc"
+
     if init_system is None and os.path.exists("/sbin/launchd"):
         init_system = "launchd"
-    
-    return init_system
 
+    return init_system if init_system is not None else "unknown"
 
 
 class SysVInitManagement:
@@ -1305,7 +1303,11 @@ def init_system_handling(init_system: str, command: str, service: str) -> bool:
 if __name__ == "__main__":
     init_system: str = get_init_system()
     distro: str = get_user_distro()
-    command: str = "install"
+    
+    print(distro)
+    print(init_system)
 
-    package_handling(distro, package_list=["vrms", "htop"], command="install")
-    package_handling(distro, package_list=["vrms"], command="remove")
+    # command: str = "install"
+
+    # package_handling(distro, package_list=["vrms", "htop"], command="install")
+    # package_handling(distro, package_list=["vrms"], command="remove")
