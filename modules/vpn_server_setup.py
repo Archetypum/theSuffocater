@@ -98,8 +98,7 @@ def outlinevpn_server_setup(distro: str, init_system: str) -> None:
         try:
             print("[<==] Updating the system...")
             sleep(1)
-            usr.package_handling(distro, package_list=["openssh-client", "openssh-server"], command="install")
-
+            distro = 
             print("[<==] Installing Docker...")
             subprocess.run(["wget", "-O", "https://get.docker.com", "|", "bash"], check=True, shell=True)
 
