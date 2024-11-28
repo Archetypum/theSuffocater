@@ -1277,7 +1277,7 @@ def init_system_handling(init_system: str, command: str, service: str) -> bool:
     
     try:
         if init_system == "systemd":
-            systemctl = SystemdManagemet(command, service)
+            systemctl = SystemdManagement(command, service)
         elif init_system == "sysvinit" or init_system == "init":
             service = SysVInitManagement(command, service)
         elif init_system == "s6":
