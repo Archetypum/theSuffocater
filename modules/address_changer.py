@@ -17,8 +17,9 @@ try:
     import random
     import subprocess
     from sys import exit
-except ModuleNotFoundError as e:
-    print(f"{usr.RED}[!] Error: modules not found.\n{e}.{RESET}")
+    from usr import GREEN, RED, RESET
+except ModuleNotFoundError as error:
+    print(f"{RED}[!] Error: modules not found:\n{error}{RESET}")
     exit(1)
 
 
@@ -28,7 +29,7 @@ def get_valid_interfaces() -> list:
         valid_interfaces: list = [interface for interface in interfaces if os.path.islink(f"/sys/class/net/{interface}")]
         return valid_interfaces
     except FileNotFoundError:
-        print(f"{usr.RED}[!] Error: /sys/class/net directory not found.{usr.RESET}")
+        print(f"{RED}[!] Error: /sys/class/net directory not found.{RESET}")
         return []
 
 
@@ -36,21 +37,21 @@ def change_mac() -> None:
     os.system("clear")
 
     print("We are going to change the system's MAC address.")
-    answer: str = input("[?] Are you sure you want to change the MAC address? (y/n): ").lower()
+    answer: str = input("[?] Are you sure you want to change the MAC address? (y/N): ").lower()
     if answer not in ["y", "yes"]:
-        print(f"{usr.RED}[!] Operation canceled.{usr.RESET}")
+        print(f"{RED}[!] Operation canceled.{RESET}")
         return
 
     interfaces: list = get_valid_interfaces()
     if not interfaces:
-        print(f"{usr.RED}[!] No valid interfaces found. Exiting.{usr.RESET}")
+        print(f"{RED}[!] No valid interfaces found. Exiting.{RESET}")
         return
 
     print(f"Available interfaces: {interfaces}")
     interface: str = input("\n[==>] Enter your interface: ").strip()
 
     if interface not in interfaces:
-        print(f"{usr.RESET}[!] Invalid interface. Exiting.{usr.RESET}")
+        print(f"{RED}[!] Invalid interface. Exiting.{RESET}")
         return
 
     mac_parts: list = [random.randint(0, 255) for _ in range(6)]
@@ -62,9 +63,9 @@ def change_mac() -> None:
         subprocess.run(["ifconfig", interface, "hw", "ether", new_mac], check=True)
         subprocess.run(["ifconfig", interface, "up"], check=True)
         
-        print(f"\n{usr.GREEN}[*] Success! MAC address changed.{usr.RESET}")
-    except (subprocess.CalledProcessError, FileNotFoundError) as e:
-        print(f"{usr.RED}[!] Error while changing MAC address:\n{e}.{usr.RESET}")
+        print(f"\n{GREEN}[*] Success! MAC address changed.{RESET}")
+    except (subprocess.CalledProcessError, FileNotFoundError) as error:
+        print(f"{RED}[!] Error while changing MAC address:\n{error}.{RESET}")
 
 
 def is_valid_ip(ip: str) -> bool:
@@ -76,41 +77,48 @@ def change_lan_ip() -> None:
     os.system("clear")
     
     print("We are going to change the local IP address.")
-    answer: str = input("[*] Are you sure you want to change the IP address? (y/n): ").lower()
+    answer: str = input("[*] Are you sure you want to change the IP address? (y/N): ").lower()
     if answer not in ["y", "yes"]:
-        print("[!] Operation canceled.")
+        print(f"{RED}[!] Operation canceled.{RESET}")
         return
 
     interfaces: list = get_valid_interfaces()
     if not interfaces:
-        print("[!] No valid interfaces found. Exiting.")
+        print(f"{RED}[!] No valid interfaces found. Exiting.{RESET}")
         return
 
     print(f"Available interfaces: {interfaces}")
     interface: str = input("\n[*] Enter your interface: ").strip()
 
     if interface not in interfaces:
-        print("[!] Invalid interface. Exiting.")
+        print(f"{RED}[!] Invalid interface. Exiting.{RESET}")
         return
 
     new_ip: str = input("[*] Enter the new IP address (e.g., 192.168.1.10): ").strip()
     if not is_valid_ip(new_ip):
-        print(f"[!] Invalid IP address: {new_ip}. Exiting.")
+        print(f"{RED}[!] Error: Invalid IP address: {new_ip}. Exiting.{RESET}")
         return
 
     subnet_mask: str = input("[*] Enter the subnet mask (e.g., 255.255.255.0): ").strip()
     if not is_valid_ip(subnet_mask):
-        print(f"[!] Invalid subnet mask: {subnet_mask}. Exiting.")
+        print(f"{RED}[!] Error: Invalid subnet mask: {subnet_mask}. Exiting.{RESET}")
         return
 
     try:
         subprocess.run(["ip", "addr", "flush", "dev", interface], check=True)
         subprocess.run(["ip", "addr", "add", f"{new_ip}/{subnet_mask}", "dev", interface], check=True)
         subprocess.run(["ip", "link", "set", interface, "up"], check=True)
-        print("\n[*] Success! IP address changed.")
-    except (subprocess.CalledProcessError, FileNotFoundError) as e:
-        print(f"[!] Error while changing IP address: {e}")
-
+        print("\n{GREEN}[*] Success! IP address changed.{RESET}")
+    except (subprocess.CalledProcessError, FileNotFoundError) as error:
+        print(f"{RED}[!] Error: cant change IP address: {error}.{RESET}")
+        print("[*] We will try another way...")
+        
+        try:
+            subprocess.run(["ifconfig", interface, "inet", new_ip, "netmask", subnet_mask], check=True)
+            print("\n{GREEN}[*] Success! IP address changed.{RESET}")
+        except (subprocess.CalledProcessError, FileNotFoundError) as error:
+            print(f"{RED}[!] Error: still cant change IP address: {error}.{RESET}")
+            
 
 def address_changer() -> None:
     os.system("clear")
