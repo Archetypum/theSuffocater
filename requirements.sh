@@ -23,8 +23,8 @@ list_of_platforms() {
 	)
 	
 	echo "Supported Platforms:"
-	for ELEMENT in "${GUIX_BASED_DISTROS[@]}"; do 
-		echo " - $ELEMENT" 
+	for ELEMENT in "${GUIX_BASED_DISTROS[@]}"; do
+		echo " - $ELEMENT"
 	done
 	
 	for ELEMENT in "${REDHAT_BASED_DISTROS[@]}"; do 
@@ -132,7 +132,6 @@ install_arch_based() {
 install_gentoo_based() {
 	echo "Im sorry but you are on your own."
 	echo "Install packages manually"
-	exit 0
 }
 
 install_alpine_based() {

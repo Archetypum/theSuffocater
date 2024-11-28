@@ -21,7 +21,7 @@ try:
     import glob
     import subprocess
     import importlib.util
-    from usr import RED, GREEN, RESET
+    from usr import GREEN, RED, RESET
 except ModuleNotFoundError as error:
     print(f"{RED}[!] Error: module not found:\n{error}{RESET}")
     sys.exit(1)
@@ -65,18 +65,18 @@ def the_suffocater_documentation() -> None:
     try:
         os.system("less README.md")
     except FileNotFoundError:
-        print("{RED}[!] Error: README.md file not found.\nBroken installation?{RESET}")
+        print(f"{RED}[!] Error: README.md file not found.\nBroken installation?{RESET}")
 
 
 def the_suffocater_license() -> None:
     """
     In normal scenario, opens 'LICENSE.md' so the user can check theSuffocater license - GNU GPLv3.
     Otherwise, tells user about broken installation.
-    """
+    """ 
     try:
         os.system("less LICENSE.md")
     except FileNotFoundError:
-        print("{RED}[!] Error: LICENSE.md file not found.\nBroken installation?{RESET}")
+        print(f"{RED}[!] Error: LICENSE.md file not found.\nBroken installation?{RESET}")
 
 
 def the_suffocater_changelog() -> None:
@@ -87,7 +87,7 @@ def the_suffocater_changelog() -> None:
     try:
         os.system("less CHANGELOG.md")
     except FileNotFoundError:
-        print("{RED}[!] Error: CHANGELOG.md file not found.\nBroken installation?{RESET}")
+        print(f"{RED}[!] Error: CHANGELOG.md file not found.\nBroken installation?{RESET}")
 
 
 def list_imported_modules(show_docs: bool = True) -> None:
@@ -103,11 +103,8 @@ def list_imported_modules(show_docs: bool = True) -> None:
         if module:
             print(f"\n-> {module_name}:")
 
-            if show_docs:
-                if module.__doc__:
-                    print(module.__doc__.strip())
-                else:
-                    print("No documentation available for this module.")
+            if show_docs and module.__doc__:
+                print(module.__doc__.strip())
 
 
 def list_available_scripts() -> None:
@@ -194,8 +191,8 @@ if __name__ == "__main__":
             spec.loader.exec_module(module)
             globals()[module_name] = module
 
-        suffocater_version: str = "8.1.1-unstable        "
+        suffocater_version: str = "8.1.2-unstable        "
         the_suffocater_main(suffocater_version)
     else:
-        print("{RED}[!] Error: This code requires root privileges to run certain modules.{RESET}")
+        print(f"{RED}[!] Error: This code requires root privileges to run certain modules.{RESET}")
         sys.exit(1)

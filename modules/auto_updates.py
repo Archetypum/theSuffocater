@@ -72,7 +72,7 @@ def auto_updates() -> None:
     distro: str = usr.get_user_distro()
     debian: bool = usr.is_debian_based(distro)
     if not debian:
-        print("{RED}[!] Error: Your OS is not debian based.{RESET}")
+        print(f"{RED}[!] Error: Your OS {distro} is not debian based.{RESET}")
 
     functions: dict = {
             "enable_auto_updates": enable_auto_updates,

@@ -680,13 +680,13 @@ class AlpinePackageManagement:
             print(f"{RED}[!] Error: {e}{RESET}")
             return False
 
-    def install(self, package: str) -> bool:
+    def install(self, packages: List[str]) -> bool:
         for package in packages:
             try:
                 subprocess.run(["apk", "add", package], check=True)
                 return True
-            except subprocess.CalledProcessError as e:
-                print(f"{RED}[!] Error: {e}{RESET}")
+            except subprocess.CalledProcessError as error:
+                print(f"{RED}[!] Error: {error}{RESET}")
                 return False
 
     def remove(self, packages: List[str]) -> bool:
@@ -694,8 +694,8 @@ class AlpinePackageManagement:
             try:
                 subprocess.run(["apk", "del", package], check=True)
                 return True
-            except subprocess.CalledProcessError as e:
-                print(f"{RED}[!] Error: {e}{RESET}")
+            except subprocess.CalledProcessError as error:
+                print(f"{RED}[!] Error: {error}{RESET}")
                 return False
 
 
