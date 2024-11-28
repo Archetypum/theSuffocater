@@ -13,11 +13,10 @@ Date: 28.07.2024
 try:
     import usr
     import subprocess
-    from sys import exit
     from os import system
     from usr import GREEN, RED, RESET
 except ModuleNotFoundError as error:
-    print(f"{RED}[!] Error: usr.py file not found.\n{e}.{RESET}")
+    print(f"{RED}[!] Error: usr.py file not found.\n{error}.{RESET}")
 
 
 def enable_auto_updates() -> None:
@@ -30,7 +29,7 @@ def enable_auto_updates() -> None:
     answer: str = input("\n[?] Proceed? (y/N): ").lower()
     if answer in ["y", "yes"]:
         print(f"[<==] Enabling automatic updates...")
-        subprocess.run(["apt", "update", "-y"], check=True)
+        subprocess.run(["apt", "update"], check=True)
         subprocess.run(["apt", "install", "unattended-upgrades", "-y"], check=True)
         subprocess.run(["dpkg-reconfigure", "-plow", "unattended-upgrades"], check=True)
        
@@ -74,7 +73,6 @@ def auto_updates() -> None:
     debian: bool = usr.is_debian_based(distro)
     if not debian:
         print("{RED}[!] Error: Your OS is not debian based.{RESET}")
-        exit(1)
 
     functions: dict = {
             "enable_auto_updates": enable_auto_updates,

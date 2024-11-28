@@ -84,9 +84,9 @@ def get_user_distro() -> str:
                     return name
     except FileNotFoundError:
         print(f"{RED}[!] Error: Cannot detect distribution from /etc/os-release.{RESET}")
+        name: str = input("[==>] Write the base of your OS yourself`: ").strip().lower()
 
-    name: str = input("[==>] Write the base of your OS yourself`: ").strip().lower()
-    return name
+        return name
 
 
 def is_debian_based(distro: str) -> str:
@@ -1259,11 +1259,11 @@ def package_handling(distro: str, package_list: List[str], command: str) -> bool
                 return True
 
             else:
-                print(f"[!] Unsupported distribution: {distro}")
+                print(f"{RED}[!] Error: Unsupported distribution: {distro}.{RESET}")
                 return False
 
-    except subprocess.CalledProcessError as e:
-        print(f"{RED}[!] Error: {e}.{RESET}")
+    except subprocess.CalledProcessError as error:
+        print(f"{RED}[!] Error: {error}.{RESET}")
         return False
 
 
