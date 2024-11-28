@@ -892,7 +892,7 @@ class ArchPackageManagement:
     Simple class for working with pacman in your modules.
     """
 
-    def __init__(self, distro: str, package: List[str]) -> None:
+    def __init__(self, distro: str, packages: List[str]) -> None:
         self.distro = distro
         self.packages = packages
 
@@ -903,8 +903,8 @@ class ArchPackageManagement:
         try:
             subprocess.run(["pacman", "-Syu"], check=True)
             return True
-        except subprocess.CalledProcessError as e:
-            print(f"{RED}[!] Error: {e}{RESET}")
+        except subprocess.CalledProcessError as error:
+            print(f"{RED}[!] Error: {error}{RESET}")
             return False
     
     def install(self, packages: List[str]) -> bool:
@@ -912,8 +912,8 @@ class ArchPackageManagement:
             try:
                 subprocess.run(["pacman", "-S", package], check=True)
                 return True
-            except subprocess.CalledProcessError as e:
-                print(f"{RED}[!] Error: {e}{RESET}")
+            except subprocess.CalledProcessError as error:
+                print(f"{RED}[!] Error: {error}{RESET}")
                 return False
     
     def remove(self, packages: List[str]) -> bool:
