@@ -168,7 +168,7 @@ def the_suffocater_main(suffocater_version: str) -> None:
                 function = getattr(program, function_name)
                 function()
             else:
-                print(f"{RED}[!] Error: Module '{module}' does not have a function '{function_name}'.[RESET]")
+                print(f"{RED}[!] Error: Module '{module}' does not have a function '{function_name}'.{RESET}")
         elif module in bash_scripts_names:
             run_bash_script(module)
         else:

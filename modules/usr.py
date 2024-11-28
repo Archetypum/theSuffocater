@@ -109,36 +109,31 @@ def get_init_system() -> str:
     """
     Detects init system.
     Can detect ugly fucking systemd, sysvinit, openrc, s6, init, and launchd.
+
+    Returns:
+        str: Name of the init system (e.g., "systemd", "sysvinit", "upstart", "openrc", etc.)
     """
 
-    init_system = None
+    if os.path.exists("/run/systemd/system"):
+        return "systemd"
+
+    elif os.path.exists("/etc/init.d"):
+        return "sysvinit"
+
+    elif os.path.exists("/etc/init.d") and os.path.isdir("/etc/init.d/openrc"):
+        return "openrc"
     
+    elif os.path.exists("/etc/s6"):
+        return "s6"
+
     try:
-        subprocess.run(["systemctl", "--version"], capture_output=True, check=True)
-        init_system = "systemd"
-    except (FileNotFoundError, subprocess.CalledProcessError):
+        init_pid = subprocess.check_output(["ps", "-p", "1", "-o", "comm="]).decode().strip()
+        if init_pid == "init":
+            return "sysvinit"  # init is almost identical to sysvinit
+    except subprocess.CalledProcessError:
         pass
 
-    if init_system is None:
-        try:
-            subprocess.run(["service", "--status-all"], capture_output=True, check=True)
-            init_system = "sysvinit"
-        except (FileNotFoundError, subprocess.CalledProcessError):
-            pass
-        
-    if init_system is None and os.path.exists("/sbin/run"):
-        init_system = "openrc"
-
-    if init_system is None and os.path.exists("/etc/s6"):
-        init_system = "s6"
-
-    if init_system is None and os.path.exists("/etc/service"):
-    	init_system = "openrc"
-
-    if init_system is None and os.path.exists("/sbin/launchd"):
-        init_system = "launchd"
-
-    return init_system if init_system is not None else "unknown"
+    return "unknown"
 
 
 class SysVInitManagement:
@@ -154,8 +149,8 @@ class SysVInitManagement:
         try:
             subprocess.run(["service", self.service, action], check=True)
             return True
-        except subprocess.CalledProcessError as e:
-            print(f"{RED}[!] Error: {e}")
+        except subprocess.CalledProcessError as error:
+            print(f"{RED}[!] Error: {error}{RESET}")
             return False
 
     def start_service(self) -> bool:
