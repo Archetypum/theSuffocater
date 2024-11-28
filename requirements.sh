@@ -180,11 +180,19 @@ install_redhat_based() {
 }
 
 install_freebsd_based() {
-	pkg update -y && pkg upgrade -y
+	pkg update && pkg upgrade -y
 	pkg install -y python3 py3-pip
-	pkg install -y net-tools iproute2 iptables-legacy nftables fail2ban
-	pkg intsall -y openvpn wireguard-tools
+	pkg install -y py311-fail2ban
+	pkg install -y openvpn wireguard-tools
 	pkg install -y lsof git
+
+	echo "[!] Warning:"
+	echo "    Iptables, nftables, Iproute, and ufw are GNU/Linux specific tools."
+	echo "    To achieve similar functionality, use tools designed for BSD systems,"
+	echo "    like PF (Packet Filter), IPFilter (ipf), or build these packages youself."
+	echo -n "[==>] Hit enter to proceed: "
+	read PROCEED
+	install_python_requirements
 }
 
 install_netbsd_based() {
@@ -198,7 +206,7 @@ install_netbsd_based() {
 	echo "[!] Warning:"
 	echo "    Iptables, nftables, Iproute, and ufw are GNU/Linux specific tools."
 	echo "    To achieve similar functionality, use tools designed for BSD systems,"
-	echo "    like PF (Packet Filter), IPFilter (ipf), or IPFW."
+	echo "    like PF (Packet Filter), IPFilter (ipf), or build these packages youself."
 	echo -n "[==>] Hit enter to proceed: "
 	read PROCEED
 	install_python_requirements_netbsd

@@ -25,6 +25,8 @@ except ModuleNotFoundError as error:
 def main(distro: str, init_system: str) -> None:
     if usr.is_debian_based(distro):
         usr.package_handling(distro, package_list=["openssh-client", "openssh-server"], command="install")
+    elif distro in usr.FREEBSD_BASED_DISTROS or distro in usr.OPENBSD_BASED_DISTROS or distro in usr.NETBSD_BASED_DISTROS:
+        print("[*] Assuming you already have openssh (BSD).")
     else:
         usr.package_handling(distro, package_list=["openssh"], command="install")
     
