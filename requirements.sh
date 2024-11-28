@@ -88,7 +88,7 @@ list_of_packages() {
 	PACKAGES=("python3" "python3-pip"
 		"net-tools" "ufw" "iptables" "nftables" "fail2ban"
 		"openvpn" "wireguard/wireguard-tools"
-		"git" "lsof"
+		"git" "wget" "lsof"
 	)
 
 	echo "Packages to install:"
@@ -118,7 +118,7 @@ install_debian_based() {
 	apt install python3 python3-pip -y
 	apt install net-tools iproute2 ufw iptables fail2ban nftables -y
 	apt install openvpn wireguard wireguard-tools -y
-	apt install lsof git -y
+	apt install lsof git wget -y
 }
 
 install_arch_based() {
@@ -126,7 +126,7 @@ install_arch_based() {
 	pacman -S python python-pip --noconfirm
 	pacman -S net-tools iproute2 ufw iptables nftables fail2ban --noconfirm
 	pacman -S openvpn wireguard-tools --noconfirm
-	pacman -S lsof git --noconfirm
+	pacman -S lsof git wget --noconfirm
 }
 
 install_gentoo_based() {
@@ -139,7 +139,7 @@ install_alpine_based() {
 	apk add python3 py3-pip
 	apk add net-tools iproute2 ufw iptables nftables fail2ban
 	apk add wireguard-tools openvpn
-	apk add lsof git
+	apk add lsof git wget
 }
 
 install_void_based() {
@@ -147,7 +147,7 @@ install_void_based() {
 	xbps-install python3 python3-pip
 	xbps-install net-tools iproute2 ufw iptables nftables fail2ban
 	xbps-install openvpn wireguard-tools
-	xbps-install lsof git
+	xbps-install lsof git wget
 }
 
 install_fedora_based() {
@@ -155,7 +155,7 @@ install_fedora_based() {
 	dnf install python3 python3-pip -y
 	dnf install net-tools iproute2 firewalld iptables-services nftables fail2ban -y
 	dnf install openvpn wireguard-tools -y
-	dnf install lsof git -y
+	dnf install lsof git wget -y
 }
 
 install_opensuse_based() {
@@ -163,7 +163,7 @@ install_opensuse_based() {
 	zypper install -y python3 python3-pip
 	zypper install -y net-tools iproute2 firewalld iptables nftables fail2ban
 	zypper install -y openvpn wireguard-tools
-	zypper install -y lsof git
+	zypper install -y lsof git wget
 }
 
 install_slackware_based() {
@@ -176,7 +176,7 @@ install_redhat_based() {
 	yum install python3 python3-pip -y
 	yum install net-tools iproute2 firewalld iptables-services nftables fail2ban -y
 	yum install openvpn wireguard-tools -y
-	yum install lsof git -y
+	yum install lsof git wget -y
 }
 
 install_freebsd_based() {
@@ -184,7 +184,7 @@ install_freebsd_based() {
 	pkg install -y python3 py3-pip
 	pkg install -y py311-fail2ban
 	pkg install -y openvpn wireguard-tools
-	pkg install -y lsof git
+	pkg install -y lsof git wget
 
 	echo "[!] Warning:"
 	echo "    Iptables, nftables, Iproute, and ufw are GNU/Linux specific tools."
@@ -200,7 +200,7 @@ install_netbsd_based() {
 	pkgin install python3.12
 	python3.12 -m ensurepip --upgrade
 	pkgin install fail2ban
-	pkgin install lsof git
+	pkgin install lsof git wget
 	pkgin install openvpn wireguard-tools
 
 	echo "[!] Warning:"
@@ -218,7 +218,7 @@ install_openbsd_based() {
 	pkg_add python3 py3-pip
 	pkg_add iproute2 pfctl fail2ban nftables
 	pkg_add openvpn wireguard-tools
-	pkg_add lsof git
+	pkg_add lsof git wget
 }
 
 install_dragora_based() {
@@ -226,7 +226,7 @@ install_dragora_based() {
 	qi install python3 python3-pip
 	qi install net-tools iproute2 ufw iptables nftables fail2ban
 	qi install openvpn wiregurard-tools
-	qi install lsof git
+	qi install lsof git wget
 }
 
 to_lowercase() {

@@ -17,9 +17,9 @@ try:
     from sys import exit
     from os import system
     from time import sleep
-    from usr import RED, GREEN, RESET
-except ModuleNotFoundError as e:
-    print(f"{RED}[!] Error: module not found:\n{e}{RESET}")
+    from usr import GREEN, RED, RESET
+except ModuleNotFoundError as error:
+    print(f"{RED}[!] Error: module not found:\n{error}{RESET}")
     exit(1)
 
 
@@ -97,27 +97,24 @@ def outlinevpn_server_setup(distro: str, init_system: str) -> None:
     if answer in ["y", "yes"]:
         try:
             print("[<==] Updating the system...")
-            subprocess.run(["apt", "update", "&&", "apt", "upgrade", "-y"], check=True, shell=True)
             sleep(1)
+            usr.package_handling(distro, package_list=["openssh-client", "openssh-server"], command="install")
 
             print("[<==] Installing Docker...")
             subprocess.run(["wget", "-O", "https://get.docker.com", "|", "bash"], check=True, shell=True)
-            sleep(1)
 
             print("[<==] Starting Docker...")
             subprocess.run(["service", "docker", "start"], check=True, shell=True)
             sleep(1)
             
             print("[<==] Installing Iptables for future...")
-            subprocess.run(["apt", "install", "iptables", "-y"], check=True, shell=True)
-            sleep(1)
+            ...
 
             print("[*] Looks like you are locked and loaded.\nNow, check the instructions in Outline Manager.")
-        
-        except subprocess.CalledProcessError as e:
-            print(f"An error occured: {e}")
+        except subprocess.CalledProcessError as error:
+            print(f"{RED}[!] Error: {error}{RESET}")
     else:
-        print("[!] Operation canceled.")
+        print("{RED}[!] Operation canceled.{RESET}")
         exit(0)
 
 
