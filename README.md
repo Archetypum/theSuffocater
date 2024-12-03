@@ -1,6 +1,6 @@
 # theSuffocater - extensible module manager that allows you to quickly harden your server and deploy services in few clicks.
 
-# Installation:
+# Installation (as root):
 	git clone https://github.com/Kinderfeld/fear-the-suffocater
 	cd fear-the-suffocater
 	bash requirements.sh
