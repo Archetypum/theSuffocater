@@ -84,7 +84,7 @@ def get_user_distro() -> str:
                     return name
     except FileNotFoundError:
         print(f"{RED}[!] Error: Cannot detect distribution from /etc/os-release.{RESET}")
-        name: str = input("[==>] Write the base of your OS yourself`: ").strip().lower()
+        name: str = input("[==>] Write the base of your OS yourself: ").strip().lower()
 
         return name
 

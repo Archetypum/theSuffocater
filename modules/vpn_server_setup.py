@@ -37,7 +37,7 @@ def openvpn_server_setup() -> None:
             usr.package_handling(distro, package_list=[], command="update")
             
             print("[<==] Installing OpenVPN...")
-            usr.pacakge_handling(distro, package_list=["openvpn"], command="install")
+            usr.package_handling(distro, package_list=["openvpn"], command="install")
             
             print("[<==] Installing Curl...")
             usr.package_handling(distro, package_list=["curl"], command="install")

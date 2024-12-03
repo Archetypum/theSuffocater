@@ -17,7 +17,7 @@ except ModuleNotFoundError as error:
     print(f"{RED}[!] Error: modules not found:\n{error}{RESET}")
 
 
-def safe_gnome_geoclue() -> None:
+def safe_geoclue_setup() -> None:
     system("clear")
 
     print("This script is going to set all geoclue config variables to 'false'.")
@@ -38,4 +38,4 @@ def safe_gnome_geoclue() -> None:
 
 
 if __name__ == "__main__":
-    safe_gnome_geoclue()
+    safe_geoclue_setup()
