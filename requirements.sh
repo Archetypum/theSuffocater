@@ -2,87 +2,41 @@
 
 clear
 
-list_of_platforms() {
-	GUIX_BASED_DISTROS=("guix")
-	REDHAT_BASED_DISTROS=("redhat")
-	CENTOS_BASED_DISTROS=("centos")
-	FEDORA_BASED_DISTROS=("fedora")
-	DRAGORA_BASED_DISTROS=("dragora")
-	OPENSUSE_BASED_DISTROS=("opensuse")
-	SLACKWARE_BASED_DISTROS=("slackware")
-	ALPINE_BASED_DISTROS=("alpine" "postmarket")
-	VOID_BASED_DISTROS=("void" "argon" "shikake" "pristine")
-	GENTOO_BASED_DISTROS=("gentoo" "funtoo" "calculate" "chromeos")
-	OPENBSD_BASED_DISTROS=("openbsd" "adj" "libertybsd")
-	NETBSD_BASED_DISTROS=("netbsd" "blackbsd" "edgebsd")
-	FREEBSD_BASED_DISTROS=("freebsd" "ghostbsd" "midnightbsd" "bastillebsd" "cheribsd" "trueos" "dragonflybsd" "hardenedbsd" "hellosystem" "truenas")
-	ARCH_BASED_DISTROS=("arch" "artix" "manjaro" "garuda" "hyperbola" "parabola" "endeavour" "blackarch" "librewolfos")
-	DEBIAN_BASED_DISTROS=("debian" "ubuntu" "xubuntu" "kubuntu" "mint" "lmde" "trisquel" "devuan" "kali" 
-		"parrot" "pop" "elementary" "mx" "antix" "steamos" "tails" "astra" "crunchbag"
-		"crunchbag++" "pureos" "deepin" "zorin" "peppermintos" "lubuntu" "wubuntu"
+GUIX_BASED_DISTROS=("guix")
+REDHAT_BASED_DISTROS=("redhat")
+CENTOS_BASED_DISTROS=("centos")
+FEDORA_BASED_DISTROS=("fedora")
+DRAGORA_BASED_DISTROS=("dragora")
+OPENSUSE_BASED_DISTROS=("opensuse")
+SLACKWARE_BASED_DISTROS=("slackware")
+ALPINE_BASED_DISTROS=("alpine" "postmarket")
+VOID_BASED_DISTROS=("void" "argon" "shikake" "pristine")
+GENTOO_BASED_DISTROS=("gentoo" "funtoo" "calculate" "chromeos")
+OPENBSD_BASED_DISTROS=("openbsd" "adj" "libertybsd")
+NETBSD_BASED_DISTROS=("netbsd" "blackbsd" "edgebsd")
+FREEBSD_BASED_DISTROS=("freebsd" "ghostbsd" "midnightbsd" "bastillebsd" "cheribsd" "trueos" "dragonflybsd" "hardenedbsd" "hellosystem" "truenas")
+ARCH_BASED_DISTROS=("arch" "artix" "manjaro" "garuda" "hyperbola" "parabola" "endeavour" "blackarch" "librewolfos")
+DEBIAN_BASED_DISTROS=("debian" "ubuntu" "xubuntu" "kubuntu" "mint" "lmde" "trisquel" "devuan" "kali" 
+	"parrot" "pop" "elementary" "mx" "antix" "steamos" "tails" "astra" "crunchbag"
+	"crunchbag++" "pureos" "deepin" "zorin" "peppermintos" "lubuntu" "wubuntu"
 	)
 	
-	echo "Supported Platforms:"
-	for ELEMENT in "${GUIX_BASED_DISTROS[@]}"; do
-		echo " - $ELEMENT"
-	done
-	
-	for ELEMENT in "${REDHAT_BASED_DISTROS[@]}"; do 
-		echo " - $ELEMENT" 
-	done
-	
-	for ELEMENT in "${CENTOS_BASED_DISTROS[@]}"; do 
-		echo " - $ELEMENT" 
-	done
-	
-	for ELEMENT in "${FEDORA_BASED_DISTROS[@]}"; do 
-		echo " - $ELEMENT" 
-	done
-	
-	for ELEMENT in "${DRAGORA_BASED_DISTROS[@]}"; do 
-		echo " - $ELEMENT" 
-	done
-	
-	for ELEMENT in "${OPENSUSE_BASED_DISTROS[@]}"; do 
-		echo " - $ELEMENT" 
-	done
-	
-	for ELEMENT in "${SLACKWARE_BASED_DISTROS[@]}"; do 
-		echo " - $ELEMENT" 
-	done
-	
-	for ELEMENT in "${ALPINE_BASED_DISTROS[@]}"; do 
-		echo " - $ELEMENT" 
-	done
-	
-	for ELEMENT in "${VOID_BASED_DISTROS[@]}"; do 
-		echo " - $ELEMENT" 
-	done
-	
-	for ELEMENT in "${GENTOO_BASED_DISTROS[@]}"; do 
-		echo " - $ELEMENT" 
-	done
-	
-	for ELEMENT in "${OPENBSD_BASED_DISTROS[@]}"; do 
-		echo " - $ELEMENT" 
-	done
-	
-	for ELEMENT in "${NETBSD_BASED_DISTROS[@]}"; do 
-		echo " - $ELEMENT" 
-	done
-	
-	for ELEMENT in "${FREEBSD_BASED_DISTROS[@]}"; do 
-		echo " - $ELEMENT" 
-	done
-	
-	for ELEMENT in "${ARCH_BASED_DISTROS[@]}"; do 
-		echo " - $ELEMENT" 
-	done
-	
-	for ELEMENT in "${DEBIAN_BASED_DISTROS[@]}"; do 
-		echo " - $ELEMENT" 
-	done
-}
+echo "Supported Platforms:"
+for ELEMENT in "${GUIX_BASED_DISTROS[@]}"; do echo " - $ELEMENT"; done 
+for ELEMENT in "${REDHAT_BASED_DISTROS[@]}"; do echo " - $ELEMENT"; done 
+for ELEMENT in "${CENTOS_BASED_DISTROS[@]}"; do echo " - $ELEMENT"; done 
+for ELEMENT in "${FEDORA_BASED_DISTROS[@]}"; do echo " - $ELEMENT"; done 
+for ELEMENT in "${DRAGORA_BASED_DISTROS[@]}"; do echo " - $ELEMENT"; done 
+for ELEMENT in "${OPENSUSE_BASED_DISTROS[@]}"; do echo " - $ELEMENT"; done 
+for ELEMENT in "${SLACKWARE_BASED_DISTROS[@]}"; do echo " - $ELEMENT"; done 
+for ELEMENT in "${ALPINE_BASED_DISTROS[@]}"; do echo " - $ELEMENT"; done 
+for ELEMENT in "${VOID_BASED_DISTROS[@]}"; do echo " - $ELEMENT"; done 
+for ELEMENT in "${GENTOO_BASED_DISTROS[@]}"; do echo " - $ELEMENT"; done 
+for ELEMENT in "${OPENBSD_BASED_DISTROS[@]}"; do echo " - $ELEMENT"; done 
+for ELEMENT in "${NETBSD_BASED_DISTROS[@]}"; do echo " - $ELEMENT"; done 
+for ELEMENT in "${FREEBSD_BASED_DISTROS[@]}"; do echo " - $ELEMENT"; done 
+for ELEMENT in "${ARCH_BASED_DISTROS[@]}"; do echo " - $ELEMENT"; done 
+for ELEMENT in "${DEBIAN_BASED_DISTROS[@]}"; do echo " - $ELEMENT"; done
 
 list_of_packages() {
 	PACKAGES=("python3" "python3-pip"
@@ -130,8 +84,8 @@ install_arch_based() {
 }
 
 install_gentoo_based() {
-	echo "Im sorry but you are on your own."
-	echo "Install packages manually"
+	echo "I'm sorry but you are on your own."
+	echo "Install packages manually."
 }
 
 install_alpine_based() {
@@ -167,7 +121,7 @@ install_opensuse_based() {
 }
 
 install_slackware_based() {
-	echo "Im sorry but you are on your own."
+	echo "I'm sorry but you are on your own."
 	echo "Install packages manually."
 }
 
@@ -189,7 +143,7 @@ install_freebsd_based() {
 	echo "[!] Warning:"
 	echo "    Iptables, nftables, Iproute, and ufw are GNU/Linux specific tools."
 	echo "    To achieve similar functionality, use tools designed for BSD systems,"
-	echo "    like PF (Packet Filter), IPFilter (ipf), or build these packages youself."
+	echo "    like PF (Packet Filter), IPFilter (ipf), or build these packages yourself."
 	echo -n "[==>] Hit enter to proceed: "
 	read PROCEED
 	install_python_requirements
@@ -206,7 +160,7 @@ install_netbsd_based() {
 	echo "[!] Warning:"
 	echo "    Iptables, nftables, Iproute, and ufw are GNU/Linux specific tools."
 	echo "    To achieve similar functionality, use tools designed for BSD systems,"
-	echo "    like PF (Packet Filter), IPFilter (ipf), or build these packages youself."
+	echo "    like PF (Packet Filter), IPFilter (ipf), or build these packages yourself."
 	echo -n "[==>] Hit enter to proceed: "
 	read PROCEED
 	install_python_requirements_netbsd
@@ -225,7 +179,7 @@ install_dragora_based() {
 	qi upgrade 
 	qi install python3 python3-pip
 	qi install net-tools iproute2 ufw iptables nftables fail2ban
-	qi install openvpn wiregurard-tools
+	qi install openvpn wireguard-tools
 	qi install lsof git wget
 }
 
@@ -234,79 +188,126 @@ to_lowercase() {
 }
 
 main() {
-	echo -n "[==>] Enter the base of your GNU/Linux or BSD distribution ('list' to view supported platforms, 'packges' to view requirements): "
+	echo -n "[==>] Enter the base of your GNU/Linux or BSD distribution ('packages' to view requirements): "
 	read DISTRO
-	
-	if [[ "$DISTRO" == "list" ]]; then
-		list_of_platforms
-		main
-		return
-	fi
-
 	if [[ "$DISTRO" == "packages" ]]; then
 		list_of_packages
 		main
 		return
 	fi
-	
-	echo "--------------------------------------------------------------------------------------"
-	echo "[<==] Installing requirements..."
-	sleep 1
 
 	DISTRO=$(to_lowercase "$DISTRO")
-	case "$DISTRO" in
-		*debian*|*ubuntu*|*xubuntu*|*mint*|*lmde*|*trisquel*|*devuan*|*kali*|*parrot*|*pop*|*elementary*|*mx*|*antix*)
+	echo "[<==] Installing requirements..."
+	echo "--------------------------------------------------------------------------------------"
+
+	for ITEM in "${DEBIAN_BASED_DISTROS[@]}"; do
+		if [[ "$DISTRO" == "$ITEM" ]]; then
 			install_debian_based
-			;;
-		*arch*|*manjaro*|*garuda*|*hyperbola*|*parabola*|*artix*)
-			install_arch_based
-			;;
-		*gentoo*)
-			install_gentoo_based
-			;;
-		*alpine*)
-			install_alpine_based
-			;;
-		*void*)
-			install_void_based
-			;;
-		*fedora*)
-			install_fedora_based
-			;;
-		*opensuse*)
-			install_opensuse_based
-			;;
-		*slackware*)
-			install_slackware_based
-			;;
-		*redhat*|*centos*)
-			install_redhat_based
-			;;
-		*freebsd*|*ghostbsd*|*midnightbsd*)
-			install_freebsd_based
-			;;
-		*netbsd*)
-			install_netbsd_based
-			;;
-		*openbsd*)
-			install_openbsd_based
-			;;
-		*dragora*)
-			install_dragora_based
-			;;
-		*)
-			echo "[!] Error: Unsupported distribution '$DISTRO'."
-			exit 1
-			;;
-	esac
+			break
+		fi
+	done
 	
-	sleep 1
-	clear
+	for ITEM in "${ARCH_BASED_DISTROS[@]}"; do
+		if [[ "$DISTRO" == "$ITEM" ]]; then
+			install_arch_based
+			break
+		fi
+	done
+	
+	for ITEM in "${GUIX_BASED_DISTROS[@]}"; do
+		if [[ "$DISTRO" == "$ITEM" ]]; then
+			install_guix_based
+			break
+		fi
+	done
+	
+	for ITEM in "${REDHAT_BASED_DISTROS[@]}"; do
+		if [[ "$DISTRO" == "$ITEM" ]]; then
+			install_redhat_based
+			break
+		fi
+	done
+
+	for ITEM in "${CENTOS_BASED_DISTROS[@]}"; do
+		if [[ "$DISTRO" == "$ITEM" ]]; then
+			install_centos_based
+			break
+		fi
+	done
+
+	for ITEM in "${FEDORA_BASED_DISTROS[@]}"; do
+		if [[ "$DISTRO" == "$ITEM" ]]; then
+			install_fedora_based
+			break
+		fi
+	done
+
+	for ITEM in "${DRAGORA_BASED_DISTROS[@]}"; do
+		if [[ "$DISTRO" == "$ITEM" ]]; then
+			install_dragora_based
+			break
+		fi
+	done
+
+	for ITEM in "${OPENSUSE_BASED_DISTROS[@]}"; do
+		if [[ "$DISTRO" == "$ITEM" ]]; then
+			install_opensuse_based
+			break
+		fi
+	done
+
+	for ITEM in "${SLACKWARE_BASED_DISTROS[@]}"; do
+		if [[ "$DISTRO" == "$ITEM" ]]; then
+			install_slackware_based
+			break
+		fi
+	done
+
+	for ITEM in "${ALPINE_BASED_DISTROS[@]}"; do
+		if [[ "$DISTRO" == "$ITEM" ]]; then
+			install_alpine_based
+			break
+		fi
+	done
+
+	for ITEM in "${VOID_BASED_DISTROS[@]}"; do
+		if [[ "$DISTRO" == "$ITEM" ]]; then
+			install_void_based
+			break
+		fi
+	done
+
+	for ITEM in "${GENTOO_BASED_DISTROS[@]}"; do
+		if [[ "$DISTRO" == "$ITEM" ]]; then
+			install_gentoo_based
+			break
+		fi
+	done
+
+	for ITEM in "${OPENBSD_BASED_DISTROS[@]}"; do
+		if [[ "$DISTRO" == "$ITEM" ]]; then
+			install_openbsd_based
+			break
+		fi
+	done
+
+	for ITEM in "${NETBSD_BASED_DISTROS[@]}"; do
+		if [[ "$DISTRO" == "$ITEM" ]]; then
+			install_netbsd_based
+			break
+		fi
+	done
+
+	for ITEM in "${FREEBSD_BASED_DISTROS[@]}"; do
+		if [[ "$DISTRO" == "$ITEM" ]]; then
+			install_freebsd_based
+			break
+		fi
+	done
+	
 	echo -n "[?] Now we need to create a virtual environment for python3 in $(pwd). Do you wish to proceed? (y/N): "
 	read ANSWER
-	
 	ANSWER=$(to_lowercase "$ANSWER")
-	
 	if [[ "$ANSWER" == "y" ]]; then
 		install_python_requirements
 	else

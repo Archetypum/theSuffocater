@@ -1024,7 +1024,7 @@ class OpenBSDPackageManagement:
             try:
                 subprocess.run(["pkg_delete", package], check=True)
                 return True
-            except subprocess.CalledProcessError as e:
+            except subprocess.CalledProcessError as error:
                 print(f"{RED}[!] Error: {e}{RESET}")
                 return False
 
@@ -1045,16 +1045,16 @@ class NetBSDPackageManagement:
         try:
             subprocess.run(["pkgin", "update"], check=True)
             return True
-        except subprocess.CalledProcessError as e:
-            print(f"{RED}[!] Error: {e}{RESET}")
+        except subprocess.CalledProcessError as error:
+            print(f"{RED}[!] Error: {error}{RESET}")
             return False
 
     def upgrade(self) -> bool:
         try:
             subprocess.run(["pkgin", "upgrade"], check=True)
             return True
-        except subprocess.CalledProcessError as e:
-            print(f"{RED}[!] Error: {e}{RESET}")
+        except subprocess.CalledProcessError as error:
+            print(f"{RED}[!] Error: {error}{RESET}")
             return False
     
     def install(self, packages: List[str]) -> bool:
@@ -1071,8 +1071,8 @@ class NetBSDPackageManagement:
             try:
                 subprocess.run(["pkgin", "remove", package], check=True)
                 return True
-            except subprocess.CalledProcessError as e:
-                print(f"{RED}[!] Error: {e}{RESET}")
+            except subprocess.CalledProcessError as error:
+                print(f"{RED}[!] Error: {error}{RESET}")
                 return False
 
 
@@ -1081,7 +1081,7 @@ def package_handling(distro: str, package_list: List[str], command: str) -> bool
     Handles package downloading for different GNU/Linux and BSD distributions.
     """
 
-    print("[<==] Installing requirements...")
+    print(f"[<==] Installing requirements {package_list}...")
     sleep(1)
 
     try:
@@ -1261,9 +1261,97 @@ def package_handling(distro: str, package_list: List[str], command: str) -> bool
             else:
                 print(f"{RED}[!] Error: Unsupported distribution: {distro}.{RESET}")
                 return False
+        
+        if command == "update" or command in "upgrade":
+            if distro in DEBIAN_BASED_DISTROS:
+                debian = DebianPackageManagement(distro, packages=[])
+                debian.update()
+                debian.upgrade()
+                return True
+
+            elif distro in ARCH_BASED_DISTROS:
+                arch = ArchPackageManagement(distro, packages=[])
+                arch.update_upgrade()
+                return True
+
+            elif distro in GENTOO_BASED_DISTROS:
+                gentoo = GentooPackageManagement(distro, packages=[])
+                gentoo.update()
+                gentoo.upgrade()
+                return True
+
+            elif distro in FEDORA_BASED_DISTROS:
+                fedora = FedoraPackageManagement(distro, packages=[])
+                fedora.update()
+                fedora.upgrade()
+                return True
+
+            elif distro in CENTOS_BASED_DISTROS:
+                centos = CentOSPackageManagement(distro, packages=[])
+                centos.update()
+                centos.upgrade()
+                return True
+
+            elif distro in ALPINE_BASED_DISTROS:
+                alpine = AlpinePackageManagement(distro, packages=[])
+                alpine.update()
+                alpine.upgrade()
+                return True
+
+            elif distro in VOID_BASED_DISTROS:
+                void = VoidPackageManagement(distro, packages=[])
+                void.update()
+                void.upgrade()
+                return True
+
+            elif distro in DRAGORA_BASED_DISTROS:
+                dragora = DragoraPackageManagement(distro, packages=[])
+                dragora.update()
+                dragora.upgrade()
+                return True
+
+            elif distro in SLACKWARE_BASED_DISTROS:
+                slackware = SlackwarePackageManagement(distro, packages=[])
+                slackware.update()
+                slackware.upgade()
+                return True
+
+            elif distro in GUIX_BASED_DISTROS:
+                guix = GuixPackageManagement(distro, packages=[])
+                guix.update()
+                guix.upgrade()
+                return True
+
+            elif distro in UTUTO_BASED_DISTROS:
+                ututo = UtutoPackageManagement(distro, packages=[])
+                ututo.update()
+                ututo.upgrade()
+                return True
+
+            elif distro in FREEBSD_BASED_DISTROS:
+                freebsd = FreeBSDPackageManagement(distro, packages=[])
+                freebsd.update()
+                freebsd.upgrade()
+                return True
+
+            elif distro in OPENBSD_BASED_DISTROS:
+                openbsd = OpenBSDPackageManagement(distro, packages=[])
+                openbsd.update()
+                openbsd.upgrade()
+                return True
+
+            elif distro in NETBSD_BASED_DISTROS:
+                netbsd = NetBSDPackageManagement(distro, packages=[])
+                netbsd.update()
+                netbsd.upgrade()
+                return True
+
+            else:
+                print(f"{RED}[!] Error: Unsupported distribution: {distro}.{RESET}")
+                return False
 
     except subprocess.CalledProcessError as error:
-        print(f"{RED}[!] Error: {error}.{RESET}")
+        print(f"{RED}[!] Error: {error}{RESET}")
         return False
 
 
@@ -1272,7 +1360,7 @@ def init_system_handling(init_system: str, command: str, service: str) -> bool:
     Handles services for GNU/Linux and BSD distributions. 
     """
 
-    print("[<==] Enabling services...")
+    print(f"[<==] Enabling services [{service}]...")
     sleep(1)
     
     try:
@@ -1290,8 +1378,8 @@ def init_system_handling(init_system: str, command: str, service: str) -> bool:
             print(f"{RED}[!] Error: unsupported init system.{RESET}")
             exit(1)
 
-    except subprocess.CalledProcessError as e:
-        print(f"{RED}[!] Error: {e}.{RESET}")
+    except subprocess.CalledProcessError as error:
+        print(f"{RED}[!] Error: {error}{RESET}")
         return False
 
 
@@ -1302,7 +1390,6 @@ if __name__ == "__main__":
     print(distro)
     print(init_system)
 
-    # command: str = "install"
-
+    package_handling(distro, package_list=["vim"], command="update")
     # package_handling(distro, package_list=["vrms", "htop"], command="install")
     # package_handling(distro, package_list=["vrms"], command="remove")
