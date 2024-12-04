@@ -63,7 +63,7 @@ def disable_auto_updates() -> None:
 
             print(f"\n{GREEN}[*] Automatic updates have been disabled.{RESET}")
         except (FileNotFoundError, IOError) as error:
-            print(f"{RED}[!] Error: Configuration files not found:\n{error}{{RESET}")
+            print(f"{RED}[!] Error: Configuration files not found:\n{error}{RESET}")
 
 
 def enable_debian_backports() -> None:
