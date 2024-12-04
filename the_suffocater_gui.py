@@ -165,6 +165,7 @@ def main_gui(suffocater_version: str) -> None:
     
     left_frame = tk.Frame(root, width=170, bg="grey20")
     left_frame.pack(side="left", fill="y")
+    
     tk.Button(top_frame, text="Modules", width=30, command=on_modules).pack(side="left", padx=5, pady=5)
     tk.Button(top_frame, text="Exit", width=3, activeforeground="red", command=exit_app).pack(side="right", padx=5, pady=5)
     
