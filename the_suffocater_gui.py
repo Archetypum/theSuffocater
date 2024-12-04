@@ -121,8 +121,8 @@ def show_changelog() -> None:
 def main_gui(suffocater_version: str) -> None:
     root = tk.Tk()
     root.title("theSuffocater GUI")
-    root.geometry("400x300")
-    root.config(bg="#696969")
+    root.geometry("700x500")
+    root.config(bg="grey24")
 
     def exit_app() -> None:
         root.quit()
@@ -151,15 +151,37 @@ def main_gui(suffocater_version: str) -> None:
     def on_changelog() -> None:
         show_changelog()
 
-    tk.Button(root, text="Exit", command=exit_app).pack(pady=5)
-    tk.Button(root, text="Help", command=on_help).pack(pady=5)
-    tk.Button(root, text="Version", command=on_version).pack(pady=5)
-    tk.Button(root, text="Modules", command=on_modules).pack(pady=5)
-    tk.Button(root, text="Scripts", command=on_scripts).pack(pady=5)
-    tk.Button(root, text="Clear Screen", command=on_clear).pack(pady=5)
-    tk.Button(root, text="Documentation", command=on_documentation).pack(pady=5)
-    tk.Button(root, text="License", command=on_license).pack(pady=5)
-    tk.Button(root, text="Changelog", command=on_changelog).pack(pady=5)
+    def execute_command(event):
+        command = command_entry.get()
+        output_text.config(state=tk.NORMAL)
+        output_text.insert(tk.END, f"> {command}\n")
+        output_text.config(state=tk.DISABLED)
+        command_entry.delete(0, tk.END)
+        top_frame = tk.Frame(root, bg="grey29")
+        top_frame.pack(side="top", fill="x")
+    
+    top_frame = tk.Frame(root, bg="grey29")
+    top_frame.pack(side="top", fill="x")
+    
+    left_frame = tk.Frame(root, width=170, bg="grey20")
+    left_frame.pack(side="left", fill="y")
+    tk.Button(top_frame, text="Modules", width=30, command=on_modules).pack(side="left", padx=5, pady=5)
+    tk.Button(top_frame, text="Exit", width=3, activeforeground="red", command=exit_app).pack(side="right", padx=5, pady=5)
+    
+    tk.Button(left_frame, text="Help", width=20, command=on_help).pack(padx=5, pady=5)
+    tk.Button(left_frame, text="Version", width=20, command=on_version).pack(padx=5, pady=5)
+    tk.Button(left_frame, text="Scripts", width=20, command=on_scripts).pack(padx=5, pady=5)
+    tk.Button(left_frame, text="Clear Screen", width=20, command=on_clear).pack(padx=5, pady=5)
+    tk.Button(left_frame, text="Documentation", width=20, command=on_documentation).pack(padx=5, pady=5)
+    tk.Button(left_frame, text="License", width=20, command=on_license).pack(padx=5, pady=5)
+    tk.Button(left_frame, text="Changelog", width=20, command=on_changelog).pack(padx=5, pady=5)
+
+    output_text = tk.Text(root, height=15, width=50, bg="white", state=tk.DISABLED)
+    output_text.pack(pady=10)
+
+    command_entry = tk.Entry(root, width=53)
+    command_entry.pack(pady=5)
+    command_entry.bind("<Return>", execute_command)
 
     root.mainloop()
 
