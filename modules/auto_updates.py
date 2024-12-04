@@ -101,7 +101,7 @@ def auto_updates() -> None:
     functions: dict = {
             "enable_auto_updates": enable_auto_updates,
             "disable_auto_updates": disable_auto_updates,
-            "enable_debian_backports:" enable_debian_backports
+            "enable_debian_backports": enable_debian_backports
             }
 
     print("+---- Auto Updates  ----+")
