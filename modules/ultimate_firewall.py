@@ -10,25 +10,30 @@ Date: 09.11.2024
 ---------------------------------------
 """
 
-import subprocess
-from os import system
+try:
+    import usr
+    import subprocess
+    from os import system
+    from usr import GREEN, RED, RESET
+except ModuleNotFoundError as error:
+    print(f"{RED}[!] Error: modules not found:\n{error}{RESET}")
 
 
 def drop_firewall() -> None:
     system("clear")
-    print("Stopping radio...")
+
+    print("[<==] Stopping radio...")
     subprocess.run(["nmcli", "radio", "all", "off"], check=True)
-    
-    print("Disabling input/output traffic...")
+    print("[<==] Disabling input/output traffic...")
     subprocess.run(["iptables", "-P", "INPUT", "DROP"], check=True)
     subprocess.run(["iptables", "-P", "OUTPUT", "DROP"], check=True)
     
 
 def accept_firewall() -> None:
     system("clear")
+
     print("Enabling radio...")
     subprocess.run(["nmcli", "radio", "all", "off"], check=True)
-    
     print("Disabling input/output traffic...")
     subprocess.run(["iptables", "-P", "INPUT", "ACCEPT"], check=True)
     subprocess.run(["iptables", "-P", "OUTPUT", "ACCEPT"], check=True)
@@ -36,7 +41,7 @@ def accept_firewall() -> None:
 
 def no_spying() -> None:
     system("clear")
-    ip_addresses: list[str] = [
+    ip_addresses: list = [
             '91.207.136.55',    # starvapol_datacenter_ip
             '20.54.36.64',      # dublin_microsoft_ip
             '64.233.163.99',    # london_google_ip
@@ -67,7 +72,7 @@ def no_spying() -> None:
 
     print(f"We are going to block {len(ip_addresses)} of big companies/datacenters/isps by using UFW.")
 
-    answer: str = input("\nAre you sure you want this? (y/n): ").lower()
+    answer: str = input("\nProceed? (y/N): ").lower()
     if answer in ["y", "yes"]:
         for ip in ip_addresses:
             subprocess.run(f"ufw deny from {ip} to any", check=True)
@@ -80,7 +85,7 @@ def no_spying() -> None:
         subprocess.run("service ufw start", shell=True)
         subprocess.run("ufw status", shell=True)
 
-        print("\nSuccess!")
+        print("\n[*] Success!")
 
 
 def fail2ban_setup() -> None:
@@ -166,6 +171,6 @@ def ultimate_firewall() -> None:
         print(f" - {profile}")
     
     while True:
-        your_profile = input("\nEnter profile name (or anything to leave) >>> ")
+        your_profile: str = input("[==>] Enter function name: ")
         if your_profile in profiles:
             profiles[your_profile]()

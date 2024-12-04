@@ -13,7 +13,6 @@ Date: 03.07.2024
 try:
     import usr
     import subprocess
-    from sys import exit
     from os import system
     from time import sleep
     from usr import RED, GREEN, RESET
@@ -67,7 +66,6 @@ def safe_ssh_setup() -> None:
         main(distro, init_system)
     else:
         print(f"{RED}[!] Operation canceled.{RESET}")
-        exit(0)
 
 
 if __name__ == "__main__":

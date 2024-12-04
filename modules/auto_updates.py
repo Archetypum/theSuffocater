@@ -62,8 +62,32 @@ def disable_auto_updates() -> None:
                 true_config_file.write(config_file_text)
 
             print(f"\n{GREEN}[*] Automatic updates have been disabled.{RESET}")
-        except (FileNotFoundError, IOError):
-            print(f"{RED}[!] Error: Configuration files not found.{RESET}")
+        except (FileNotFoundError, IOError) as error:
+            print(f"{RED}[!] Error: Configuration files not found:\n{error}{{RESET}")
+
+
+def enable_debian_backports() -> None:
+    system("clear")
+    
+    print("[OPTIONAL]: Debian Backports")
+    print("            Backports are packages taken from the next Debian release")
+    print("            called 'testing'), adjusted and recompiled for usage on Debian stable.")
+    print("            By adding Debian Backports, you can gradually increase the number")
+    print("            of fresh/completely new packages on your system.")
+
+    answer: str = input("Add backports? (y/N): ")
+    if answer in ["y", "yes"]:
+        print("[<==] Enabling Backports...")
+        try:
+            with open("config_files/debian_backports.txt", "r") as config_file:
+                config_file_text: str = config_file.read()
+
+            with open("/etc/apt/sources.list", "a") as true_config_file:
+                true_config_file.write(config_file_text)
+
+            print(f"\n{GREEN}[*] Backports are successfully added.{RESET}")
+        except (FileNotFoundError, IOError) as error:
+            print(f"{RED}[!] Error: Configuration files not found:\n{error}{RESET}")
 
 
 def auto_updates() -> None:
@@ -76,7 +100,8 @@ def auto_updates() -> None:
 
     functions: dict = {
             "enable_auto_updates": enable_auto_updates,
-            "disable_auto_updates": disable_auto_updates
+            "disable_auto_updates": disable_auto_updates,
+            "enable_debian_backports:" enable_debian_backports
             }
 
     print("+---- Auto Updates  ----+")

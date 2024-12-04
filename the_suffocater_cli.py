@@ -192,7 +192,7 @@ if __name__ == "__main__":
             spec.loader.exec_module(module)
             globals()[module_name] = module
 
-        suffocater_version: str = "8.1.2-unstable        "
+        suffocater_version: str = "8.2.3-unstable        "
         the_suffocater_main(suffocater_version)
     else:
         print(f"{RED}[!] Error: This code requires root privileges to run certain modules.{RESET}")

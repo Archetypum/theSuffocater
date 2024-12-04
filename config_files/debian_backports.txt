@@ -1,0 +1,3 @@
+
+# Debian Bookworm backports repositories
+deb http://deb.debian.org/debian/ bookworm-backports main non-free-firmware

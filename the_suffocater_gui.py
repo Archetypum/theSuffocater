@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-
 #
 # This thing is called the "Carcass" - the heart of theSuffocater.
 # Carcass destiny is to load modules located in the /fear-the-suffocater/modules
@@ -26,12 +25,12 @@ except ModuleNotFoundError as error:
     print(f"{RED}[!] Error: module not found:\n{error}{RESET}")
     sys.exit(1)
 
-current_dir = os.path.dirname(__file__)
-modules_dir = os.path.join(current_dir, "modules")
-bash_scripts_dir = os.path.join(current_dir, "scripts")
+current_dir: str = os.path.dirname(__file__)
+modules_dir: str = os.path.join(current_dir, "modules")
+bash_scripts_dir: str = os.path.join(current_dir, "scripts")
 py_files = glob.glob(os.path.join(modules_dir, "*.py"))
 bash_scripts = glob.glob(os.path.join(bash_scripts_dir, "*.sh"))
-bash_scripts_names = [os.path.basename(script) for script in bash_scripts]
+bash_scripts_names: list = [os.path.basename(script) for script in bash_scripts]
 sys.path.append(modules_dir)
 
 for py_file in py_files:
@@ -40,6 +39,7 @@ for py_file in py_files:
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
     globals()[module_name] = module
+
 
 def run_bash_script(script_name: str) -> None:
     script_path = os.path.join(bash_scripts_dir, script_name)
@@ -77,7 +77,7 @@ def clear_screen() -> None:
 def show_modules(show_docs: bool = False) -> None:
     modules_text = "+-------------------- Imported Modules --------------------+\n"
     for python_file in py_files:
-        module_name = os.path.splitext(os.path.basename(python_file))[0]
+        module_name: str = os.path.splitext(os.path.basename(python_file))[0]
         module = globals().get(module_name)
 
         if module:
@@ -92,7 +92,7 @@ def show_modules(show_docs: bool = False) -> None:
 def show_scripts() -> None:
     scripts_text = "+-------------------- Available Scripts -------------------+\n"
     for script_file in bash_scripts:
-        script_name = os.path.basename(script_file)
+        script_name: str = os.path.basename(script_file)
         scripts_text += f"-> {script_name}\n"
     messagebox.showinfo("Scripts", scripts_text)
 
@@ -186,6 +186,7 @@ def main_gui(suffocater_version: str) -> None:
 
     root.mainloop()
 
+
 if __name__ == "__main__":
-    suffocater_version: str = "8.2.2-unstable"
+    suffocater_version: str = "8.2.3-unstable"
     main_gui(suffocater_version)
