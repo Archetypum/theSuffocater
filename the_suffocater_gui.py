@@ -5,7 +5,7 @@
 # Carcass destiny is to load modules located in the /fear-the-suffocater/modules
 # for further using.
 # 
-# Usually carcass dont receive much updates because its already serving
+# Usually carcass don't receive many updates because it's already serving
 # its functionality very good.
 # 
 # This is a graphical frontend, normal cli version is 'the_suffocater_gui.py'.

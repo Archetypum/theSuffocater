@@ -10,21 +10,21 @@ Date: 16.08.2024
 ---------------------------------------
 """
 
-import os
-import json
-import urllib.request as urllib2
+try:
+    import os
+    import json
+    import urllib.request as urllib2
+    from usr import GREEN, RED, RESET
+except ModuleNotFoundError as error:
+    print(f"{RED}[!] Error: modules not found:\n{error}{RESET}")
 
 
 def get_ip_details(ip_address: str) -> str | None:
-    try:
-        url: str = "http://ip-api.com/json/"
-        response = urllib2.urlopen(url + ip_address)
-        data = response.read()
-        values = json.loads(data)
-        print(values)
-
-    except subprocess.CalledProcessError as error:
-        print(f"[!] Error: An error occurred: {error}")
+    url: str = "http://ip-api.com/json/"
+    response = urllib2.urlopen(url + ip_address)
+    data = response.read()
+    values = json.loads(data)
+    print(f"{GREEN}values{RESET}")
 
 
 def ip_resolver() -> None:

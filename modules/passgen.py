@@ -39,4 +39,4 @@ def passgen() -> None:
             print(f"[*] Your new password for {name}: {created_password}")
             print(f"[<==] Saving to {name}.txt...")
         except ValueError:
-            print(f"{RED}[!] Error: password length cant be {passoword_lenght}.{RESET}")
+            print(f"{RED}[!] Error: password length cant be {passoword_length}.{RESET}")

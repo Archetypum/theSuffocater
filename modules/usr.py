@@ -26,7 +26,7 @@ GENTOO_BASED_DISTROS: list = ["gentoo", "pentoo", "funtoo", "calculate" "chrome"
 VOID_BASED_DISTROS: list = ["void", "argon", "shikake", "pristine"]
 DRAGORA_BASED_DISTROS: list = ["dragora"]
 SLACKWARE_BASED_DISTROS: list = ["slackware"]
-FEDORA_BASED_DISTROS: list = ["fedora"]
+FEDORA_BASED_DISTROS: list = ["fedora", "mos"]
 CENTOS_BASED_DISTROS: list = ["centos"]
 GUIX_BASED_DISTROS: list = ["guix"]
 UTUTO_BASED_DISTROS: list = ["ututo"]
@@ -89,7 +89,7 @@ def get_user_distro() -> str:
         return name
 
 
-def is_debian_based(distro: str) -> str:
+def is_debian_based(distro: str) -> True:
     """
     Detects if provided distro is debian based.
     """
@@ -798,7 +798,7 @@ class SlackwarePackageManagement:
     Simple class for working with slackpkg in your modules.
     """
 
-    def __init__(self, distro: str, package: List[str]) -> None:
+    def __init__(self, distro: str, packages: List[str]) -> None:
         self.distro = distro
         self.packages = packages
     
@@ -809,15 +809,15 @@ class SlackwarePackageManagement:
         try:
             subprocess.run(["slackpkg", "update"], check=True)
             return True
-        except subprocess.CalledProcessError as e:
-            print(f"{RED}[!] Error: {e}{RESET}")
+        except subprocess.CalledProcessError as error:
+            print(f"{RED}[!] Error: {error}{RESET}")
             return False
 
     def upgrade(self) -> bool:
         try:
             subprocess.run(["slackpkg", "upgrade"], check=True)
             return True
-        except subprocess.CalledProcessError as e:
+        except subprocess.CalledProcessError as error:
             print(f"{RED}[!] Error: {e}{RESET}")
             return False
 
@@ -826,7 +826,7 @@ class SlackwarePackageManagement:
             try:
                 subprocess.run(["slackpkg", "install", package], check=True)
                 return True
-            except subprocess.CalledProcessError as e:
+            except subprocess.CalledProcessError as error:
                 print(f"{RED}[!] Error: {e}{RESET}")
                 return False
 
@@ -835,8 +835,8 @@ class SlackwarePackageManagement:
             try:
                 subprocess.run(["slackpkg", "remove", package], check=True)
                 return True
-            except subprocess.CalledProcessError as e:
-                print(f"{RED}[!] Error: {e}{RESET}")
+            except subprocess.CalledProcessError as error:
+                print(f"{RED}[!] Error: {error}{RESET}")
                 return False
 
 
@@ -1025,7 +1025,7 @@ class OpenBSDPackageManagement:
                 subprocess.run(["pkg_delete", package], check=True)
                 return True
             except subprocess.CalledProcessError as error:
-                print(f"{RED}[!] Error: {e}{RESET}")
+                print(f"{RED}[!] Error: {error}{RESET}")
                 return False
 
 

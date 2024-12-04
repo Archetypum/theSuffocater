@@ -4,18 +4,18 @@
 # Carcass destiny is to load modules located in the /fear-the-suffocater/modules
 # for further using.
 # 
-# Usually carcass dont receive much updates because its already serving
+# Usually carcass don't receive many updates because it's already serving
 # its functionality very good.
 # 
 # Graphical frontend - the_suffocater_gui.py
 
 try:
-    # Here we importing python modules, and the most importantly,
+    # Here we importing are python modules, and the most importantly,
     # we are importing "usr.py" - module with all possible functions,
     # widely used by theSuffocater modules.
     import os
     import sys
-    modules_dir = os.path.join(os.path.dirname(__file__), "modules")
+    modules_dir: str = os.path.join(os.path.dirname(__file__), "modules")
     sys.path.append(modules_dir)
     import usr
     import glob
@@ -169,7 +169,8 @@ def the_suffocater_main(suffocater_version: str) -> None:
         elif module in bash_scripts_names:
             run_bash_script(module)
         else:
-            print(f"{RED}[!] Error: Module or script not found. Please check the name or ensure it is imported and try 'help'.{RESET}")
+            print(f"{RED}[!] Error: Module or script not found.")
+            print(f"Please check the name or ensure it is imported and try 'help'.{RESET}")
 
 
 if __name__ == "__main__":
