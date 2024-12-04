@@ -77,7 +77,7 @@ install_debian_based() {
 
 install_arch_based() {
 	pacman -Syu --noconfirm
-	pacman -S python python-pip --noconfirm
+	pacman -S python python-pip tk --noconfirm
 	pacman -S net-tools iproute2 ufw iptables nftables fail2ban --noconfirm
 	pacman -S openvpn wireguard-tools --noconfirm
 	pacman -S lsof git wget --noconfirm
