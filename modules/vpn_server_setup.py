@@ -63,7 +63,23 @@ def wireguard_server_setup(distro: str, init_system: str) -> None:
     answer: str = input("\n[?] Proceed? (y/N): ").lower()
     if answer in ["y", "yes"]:
         try:
+            print("[<==] Updating the system...")
+            usr.package_handling(distro, package_list=[], command="update")
+
+            print("[<==] Installing Wireguard...")
+            usr.package_handling(distro, package_list=["wireguard", "wireguard-tools"], command="install")
+
+            print("[<==] Installing Curl...")
+            usr.package_handling(distro, package_list=["curl"], command="install")
+
+            print("[<==] Installing Wireguard-Installer script...")
             ...
+            sleep(1)
+
+            print("[<==] Restarting Wireguard service && Finishing installation...")
+            usr.init_system_handling(init_system, "start", "wireguard")
+
+            print("[*] Looks like you are locked and loaded.\n (...)")
         except subprocess.CalledProcessError as error:
             print(f"{RED} Error: {error}{RESET}")
 

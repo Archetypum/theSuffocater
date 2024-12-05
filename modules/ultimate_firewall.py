@@ -13,94 +13,111 @@ Date: 09.11.2024
 try:
     import usr
     import subprocess
+    from sys import exit
     from os import system
     from usr import GREEN, RED, RESET
 except ModuleNotFoundError as error:
     print(f"{RED}[!] Error: modules not found:\n{error}{RESET}")
+    exit(1)
 
 
 def drop_firewall() -> None:
     system("clear")
+    
+    try:
+        print("[<==] Stopping radio...")
+        subprocess.run(["nmcli", "radio", "all", "off"], check=True)
 
-    print("[<==] Stopping radio...")
-    subprocess.run(["nmcli", "radio", "all", "off"], check=True)
-    print("[<==] Disabling input/output traffic...")
-    subprocess.run(["iptables", "-P", "INPUT", "DROP"], check=True)
-    subprocess.run(["iptables", "-P", "OUTPUT", "DROP"], check=True)
+        print("[<==] Disabling input/output traffic...")
+        subprocess.run(["iptables", "-P", "INPUT", "DROP"], check=True)
+        subprocess.run(["iptables", "-P", "OUTPUT", "DROP"], check=True)
+
+        print(f"{GREEN}[*] Success!{RESET}")
+    except subprocess.CalledProcessError as error:
+        print(f"{RED}[!] Error: {error}{RESET}")
     
 
 def accept_firewall() -> None:
     system("clear")
 
-    print("Enabling radio...")
-    subprocess.run(["nmcli", "radio", "all", "off"], check=True)
-    print("Disabling input/output traffic...")
-    subprocess.run(["iptables", "-P", "INPUT", "ACCEPT"], check=True)
-    subprocess.run(["iptables", "-P", "OUTPUT", "ACCEPT"], check=True)
+    try:
+        print("[<==] Enabling radio...")
+        subprocess.run(["nmcli", "radio", "all", "off"], check=True)
+    
+        print("[<==] Disabling input/output traffic...")
+        subprocess.run(["iptables", "-P", "INPUT", "ACCEPT"], check=True)
+        subprocess.run(["iptables", "-P", "OUTPUT", "ACCEPT"], check=True)
+        
+        print(f"{GREEN}[*] Success!{RESET}")
+    except subprocess.CalledProcessError as error:
+        print(f"{RED}[!] Error: {error}{RESET}")
 
 
 def no_spying() -> None:
     system("clear")
+
     ip_addresses: list = [
-            '91.207.136.55',    # starvapol_datacenter_ip
-            '20.54.36.64',      # dublin_microsoft_ip
-            '64.233.163.99',    # london_google_ip
-            '34.107.221.82',    # kansas_google_ip
-            '34.149.100.209',   # kansas_google_ip2
-            '142.250.74.42',    # stockholm_google_ip
-            '35.224.181.201',   # councilbluffs_google_ip
-            '162.159.61.4',     # sanfrancisco_cloudflare_ip
-            '104.26.10.222',    # sanfrancisco_cloudflare_ip2
-            '54.243.196.140',   # ashburn_amazon_ip
-            '3.217.123.24',     # ashburn_amazon_ip2
-            '3.164.68.27',      # seattle_amazon_ip
-            '3.164.240.75',     # seattle_amazon_ip2
-            '3.164.240.98',     # stockholm_amazon_ip
-            '93.243.107.34',    # brandenburg_telekom_ip
-            '209.100.149.34',   # london_datacenter_ip
-            '40.114.178.124',   # amsterdam_microsoft_ip
-            '172.64.41.4',      # sanfrancisco_cloudflare_ip
-            '93.243.107.34',    # brandenburg_telekom_ip
-            '178.128.135.204',  # newjersey_datacenter_ip
-            '82.221.107.34',    # reykjavik_datacenter_ip
-            '104.19.222.79',    # sanfranciso_cloudflare_ip
-            '104.21.42.32',     # sanfrancisco_cloudflare_ip
-            '191.144.160.34',   # bolivar_datacenter_ip (the fuck?! columbia???)
-            '104.18.32.115',    # sanfrancisco_cloudflare_ip
-            '151.101.194.132'   # stockholm_datacenter_ip
+            "91.207.136.55",    # starvapol_datacenter_ip
+            "20.54.36.64",      # dublin_microsoft_ip
+            "64.233.163.99",    # london_google_ip
+            "34.107.221.82",    # kansas_google_ip
+            "34.149.100.209",   # kansas_google_ip2
+            "142.250.74.42",    # stockholm_google_ip
+            "35.224.181.201",   # councilbluffs_google_ip
+            "162.159.61.4",     # sanfrancisco_cloudflare_ip
+            "104.26.10.222",    # sanfrancisco_cloudflare_ip2
+            "54.243.196.140",   # ashburn_amazon_ip
+            "3.217.123.24",     # ashburn_amazon_ip2
+            "3.164.68.27",      # seattle_amazon_ip
+            "3.164.240.75",     # seattle_amazon_ip2
+            "3.164.240.98",     # stockholm_amazon_ip
+            "93.243.107.34",    # brandenburg_telekom_ip
+            "209.100.149.34",   # london_datacenter_ip
+            "40.114.178.124",   # amsterdam_microsoft_ip
+            "172.64.41.4",      # sanfrancisco_cloudflare_ip
+            "93.243.107.34",    # brandenburg_telekom_ip
+            "178.128.135.204",  # newjersey_datacenter_ip
+            "82.221.107.34",    # reykjavik_datacenter_ip
+            "104.19.222.79",    # sanfranciso_cloudflare_ip
+            "104.21.42.32",     # sanfrancisco_cloudflare_ip
+            "191.144.160.34",   # bolivar_datacenter_ip (the fuck?! columbia???)
+            "104.18.32.115",    # sanfrancisco_cloudflare_ip
+            "151.101.194.132"   # stockholm_datacenter_ip
             ]
 
     print(f"We are going to block {len(ip_addresses)} of big companies/datacenters/isps by using UFW.")
-
-    answer: str = input("\nProceed? (y/N): ").lower()
+    answer: str = input("[?] Proceed? (y/N): ").lower()
     if answer in ["y", "yes"]:
         for ip in ip_addresses:
-            subprocess.run(f"ufw deny from {ip} to any", check=True)
-            subprocess.run(f"ufw deny out to {ip}", check=True)
-            # subprocess.run(f"ufw reject from {ip}", check=True)
-            # subprocess.run(f"ufw reject out to {ip}", check=True)
+            try:
+                answer: str = input("[?] Reject or Deny? (r/D): ").lower()
+                if answer in ["d", "deny"]:
+                    subprocess.run(f"ufw deny from {ip} to any", check=True)
+                    subprocess.run(f"ufw deny out to {ip}", check=True)
+                    subprocess.run(f"ufw reject from {ip}", check=True)
+                    subprocess.run(f"ufw reject out to {ip}", check=True)
+                
+                if answer in ["r", "reject"]:
+                    subprocess.run("ufw enable", shell=True)
+                    subprocess.run("ufw reload", shell=True)
+                    subprocess.run("service ufw start", shell=True)
+                    subprocess.run("ufw status", shell=True)
+            
+            except subprocess.CalledProcessError as error:
+                print(f"{GREEN}[!] Error: {error}{RESET}")
 
-        subprocess.run("ufw enable", shell=True)
-        subprocess.run("ufw reload", shell=True)
-        subprocess.run("service ufw start", shell=True)
-        subprocess.run("ufw status", shell=True)
-
-        print("\n[*] Success!")
-
-
-def fail2ban_setup() -> None:
-    system("clear")
-    ...
+        print(f"{GREEN}[*] Success!{RESET}")
 
 
 def iptables_setup() -> None:
     system("clear")
+    
     print("We are going to set up basic iptables rules to secure your machine.")
-    answer = input("\nAre you sure you want this? (y/n): ").lower()
+    answer = input("[*] Proceed? (y/N): ").lower()
     if answer in ['y', 'yes']:
         interfaces = os.listdir("/sys/class/net")
         print(f"Interfaces:\n{[interface for interface in interfaces if os.path.islink(f'/sys/class/net/{interface}')]}")
-        interface = input('\nEnter your interface: ')
+        interface = input('\n[==>] Enter your interface: ')
 
         rules: list = [
             ("Loopback", ['lo'], ['lo']),
@@ -134,23 +151,22 @@ def porter() -> None:
 
     active_ports: str = subprocess.check_output("lsof -i -P -n | grep LISTEN", shell=True).strip()
     print(f"\nActive listening ports:\n{active_ports}")
-
-    answer: str = input("\nDo you want to open or close ports? (open/close): ").lower()
+    answer: str = input("[?] Open/Close ports? (open/close): ").lower()
     if answer in ["o", "open"]:
-        port: int = input("Enter the port number you want to open: ")
+        port: int = input("[==>] Enter the port number you want to open: ")
         try:
             subprocess.check_call(f"ufw allow {port}", shell=True)
-            print(f"Port {port} has been opened.")
-        except subprocess.CalledProcessError as e:
-            print(f"Failed to open port {port}: {e}")
+            print(f"{GREEN}[*] Port {port} has been opened.{RESET}")
+        except (subprocess.CalledProcessError, ValueError) as error:
+            print(f"{GREEN}[!] Failed to open port {port}:\n{error}{RESET}")
 
     if answer in ["c", "close"]:
-        port: int = input("Enter the port number you want to close: ")
+        port: int = input("[==>] Enter the port number you want to close: ")
         try:
             subprocess.check_call(f"ufw deny {port}", shell=True)
-            print(f"Port {port} has been closed.")
-        except subprocess.CalledProcessError as e:
-            print(f"Failed to close port {port}: {e}")
+            print(f"{GREEN}[*] Port {port} has been closed.{RESET}")
+        except (subprocess.CalledProcessError, ValueError) as error:
+            print(f"{RED}[!] Error: Failed to close port {port}:\n{error}{RESET}")
 
 
 def ultimate_firewall() -> None:

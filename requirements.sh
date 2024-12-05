@@ -4,7 +4,7 @@ clear
 
 GUIX_BASED_DISTROS=("guix")
 REDHAT_BASED_DISTROS=("redhat")
-CENTOS_BASED_DISTROS=("centos")
+CENTOS_BASED_DISTROS=("centos" "oracle")
 FEDORA_BASED_DISTROS=("fedora" "rocky" "mos")
 DRAGORA_BASED_DISTROS=("dragora")
 OPENSUSE_BASED_DISTROS=("opensuse")
@@ -42,7 +42,7 @@ list_of_packages() {
 	PACKAGES=("python3" "python3-pip"
 		"net-tools" "ufw" "iptables" "nftables" "fail2ban"
 		"openvpn" "wireguard/wireguard-tools"
-		"git" "wget" "lsof" "bash"
+		"git" "wget" "lsof" "bash" "unbound"
 	)
 
 	echo "Packages to install:"
@@ -72,7 +72,7 @@ install_debian_based() {
 	apt install python3 python3-pip -y
 	apt install net-tools iproute2 ufw iptables fail2ban nftables -y
 	apt install openvpn wireguard wireguard-tools -y
-	apt install lsof git wget bash -y
+	apt install lsof git wget bash unbound -y
 }
 
 install_arch_based() {
@@ -80,7 +80,7 @@ install_arch_based() {
 	pacman -S python python-pip tk --noconfirm
 	pacman -S net-tools iproute2 ufw iptables nftables fail2ban --noconfirm
 	pacman -S openvpn wireguard-tools --noconfirm
-	pacman -S lsof git wget bash --noconfirm
+	pacman -S lsof git wget bash unbound --noconfirm
 }
 
 install_gentoo_based() {
@@ -130,7 +130,7 @@ install_redhat_based() {
 	yum install python3 python3-pip -y
 	yum install net-tools iproute2 firewalld iptables-services nftables fail2ban -y
 	yum install openvpn wireguard-tools -y
-	yum install lsof git wget bash -y
+	yum install lsof git wget bash unbound -y
 }
 
 install_freebsd_based() {
