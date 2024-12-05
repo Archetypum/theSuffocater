@@ -122,8 +122,8 @@ def run_bash_script(script_name: str) -> None:
     script_path: str = os.path.join(bash_scripts_dir, script_name)
     try:
         subprocess.run(["bash", script_path], check=True)
-    except subprocess.CalledProcessError as e:
-        print(f"{RED}[!] Error running script '{script_name}': {e}{RESET}")
+    except subprocess.CalledProcessError as error:
+        print(f"{RED}[!] Error running script '{script_name}': {error}{RESET}")
 
 
 def the_suffocater_main(suffocater_version: str) -> None:
