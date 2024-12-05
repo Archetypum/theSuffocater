@@ -42,7 +42,7 @@ for py_file in py_files:
 
 
 def run_bash_script(script_name: str) -> None:
-    script_path = os.path.join(bash_scripts_dir, script_name)
+    script_path: str = os.path.join(bash_scripts_dir, script_name)
     try:
         subprocess.run(["bash", script_path], check=True)
         messagebox.showinfo("[*] Success", f"Script {script_name} executed successfully.")
@@ -75,7 +75,7 @@ def clear_screen() -> None:
 
 
 def show_modules(show_docs: bool = False) -> None:
-    modules_text = "+-------------------- Imported Modules --------------------+\n"
+    modules_text = "Imported Modules\n"
     for python_file in py_files:
         module_name: str = os.path.splitext(os.path.basename(python_file))[0]
         module = globals().get(module_name)
@@ -83,14 +83,14 @@ def show_modules(show_docs: bool = False) -> None:
         if module:
             modules_text += f"\n-> {module_name}:"
 
-            if show_docs and module.doc:
-                modules_text += f"\n{module.doc.strip()}"
+            if show_docs and module.__doc__:
+                modules_text += f"\n{module.__doc__.strip()}"
 
-        messagebox.showinfo("Modules", modules_text)
+    messagebox.showinfo("Modules", modules_text)
 
 
 def show_scripts() -> None:
-    scripts_text = "+-------------------- Available Scripts -------------------+\n"
+    scripts_text = "Available Scripts\n"
     for script_file in bash_scripts:
         script_name: str = os.path.basename(script_file)
         scripts_text += f"-> {script_name}\n"
@@ -118,7 +118,31 @@ def show_changelog() -> None:
         messagebox.showerror("[!] Error", "CHANGELOG.md file not found.\nBroken installation?")
 
 
+def execute_command(command: str) -> None:
+    if command == "exit":
+        root.quit()
+    elif command == "clear":
+        clear_screen()
+    elif command == "help":
+        show_help()
+    elif command == "version":
+        show_version("8.2.3-unstable")
+    elif command == "modules":
+        show_modules()
+    elif command == "scripts":
+        show_scripts()
+    elif command == "documentation":
+        show_documentation()
+    elif command == "license":
+        show_license()
+    elif command == "changelog":
+        show_changelog()
+    else:
+        messagebox.showerror("[!] Error", f"Unknown command: {command}")
+
+
 def main_gui(suffocater_version: str) -> None:
+    global root
     root = tk.Tk()
     root.title("theSuffocater GUI")
     root.geometry("700x500")
@@ -151,21 +175,17 @@ def main_gui(suffocater_version: str) -> None:
     def on_changelog() -> None:
         show_changelog()
 
-    def execute_command(event):
+    def execute_gui_command(event) -> None:
         command = command_entry.get()
-        output_text.config(state=tk.NORMAL)
-        output_text.insert(tk.END, f"> {command}\n")
-        output_text.config(state=tk.DISABLED)
+        execute_command(command)
         command_entry.delete(0, tk.END)
-        top_frame = tk.Frame(root, bg="grey29")
-        top_frame.pack(side="top", fill="x")
-    
+
     top_frame = tk.Frame(root, bg="grey29")
     top_frame.pack(side="top", fill="x")
     
     left_frame = tk.Frame(root, width=170, bg="grey20")
     left_frame.pack(side="left", fill="y")
-    
+
     tk.Button(top_frame, text="Modules", width=30, command=on_modules).pack(side="left", padx=5, pady=5)
     tk.Button(top_frame, text="Exit", width=3, activeforeground="red", command=exit_app).pack(side="right", padx=5, pady=5)
     
@@ -182,7 +202,7 @@ def main_gui(suffocater_version: str) -> None:
 
     command_entry = tk.Entry(root, width=53)
     command_entry.pack(pady=5)
-    command_entry.bind("<Return>", execute_command)
+    command_entry.bind("<Return>", execute_gui_command)
 
     root.mainloop()
 
