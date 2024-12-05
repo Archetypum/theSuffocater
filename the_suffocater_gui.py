@@ -10,6 +10,10 @@
 # This is a graphical frontend, normal cli version is 'the_suffocater_gui.py'.
 
 try:
+    # Here we importing are python modules, and the most importantly,
+    # we are importing "usr.py" - module with all possible functions,
+    # widely used by theSuffocater modules.
+    # Also here are additional tkinter functions for the graphical interface.
     import os
     import sys
     modules_dir = os.path.join(os.path.dirname(__file__), "modules")
@@ -25,6 +29,7 @@ except ModuleNotFoundError as error:
     print(f"{RED}[!] Error: module not found:\n{error}{RESET}")
     sys.exit(1)
 
+# Finds paths to directories where executable files are located.
 current_dir: str = os.path.dirname(__file__)
 modules_dir: str = os.path.join(current_dir, "modules")
 bash_scripts_dir: str = os.path.join(current_dir, "scripts")
@@ -33,6 +38,7 @@ bash_scripts = glob.glob(os.path.join(bash_scripts_dir, "*.sh"))
 bash_scripts_names: list = [os.path.basename(script) for script in bash_scripts]
 sys.path.append(modules_dir)
 
+# Imports them.
 for py_file in py_files:
     module_name = os.path.splitext(os.path.basename(py_file))[0]
     spec = importlib.util.spec_from_file_location(module_name, py_file)
@@ -41,6 +47,7 @@ for py_file in py_files:
     globals()[module_name] = module
 
 
+# TODO: Adapt some functions for the GUI.
 def run_bash_script(script_name: str) -> None:
     script_path: str = os.path.join(bash_scripts_dir, script_name)
     try:
@@ -118,7 +125,9 @@ def show_changelog() -> None:
         messagebox.showerror("[!] Error", "CHANGELOG.md file not found.\nBroken installation?")
 
 
+# Configure command input into the line.
 def execute_command(command: str) -> None:
+    command = command.lower()
     if command == "exit":
         root.quit()
     elif command == "clear":
@@ -141,6 +150,7 @@ def execute_command(command: str) -> None:
         messagebox.showerror("[!] Error", f"Unknown command: {command}")
 
 
+# The main graphic part with frames and buttons.
 def main_gui(suffocater_version: str) -> None:
     global root
     root = tk.Tk()
@@ -186,8 +196,8 @@ def main_gui(suffocater_version: str) -> None:
     left_frame = tk.Frame(root, width=170, bg="grey20")
     left_frame.pack(side="left", fill="y")
 
-    tk.Button(top_frame, text="Modules", width=30, command=on_modules).pack(side="left", padx=5, pady=5)
-    tk.Button(top_frame, text="Exit", width=3, activeforeground="red", command=exit_app).pack(side="right", padx=5, pady=5)
+    tk.Button(top_frame, text="Modules", width=30, command=on_modules,  bg='grey24', fg='white', activeforeground="green3").pack(side="left", padx=5, pady=5)
+    tk.Button(top_frame, text="Exit", width=3, bg="grey20", fg='white', activeforeground="red", command=exit_app).pack(side="right", padx=5, pady=5)
     
     tk.Button(left_frame, text="Help", width=20, command=on_help).pack(padx=5, pady=5)
     tk.Button(left_frame, text="Version", width=20, command=on_version).pack(padx=5, pady=5)
@@ -197,10 +207,10 @@ def main_gui(suffocater_version: str) -> None:
     tk.Button(left_frame, text="License", width=20, command=on_license).pack(padx=5, pady=5)
     tk.Button(left_frame, text="Changelog", width=20, command=on_changelog).pack(padx=5, pady=5)
 
-    output_text = tk.Text(root, height=15, width=50, bg="white", state=tk.DISABLED)
+    output_text = tk.Text(root, height=15, width=50, bg="grey20", state=tk.DISABLED)
     output_text.pack(pady=10)
 
-    command_entry = tk.Entry(root, width=53)
+    command_entry = tk.Entry(root, width=53, bg="grey20")
     command_entry.pack(pady=5)
     command_entry.bind("<Return>", execute_gui_command)
 
