@@ -207,10 +207,10 @@ def main_gui(suffocater_version: str) -> None:
     tk.Button(left_frame, text="License", width=20, command=on_license).pack(padx=5, pady=5)
     tk.Button(left_frame, text="Changelog", width=20, command=on_changelog).pack(padx=5, pady=5)
 
-    output_text = tk.Text(root, height=15, width=50, bg="grey20", state=tk.DISABLED)
+    output_text = tk.Text(root, height=15, width=50, bg="grey20", fg='white', state=tk.DISABLED)
     output_text.pack(pady=10)
 
-    command_entry = tk.Entry(root, width=53, bg="grey20")
+    command_entry = tk.Entry(root, width=53, bg="grey20", fg='white')
     command_entry.pack(pady=5)
     command_entry.bind("<Return>", execute_gui_command)
 
