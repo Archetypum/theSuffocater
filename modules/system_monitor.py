@@ -4,7 +4,7 @@
 ---------------------------------------
 null
 
-GNU/Linux, BSD supported.
+GNU/Linux and BSD supported.
 Author: iva
 Date: null
 ---------------------------------------

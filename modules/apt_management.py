@@ -2,7 +2,10 @@
 
 """
 ---------------------------------------
-Reduces the risk of vulnerabilities being exploited and helps keep your system stable and secure.
+Tweaks for Apt Package Manager.
+- Adds 32-bit libraries.
+- Reduces the risk of vulnerabilities being exploited and helps keep your system stable and secure.
+- Adds Bookworm Backports
 Debian-Based GNU/Linux distributions only supported.
 
 Author: iva
@@ -69,13 +72,12 @@ def disable_auto_updates() -> None:
 def enable_debian_backports() -> None:
     system("clear")
     
-    print("[OPTIONAL]: Debian Backports")
-    print("            Backports are packages taken from the next Debian release")
-    print("            called 'testing'), adjusted and recompiled for usage on Debian stable.")
-    print("            By adding Debian Backports, you can gradually increase the number")
-    print("            of fresh/completely new packages on your system.")
+    print("Backports are packages taken from the next Debian release")
+    print("called 'testing'), adjusted and recompiled for usage on Debian stable.")
+    print("By adding Debian Backports, you can gradually increase the number")
+    print("of fresh/completely new packages on your system.")
 
-    answer: str = input("Add backports? (y/N): ")
+    answer: str = input("Add backports? (y/N): ").lower()
     if answer in ["y", "yes"]:
         print("[<==] Enabling Backports...")
         try:
@@ -90,7 +92,22 @@ def enable_debian_backports() -> None:
             print(f"{RED}[!] Error: Configuration files not found:\n{error}{RESET}")
 
 
-def auto_updates() -> None:
+def add_i386() -> None:
+    system("clear")
+
+    print("Some specific software requires 32-bit libraries to work.")
+    answer: str = input("Add i386 support? (y/N): ")
+    if answer in ["y", "yes"]:
+        print("[<==] Adding architecture...")
+        try:
+            subprocess.run(["dpkg", "--add-architecture", "i386"], check=True)
+            usr.package_handling("debian", package_list=[], command="update")
+            print(f"{GREEN}[*] Success!{RESET}")
+        except subprocess.CalledProcessError as error:
+            print(f"{RED}[!] Error: {error}{RESET}")
+
+
+def apt_management() -> None:
     system("clear")
 
     distro: str = usr.get_user_distro()
@@ -101,7 +118,8 @@ def auto_updates() -> None:
     functions: dict = {
             "enable_auto_updates": enable_auto_updates,
             "disable_auto_updates": disable_auto_updates,
-            "enable_debian_backports": enable_debian_backports
+            "enable_debian_backports": enable_debian_backports,
+            "add_i386": add_i386
             }
 
     print("+---- Auto Updates  ----+")

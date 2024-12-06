@@ -88,62 +88,64 @@ def no_spying() -> None:
     print(f"We are going to block {len(ip_addresses)} of big companies/datacenters/isps by using UFW.")
     answer: str = input("[?] Proceed? (y/N): ").lower()
     if answer in ["y", "yes"]:
-        for ip in ip_addresses:
-            try:
-                answer: str = input("[?] Reject or Deny? (r/D): ").lower()
-                if answer in ["d", "deny"]:
-                    subprocess.run(f"ufw deny from {ip} to any", check=True)
-                    subprocess.run(f"ufw deny out to {ip}", check=True)
-                    subprocess.run(f"ufw reject from {ip}", check=True)
-                    subprocess.run(f"ufw reject out to {ip}", check=True)
-                
-                if answer in ["r", "reject"]:
-                    subprocess.run("ufw enable", shell=True)
-                    subprocess.run("ufw reload", shell=True)
-                    subprocess.run("service ufw start", shell=True)
-                    subprocess.run("ufw status", shell=True)
-            
-            except subprocess.CalledProcessError as error:
-                print(f"{GREEN}[!] Error: {error}{RESET}")
+        answer: str = input("[?] Reject or Deny? (r/D): ").lower()
+        if answer in ["d", "deny"]:
+            for ip in ip_addresses:
+                try:
+                    subprocess.run(["ufw", "deny", "out", "from", ip], check=True)
+                    subprocess.run(["ufw", "deny", "out", "to", ip], check=True)
+                except subprocess.CalledProcessError as error:
+                    print(f"{RED}[!] Error: {error}{RESET}")
 
+        if answer in ["r", "reject"]:
+            for ip in ip_addresses:    
+                try:
+                    subprocess.run(["ufw", "reject", "from", ip], check=True)
+                    subprocess.run(["ufw", "reject", "out", "to", ip], check=True)
+                except subprocess.CalledProcessError as error:
+                    print(f"{RED}[!] Error: {error}{RESET}")
+        
+        init_system: str = usr.get_init_system()
+        usr.init_system_handling(init_system, "start", "ufw")
+        subprocess.run("ufw status", shell=True)
         print(f"{GREEN}[*] Success!{RESET}")
 
 
 def iptables_setup() -> None:
     system("clear")
-    
+
     print("We are going to set up basic iptables rules to secure your machine.")
-    answer = input("[*] Proceed? (y/N): ").lower()
-    if answer in ['y', 'yes']:
+    answer: str = input("[?] Proceed? (y/N): ").lower()
+    if answer in ["y", "yes"]:
         interfaces = os.listdir("/sys/class/net")
         print(f"Interfaces:\n{[interface for interface in interfaces if os.path.islink(f'/sys/class/net/{interface}')]}")
-        interface = input('\n[==>] Enter your interface: ')
+        interface = input("\n[==>] Enter your interface: ")
 
         rules: list = [
-            ("Loopback", ['lo'], ['lo']),
-            ("Ping", ['icmp'], ['icmp']),
-            ("Web", ['80', '443'], ['80', '443']),
-            ("DNS", ['53'], ['53']),
-            ("NTP", ['123'], ['123']),
-            ("CUPS", ['631'], ['631']),
-            ("SSH", ['22'], ['22']),
-            ("DHCP", ['67:68'], ['67:68'])
+            ("Loopback", ["lo"], ["lo"]),
+            ("Ping", ["icmp"], ['icmp']),
+            ("Web", ["80", "443"], ["80", "443"]),
+            ("DNS", ["53"], ["53"]),
+            ("NTP", ["123"], ["123"]),
+            ("CUPS", ["631"], ["631"]),
+            ("SSH", ["22"], ["22"]),
+            ("DHCP", ["67:68"], ["67:68"])
         ]
         
         for rule_name, input_ports, output_ports in rules:
-            choice: str = input(f"\nAllow {rule_name}? (y/n): ").lower()
-            if choice in ['y', 'yes']:
+            choice: str = input(f"\n[?] Allow {rule_name}? (y/N): ").lower()
+            if choice in ["y", "yes"]:
                 for port in input_ports:
                     subprocess.run(f"iptables -A INPUT -i {interface} -p tcp --dport {port} -j ACCEPT", check=True)
                 for port in output_ports:
                     subprocess.run(f"iptables -A OUTPUT -o {interface} -p tcp --dport {port} -j ACCEPT", check=True)
 
-        reject_choice = input("\nReject everything else that was not explicitly allowed? (y/n): ").lower()
-        if reject_choice in ['y', 'yes']:
+        reject_choice: str = input("\n[?] Reject everything else that was not explicitly allowed? (y/N): ").lower()
+        if reject_choice in ["y", "yes"]:
             subprocess.run("iptables -A INPUT -j REJECT", check=True)
             subprocess.run("iptables -A OUTPUT -j REJECT", check=True)
 
-        print("\nSuccess!")
+        print(f"{GREEN}[*] Success!{RESET}")
 
 
 def porter() -> None:
@@ -177,7 +179,6 @@ def ultimate_firewall() -> None:
             "accept_all": accept_firewall,
             "no_spying": no_spying,
             "iptables_setup": iptables_setup,
-            "fail2ban_setup": fail2ban_setup,
             "porter": porter
             }
 
@@ -186,7 +187,10 @@ def ultimate_firewall() -> None:
     for profile in profiles.keys():
         print(f" - {profile}")
     
-    while True:
-        your_profile: str = input("[==>] Enter function name: ")
-        if your_profile in profiles:
-            profiles[your_profile]()
+    your_profile: str = input("[==>] Enter function name: ")
+    if your_profile in profiles:
+        profiles[your_profile]()
+
+
+if __name__ == "__main__":
+    ultimate_firewall()
