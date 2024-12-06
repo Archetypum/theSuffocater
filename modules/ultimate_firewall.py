@@ -119,7 +119,7 @@ def iptables_setup() -> None:
     if answer in ["y", "yes"]:
         interfaces = os.listdir("/sys/class/net")
         print(f"Interfaces:\n{[interface for interface in interfaces if os.path.islink(f'/sys/class/net/{interface}')]}")
-        interface = input("\n[==>] Enter your interface: ")
+        interface: str = input("\n[==>] Enter your interface: ")
 
         rules: list = [
             ("Loopback", ["lo"], ["lo"]),
@@ -142,8 +142,8 @@ def iptables_setup() -> None:
 
         reject_choice: str = input("\n[?] Reject everything else that was not explicitly allowed? (y/N): ").lower()
         if reject_choice in ["y", "yes"]:
-            subprocess.run("iptables -A INPUT -j REJECT", check=True)
-            subprocess.run("iptables -A OUTPUT -j REJECT", check=True)
+            subprocess.run(["iptables", "-A", "INPUT", "-j", "REJECT"], check=True)
+            subprocess.run(["iptables", "-A", "OUTPUT", "-j", "REJECT"], check=True)
 
         print(f"{GREEN}[*] Success!{RESET}")
 
@@ -157,7 +157,7 @@ def porter() -> None:
     if answer in ["o", "open"]:
         port: int = input("[==>] Enter the port number you want to open: ")
         try:
-            subprocess.check_call(f"ufw allow {port}", shell=True)
+            subprocess.check_call(["ufw", "allow", port], shell=True)
             print(f"{GREEN}[*] Port {port} has been opened.{RESET}")
         except (subprocess.CalledProcessError, ValueError) as error:
             print(f"{GREEN}[!] Failed to open port {port}:\n{error}{RESET}")
@@ -165,7 +165,7 @@ def porter() -> None:
     if answer in ["c", "close"]:
         port: int = input("[==>] Enter the port number you want to close: ")
         try:
-            subprocess.check_call(f"ufw deny {port}", shell=True)
+            subprocess.check_call(["ufw", "deny", port], shell=True)
             print(f"{GREEN}[*] Port {port} has been closed.{RESET}")
         except (subprocess.CalledProcessError, ValueError) as error:
             print(f"{RED}[!] Error: Failed to close port {port}:\n{error}{RESET}")
