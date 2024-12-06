@@ -10,9 +10,13 @@ but supports ugly fucking systemd, s6, openrc, and launchd as well.
 ## Installation (as root):
 
 git clone https://github.com/Kinderfeld/fear-the-suffocater
+
 cd fear-the-suffocater
+
 bash requirements.sh
+
 source pkgenv/bin/activate
+
 python3 the_suffocater_cli.py
 
 ## Usage
