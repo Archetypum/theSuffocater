@@ -24,27 +24,38 @@ python3 the_suffocater_cli.py
 Currently, theSuffocater has a small GUI and 11 working modules:
 
  - passgen.py
+
 Password generator with customizable key length which uses random symbols and random words from user-specified dictionary.
  - address_changer.py
+
 Provides MAC address/local IP changing functionality on a unix-like operating systems. 
  - apt_management.py
+
 Provides you all tweaks of the Apt Package Manager on Debian-based
 distributions.
  - ip_resolver.py
+
 Resolves Country, city and company of provided IP address.
  - safe_geoclue_setup.py
+
 Disables Geoclue geolocation gathering by changing the config file, improving your OPSEC.
  - safe_ssh_setup.py
+
 Hardens your SSH by configuration by changing the config file. Essential to your server.
  - tor_management.py
+
 Installs tor, adds tor devuan repositories, setups tor nodes. You know what you're doing.
  - ultimate_firewall.py
+
 Setups firewalls for you using pre-build profiles.
  - user_management.py
+
 Unix user management for new users.
  - usr.py
+
 Most important module to make all others to work properly: simply usr.py is a big list of functions that theSuffocater modules rely on.
  - vpn_server_setup.py
+
 Installs OpenVPN, Wireguard, OutlineVPN and automatically set them up for proper VPN server work.
 
 ## Credits
