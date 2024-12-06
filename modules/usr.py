@@ -89,7 +89,7 @@ def get_user_distro() -> str:
         return name
 
 
-def is_debian_based(distro: str) -> True:
+def is_debian_based(distro: str) -> bool:
     """
     Detects if provided distro is debian based.
     """
@@ -97,7 +97,7 @@ def is_debian_based(distro: str) -> True:
     return True if distro in DEBIAN_BASED_DISTROS else False
 
 
-def is_arch_based(distro: str) -> str:
+def is_arch_based(distro: str) -> bool:
     """
     Detects if provided distro is arch based.
     """
@@ -360,7 +360,7 @@ class LaunchdManagement:
         return self._run_launchctl("unload")
 
     def reload_service(self) -> bool:
-        # on mac os reload is handled by unloading and loading again..
+        # on macOS reload is handled by unloading and loading again...
         return self._run_launchctl("unload") and self._run_launchctl("load")
 
     def force_reload_service(self) -> bool:
@@ -373,8 +373,8 @@ class LaunchdManagement:
         try:
             subprocess.run(["launchctl", "list", self.service], check=True)
             return True
-        except subprocess.CalledProcessError as e:
-            print(f"{RED}[!] Error: {e}{RESET}")
+        except subprocess.CalledProcessError as error:
+            print(f"{RED}[!] Error: {error}{RESET}")
             return False
 
     def execute(self) -> bool:
@@ -518,7 +518,7 @@ class FedoraPackageManagement:
 
     def __init__(self, distro: str, packages: List[str]) -> None:
         self.distro = distro
-        self.packages = package
+        self.packages = packages
     
     def name(self) -> str:
         return self.distro
@@ -563,7 +563,7 @@ class CentOSPackageManagement:
     Simple class for working with yum in your modules.
     """
 
-    def __init__(self, distro: str, package: List[str]) -> None:
+    def __init__(self, distro: str, packages: List[str]) -> None:
         self.distro = distro
         self.packages = packages
     
@@ -658,7 +658,7 @@ class AlpinePackageManagement:
     """
 
     def __init__(self, distro: str, packages: List[str]) -> None:
-        self.distro =  distro
+        self.distro = distro
         self.packages = packages
     
     def name(self) -> str:
@@ -668,8 +668,8 @@ class AlpinePackageManagement:
         try:
             subprocess.run(["apk", "update"], check=True)
             return True
-        except subprocess.CalledProcessError as e:
-            print(f"{RED}[!] Error: {e}{RESET}")
+        except subprocess.CalledProcessError as error:
+            print(f"{RED}[!] Error: {error}{RESET}")
             return False
 
     def upgrade(self) -> bool:
@@ -818,7 +818,7 @@ class SlackwarePackageManagement:
             subprocess.run(["slackpkg", "upgrade"], check=True)
             return True
         except subprocess.CalledProcessError as error:
-            print(f"{RED}[!] Error: {e}{RESET}")
+            print(f"{RED}[!] Error: {error}{RESET}")
             return False
 
     def install(self, packages: List[str]) -> bool:
@@ -827,7 +827,7 @@ class SlackwarePackageManagement:
                 subprocess.run(["slackpkg", "install", package], check=True)
                 return True
             except subprocess.CalledProcessError as error:
-                print(f"{RED}[!] Error: {e}{RESET}")
+                print(f"{RED}[!] Error: {error}{RESET}")
                 return False
 
     def remove(self, packages: List[str]) -> bool:
@@ -845,7 +845,7 @@ class GuixPackageManager:
     Simple class for working with guix in your modules.
     """ 
 
-    def __init__(self, distro: str, package: List[str]) -> None:
+    def __init__(self, distro: str, packages: List[str]) -> None:
         self.distro = distro
         self.packages = packages
     
@@ -856,8 +856,8 @@ class GuixPackageManager:
         try:
             subprocess.run(["guix", "upgrade"], check=True)
             return True
-        except subprocess.CalledProcessError as e:
-            print(f"{RED}[!] Error: {e}{RESET}")
+        except subprocess.CalledProcessError as error:
+            print(f"{RED}[!] Error: {error}{RESET}")
             return False
 
     def upgrade(self) -> bool:
@@ -1313,7 +1313,7 @@ def package_handling(distro: str, package_list: List[str], command: str) -> bool
             elif distro in SLACKWARE_BASED_DISTROS:
                 slackware = SlackwarePackageManagement(distro, packages=[])
                 slackware.update()
-                slackware.upgade()
+                slackware.upgrade()
                 return True
 
             elif distro in GUIX_BASED_DISTROS:

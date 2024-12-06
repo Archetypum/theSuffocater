@@ -79,7 +79,7 @@ def list_groups() -> None:
 
 def view_groups(username: str) -> None:
     try:
-        user_info: str = pwd.getpwnam(username)
+        user_info = pwd.getpwnam(username)
         groups: list = [g.gr_name for g in grp.getgrall() if username in g.gr_mem]
         
         if groups:

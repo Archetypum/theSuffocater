@@ -10,7 +10,7 @@
 # Graphical frontend - the_suffocater_gui.py
 
 try:
-    # Here we importing are python modules, and the most importantly,
+    # Here we are importing are python modules, and the most importantly,
     # we are importing "usr.py" - module with all possible functions,
     # widely used by theSuffocater modules.
     import os
@@ -60,7 +60,7 @@ def the_suffocater_version(suffocater_version: str) -> str:
 def the_suffocater_documentation() -> None:
     """
     In normal scenario, opens 'README.md' so the user can read brief documentation.
-    Otherwise tells user about broken installation.
+    Otherwise, tells user about broken installation.
     """
     try:
         os.system("less README.md")

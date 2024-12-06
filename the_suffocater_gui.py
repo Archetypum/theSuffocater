@@ -10,10 +10,10 @@
 # This is a graphical frontend, normal cli version is 'the_suffocater_cli.py'.
 
 try:
-    # Here we importing are python modules, and the most importantly,
+    # Here we are importing are python modules, and the most importantly,
     # we are importing "usr.py" - module with all possible functions,
     # widely used by theSuffocater modules.
-    # Also here are additional tkinter functions for the graphical interface.
+    # Also, here are additional tkinter functions for the graphical interface.
     import os
     import sys
     modules_dir = os.path.join(os.path.dirname(__file__), "modules")
@@ -104,7 +104,7 @@ def list_available_scripts() -> None:
 def the_suffocater_documentation() -> None:
     """
     In normal scenario, opens 'README.md' so the user can read brief documentation.
-    Otherwise tells user about broken installation.
+    Otherwise, tells user about broken installation.
         """
     try:
         os.system("less README.md")
@@ -162,7 +162,7 @@ def execute_command(command: str) -> None:
             function = getattr(program, function_name)
             function()
         else:
-            print(f"{RED}[!] Error: Module '{module}' does not have a function '{function_name}'.{RESET}")
+            print(f"[!] Error: Module '{module}' does not have a function '{function_name}'.")
     elif command in bash_scripts_names:
         run_bash_script(command)
     else:

@@ -17,7 +17,7 @@ try:
     from os import system
     from usr import GREEN, RED, RESET
 except ModuleNotFoundError as error:
-    print(f"{RED}[!] Error: usr.py not found:\n{error}{RESET}")
+    print(f"{RED}[!] Error: modules not found:\n{error}{RESET}")
 
 
 def fail2ban_setup() -> None:

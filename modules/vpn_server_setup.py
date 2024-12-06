@@ -2,7 +2,7 @@
 
 """
 ---------------------------------------
-Setup your VPN servers automaticly with this module.
+Setup your VPN servers automatically with this module.
 GNU/Linux and BSD supported (OpenVPN, Wireguard)
 GNU/Linux supported (OutlineVPN)
 
@@ -19,7 +19,7 @@ try:
     from time import sleep
     from usr import GREEN, RED, RESET
 except ModuleNotFoundError as error:
-    print(f"{RED}[!] Error: module not found:\n{error}{RESET}")
+    print(f"{RED}[!] Error: modules not found:\n{error}{RESET}")
     exit(1)
 
 
@@ -92,7 +92,7 @@ def outlinevpn_server_setup(distro: str, init_system: str) -> None:
     if answer in ["y", "yes"]:
         try:
             print("[<==] Updating the system...")
-            usr.packagr_handling(distro, package_list=[], command="update")
+            usr.package_handling(distro, package_list=[], command="update")
 
             print("[<==] Installing Docker...")
             subprocess.run(["wget", "-O", "https://get.docker.com", "|", "bash"], check=True, shell=True)

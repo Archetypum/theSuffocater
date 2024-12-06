@@ -16,7 +16,7 @@ try:
     from os import system
     from usr import GREEN, RED, RESET
 except ModuleNotFoundError as error:
-    print(f"{RED}[!] Error: usr.py file not found.\n{error}.{RESET}")
+    print(f"{RED}[!] Error: modules not found.\n{error}.{RESET}")
 
 
 def enable_auto_updates() -> None:

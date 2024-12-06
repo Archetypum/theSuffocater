@@ -19,7 +19,7 @@ except ModuleNotFoundError as error:
     print(f"{RED}[!] Error: modules not found:\n{error}{RESET}")
 
 
-def get_ip_details(ip_address: str) -> str | None:
+def get_ip_details(ip_address: str) -> None:
     url: str = "http://ip-api.com/json/"
     response = urllib2.urlopen(url + ip_address)
     data = response.read()
