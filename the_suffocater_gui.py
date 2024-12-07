@@ -16,6 +16,7 @@ try:
     # Also, here are additional tkinter functions for the graphical interface.
     import os
     import sys
+    import threading
     modules_dir = os.path.join(os.path.dirname(__file__), "modules")
     sys.path.append(modules_dir)
     import usr
@@ -37,7 +38,7 @@ class Redirect:
     def write(self, message):
         self.text_widget.config(state=tk.NORMAL)
         self.text_widget.insert(tk.END, message)
-        self.text_widget.see(tk.END)  # Прокрутка вниз
+        self.text_widget.see(tk.END) 
         self.text_widget.config(state=tk.DISABLED)
 
     def flush(self):
@@ -51,6 +52,15 @@ class Redirect:
         sys.stdout = self._stdout
         sys.stderr = self._stderr
 
+def execute_command_in_thread(command: str):
+    """Executes the command in a separate thread to avoid blocking the GUI."""
+    def target():
+        execute_command(command)
+    
+    # Create and start the thread
+    command_thread = threading.Thread(target=target)
+    command_thread.daemon = True  # Daemonize the thread to ensure it exits with the main program
+    command_thread.start()
 
 def run_bash_script(script_name: str) -> None:
     """Runs shell scripts."""
@@ -171,7 +181,7 @@ def execute_command(command: str) -> None:
             "documentation": the_suffocater_documentation
             }
 
-    command: str = command.lower()
+    command = command.lower()
     if command.startswith("modules -d"):
         list_imported_modules(show_docs=True)
     elif command == "modules":
@@ -234,7 +244,7 @@ def main_gui(suffocater_version: str) -> None:
 
     def execute_gui_command(event=None):
         command = command_entry.get()
-        execute_command(command)
+        execute_command_in_thread(command)  # Run the command in a separate thread
         command_entry.delete(0, tk.END)
 
     top_frame = tk.Frame(root, bg="grey29")
@@ -260,11 +270,17 @@ def main_gui(suffocater_version: str) -> None:
     command_entry.pack(fill="x", padx=10, pady=5)
     command_entry.bind("<Return>", execute_gui_command)
 
+    # Here we initialize and start the redirect
     redirect = Redirect(output_text)
-    redirect.start()
+
+    # Start redirection inside the Tkinter mainloop (after initializing the app)
+    def start_redirect():
+        redirect.start()
+
+    # Schedule the redirect start after the mainloop starts
+    root.after(100, start_redirect)
 
     root.mainloop()
-
 
 if __name__ == "__main__":
     if os.geteuid() == 0:
