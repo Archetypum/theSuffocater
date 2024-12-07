@@ -28,6 +28,29 @@ except ModuleNotFoundError as error:
     print(f"[!] Error: modules not found:\n{error}")
     sys.exit(1)
 
+class Redirect:
+    def __init__(self, text_widget):
+        self.text_widget = text_widget
+        self._stdout = sys.stdout
+        self._stderr = sys.stderr
+
+    def write(self, message):
+        self.text_widget.config(state=tk.NORMAL)
+        self.text_widget.insert(tk.END, message)
+        self.text_widget.see(tk.END)  # Прокрутка вниз
+        self.text_widget.config(state=tk.DISABLED)
+
+    def flush(self):
+        pass
+
+    def start(self):
+        sys.stdout = self
+        sys.stderr = self
+
+    def stop(self):
+        sys.stdout = self._stdout
+        sys.stderr = self._stderr
+
 
 def run_bash_script(script_name: str) -> None:
     """Runs shell scripts."""
@@ -179,7 +202,7 @@ def main_gui(suffocater_version: str) -> None:
     global root
     root = tk.Tk()
     root.title("theSuffocater GUI")
-    root.geometry("700x500")
+    root.geometry("800x600")
     root.config(bg="grey24")
 
     def exit_app() -> None:
@@ -209,8 +232,8 @@ def main_gui(suffocater_version: str) -> None:
     def on_changelog() -> None:
         the_suffocater_changelog()
 
-    def execute_gui_command(event) -> None:
-        command: str = command_entry.get()
+    def execute_gui_command(event=None):
+        command = command_entry.get()
         execute_command(command)
         command_entry.delete(0, tk.END)
 
@@ -230,12 +253,15 @@ def main_gui(suffocater_version: str) -> None:
     tk.Button(left_frame, text="License", width=20, command=on_license).pack(padx=5, pady=5)
     tk.Button(left_frame, text="Changelog", width=20, command=on_changelog).pack(padx=5, pady=5)
 
-    output_text = tk.Text(root, height=15, width=50, bg="grey20", fg='white', state=tk.DISABLED)
-    output_text.pack(pady=10)
+    output_text = tk.Text(root, bg="black", fg="white", wrap="word", state=tk.DISABLED)
+    output_text.pack(expand=True, fill="both", padx=10, pady=5)
 
-    command_entry = tk.Entry(root, width=53, bg="grey20", fg='white')
-    command_entry.pack(pady=5)
+    command_entry = tk.Entry(root, bg="grey20", fg="white")
+    command_entry.pack(fill="x", padx=10, pady=5)
     command_entry.bind("<Return>", execute_gui_command)
+
+    redirect = Redirect(output_text)
+    redirect.start()
 
     root.mainloop()
 
