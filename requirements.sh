@@ -38,7 +38,7 @@ for ELEMENT in "${FREEBSD_BASED_DISTROS[@]}"; do echo " - $ELEMENT"; done
 for ELEMENT in "${ARCH_BASED_DISTROS[@]}"; do echo " - $ELEMENT"; done 
 for ELEMENT in "${DEBIAN_BASED_DISTROS[@]}"; do echo " - $ELEMENT"; done
 
-list_of_packages() {
+function list_of_packages() {
 	PACKAGES=("python3" "python3-pip"
 		"net-tools" "ufw" "iptables" "nftables" "fail2ban"
 		"openvpn" "wireguard/wireguard-tools"
@@ -51,7 +51,7 @@ list_of_packages() {
 	done
 }
 
-install_python_requirements() {
+function install_python_requirements() {
 	python3 -m venv pkgenv
 	source pkgenv/bin/activate
 	pip install -r python_requirements.txt
@@ -59,7 +59,7 @@ install_python_requirements() {
 	echo "Don't forget to 'source pkgenv/bin/activate' and you are good to go."
 }
 
-install_python_requirements_netbsd() {
+function install_python_requirements_netbsd() {
 	python3.12 -m venv pkgenv
 	. pkgenv/bin/activate
 	pip install -r python_requirements.txt
@@ -67,7 +67,7 @@ install_python_requirements_netbsd() {
 	echo "Don't forget to 'source' pkgenv/bin/activate and you are good to go."
 }
 
-install_debian_based() {
+function install_debian_based() {
 	apt update && apt full-upgrade -y
 	apt install python3 python3-pip -y
 	apt install net-tools iproute2 ufw iptables fail2ban nftables -y
@@ -75,7 +75,7 @@ install_debian_based() {
 	apt install lsof git wget bash unbound -y
 }
 
-install_arch_based() {
+function install_arch_based() {
 	pacman -Syu --noconfirm
 	pacman -S python python-pip tk --noconfirm
 	pacman -S net-tools iproute2 ufw iptables nftables fail2ban --noconfirm
@@ -83,12 +83,12 @@ install_arch_based() {
 	pacman -S lsof git wget bash unbound --noconfirm
 }
 
-install_gentoo_based() {
+function install_gentoo_based() {
 	echo "I'm sorry but you are on your own."
 	echo "Install packages manually."
 }
 
-install_alpine_based() {
+function install_alpine_based() {
 	apk update && apk upgrade
 	apk add python3 py3-pip
 	apk add net-tools iproute2 ufw iptables nftables fail2ban
@@ -96,7 +96,7 @@ install_alpine_based() {
 	apk add lsof git wget bash
 }
 
-install_void_based() {
+function install_void_based() {
 	xbps-install -Su
 	xbps-install python3 python3-pip
 	xbps-install net-tools iproute2 ufw iptables nftables fail2ban
@@ -104,7 +104,7 @@ install_void_based() {
 	xbps-install lsof git wget bash
 }
 
-install_fedora_based() {
+function install_fedora_based() {
 	dnf update -y
 	dnf install python3 python3-pip -y
 	dnf install net-tools iproute2 firewalld iptables-services nftables fail2ban -y
@@ -112,7 +112,7 @@ install_fedora_based() {
 	dnf install lsof git wget bash -y
 }
 
-install_opensuse_based() {
+function install_opensuse_based() {
 	zypper refresh && zypper update -y
 	zypper install -y python3 python3-pip
 	zypper install -y net-tools iproute2 firewalld iptables nftables fail2ban
@@ -120,12 +120,12 @@ install_opensuse_based() {
 	zypper install -y lsof git wget bash
 }
 
-install_slackware_based() {
+function install_slackware_based() {
 	echo "I'm sorry but you are on your own."
 	echo "Install packages manually."
 }
 
-install_redhat_based() {
+function install_redhat_based() {
 	yum update -y && yum upgrade -y
 	yum install python3 python3-pip -y
 	yum install net-tools iproute2 firewalld iptables-services nftables fail2ban -y
@@ -133,7 +133,7 @@ install_redhat_based() {
 	yum install lsof git wget bash unbound -y
 }
 
-install_freebsd_based() {
+function install_freebsd_based() {
 	pkg update && pkg upgrade -y
 	pkg install -y python3 py3-pip
 	pkg install -y py311-fail2ban
@@ -148,7 +148,7 @@ install_freebsd_based() {
 	read PROCEED
 }
 
-install_netbsd_based() {
+function install_netbsd_based() {
 	pkgin update && pkgin upgrade
 	pkgin install python3.12
 	python3.12 -m ensurepip --upgrade
@@ -164,7 +164,7 @@ install_netbsd_based() {
 	read PROCEED
 }
 
-install_openbsd_based() {
+function install_openbsd_based() {
 	pkg_add -u
 	pkg_add -uf
 	pkg_add python3 py3-pip
@@ -173,7 +173,7 @@ install_openbsd_based() {
 	pkg_add lsof git wget bash
 }
 
-install_dragora_based() {
+function install_dragora_based() {
 	qi upgrade 
 	qi install python3 python3-pip
 	qi install net-tools iproute2 ufw iptables nftables fail2ban
@@ -181,11 +181,11 @@ install_dragora_based() {
 	qi install lsof git wget bash
 }
 
-to_lowercase() {
+function to_lowercase() {
 	echo "$1" | tr "[:upper:]" "[:lower:]"
 }
 
-main() {
+function main() {
 	echo -n "[==>] Enter the base of your GNU/Linux or BSD distribution ('packages' to view requirements): "
 	read DISTRO
 	if [[ "$DISTRO" == "packages" ]]; then
@@ -313,7 +313,7 @@ main() {
 	fi
 }
 
-check_privileges() {
+function check_privileges() {
 	if [ "$(id -u)" -eq 0 ]; then
 		main
 	else
@@ -322,7 +322,7 @@ check_privileges() {
 	fi
 }
 
-parse_args() {
+function parse_args() {
 	if [[ $# -eq 0 ]]; then
 		check_privileges
 		return
