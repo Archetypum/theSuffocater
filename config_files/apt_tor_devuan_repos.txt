@@ -1,5 +1,5 @@
 
 # Tor Devuan GNU+Linux repositories:
-deb tor+http://devuanauxrkggcowgm2vcs6go3c5pgxdidd5wqjpg7zpfaxkmgspr6id.onion/merged daedalus main non-free-firmware
-deb tor+http://devuanauxrkggcowgm2vcs6go3c5pgxdidd5wqjpg7zpfaxkmgspr6id.onion/merged daedalus-updates  main non-free-firmware
-deb tor+http://devuanauxrkggcowgm2vcs6go3c5pgxdidd5wqjpg7zpfaxkmgspr6id.onion/merged daedalus-security main non-free-firmware
+deb tor+http://devuanauxrkggcowgm2vcs6go3c5pgxdidd5wqjpg7zpfaxkmgspr6id.onion/merged daedalus main
+deb tor+http://devuanauxrkggcowgm2vcs6go3c5pgxdidd5wqjpg7zpfaxkmgspr6id.onion/merged daedalus-updates  main
+deb tor+http://devuanauxrkggcowgm2vcs6go3c5pgxdidd5wqjpg7zpfaxkmgspr6id.onion/merged daedalus-security main
