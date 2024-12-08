@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 
 """
+---------------------------------------
 Here you can find list of common functions
 used by theSuffocater.
 
@@ -8,15 +9,16 @@ Required by all theSuffocater modules
 
 Author: iva
 Date: 26.11.2024
+---------------------------------------
 """
 
-###### Fancy color codes ;3 ######
+# Fancy color codes ;3
 GREEN: str = "\033[92m"
 RED: str = "\033[91m"
 RESET: str = "\033[0m"
 
-###### GNU/LINUX ######
-DEBIAN_BASED_DISTROS: list = ["debian", "ubuntu", "xubuntu", "mint", "lmde", "trisquel", "devuan", 
+# GNU/LINUX
+DEBIAN_BASED_DISTROS: list = ["debian", "ubuntu", "xubuntu", "linuxmint", "lmde", "trisquel", "devuan", 
                               "kali", "parrot", "pop", "elementary", "mx", "antix", "crunchbag",
                               "crunchbag++", "pure", "deepin", "zorin", "peppermint", "lubuntu",
                               "kubuntu", "wubuntu", "steamos", "astra", "tails"]

@@ -31,30 +31,30 @@ except ModuleNotFoundError as error:
 
 
 class Redirect:
-    def __init__(self, text_widget):
+    def __init__(self, text_widget) -> None:
         self.text_widget = text_widget
         self._stdout = sys.stdout
         self._stderr = sys.stderr
 
-    def write(self, message):
+    def write(self, message) -> None:
         self.text_widget.config(state=tk.NORMAL)
         self.text_widget.insert(tk.END, message)
         self.text_widget.see(tk.END) 
         self.text_widget.config(state=tk.DISABLED)
 
-    def flush(self):
+    def flush(self) -> None:
         pass
 
-    def start(self):
+    def start(self) -> None:
         sys.stdout = self
         sys.stderr = self
 
-    def stop(self):
+    def stop(self) -> None:
         sys.stdout = self._stdout
         sys.stderr = self._stderr
 
 
-def execute_command_in_thread(command: str):
+def execute_command_in_thread(command: str) -> None:
     """Executes the command in a separate thread to avoid blocking the GUI."""
     def target():
         execute_command(command)
@@ -63,6 +63,7 @@ def execute_command_in_thread(command: str):
     command_thread = threading.Thread(target=target)
     command_thread.daemon = True  # Daemonize the thread to ensure it exits with the main program
     command_thread.start()
+
 
 def run_bash_script(script_name: str) -> None:
     """Runs shell scripts."""
