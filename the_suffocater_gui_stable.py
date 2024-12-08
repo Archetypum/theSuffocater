@@ -16,7 +16,6 @@ try:
     # Also, here are additional tkinter functions for the graphical interface.
     import os
     import sys
-    import threading
     modules_dir = os.path.join(os.path.dirname(__file__), "modules")
     sys.path.append(modules_dir)
     import usr
@@ -29,40 +28,6 @@ except ModuleNotFoundError as error:
     print(f"[!] Error: modules not found:\n{error}")
     sys.exit(1)
 
-
-class Redirect:
-    def __init__(self, text_widget):
-        self.text_widget = text_widget
-        self._stdout = sys.stdout
-        self._stderr = sys.stderr
-
-    def write(self, message):
-        self.text_widget.config(state=tk.NORMAL)
-        self.text_widget.insert(tk.END, message)
-        self.text_widget.see(tk.END) 
-        self.text_widget.config(state=tk.DISABLED)
-
-    def flush(self):
-        pass
-
-    def start(self):
-        sys.stdout = self
-        sys.stderr = self
-
-    def stop(self):
-        sys.stdout = self._stdout
-        sys.stderr = self._stderr
-
-
-def execute_command_in_thread(command: str):
-    """Executes the command in a separate thread to avoid blocking the GUI."""
-    def target():
-        execute_command(command)
-    
-    # Create and start the thread
-    command_thread = threading.Thread(target=target)
-    command_thread.daemon = True  # Daemonize the thread to ensure it exits with the main program
-    command_thread.start()
 
 def run_bash_script(script_name: str) -> None:
     """Runs shell scripts."""
@@ -183,7 +148,7 @@ def execute_command(command: str) -> None:
             "documentation": the_suffocater_documentation
             }
 
-    command = command.lower()
+    command: str = command.lower()
     if command.startswith("modules -d"):
         list_imported_modules(show_docs=True)
     elif command == "modules":
@@ -214,7 +179,7 @@ def main_gui(suffocater_version: str) -> None:
     global root
     root = tk.Tk()
     root.title("theSuffocater GUI")
-    root.geometry("800x600")
+    root.geometry("700x500")
     root.config(bg="grey24")
 
     def exit_app() -> None:
@@ -244,9 +209,9 @@ def main_gui(suffocater_version: str) -> None:
     def on_changelog() -> None:
         the_suffocater_changelog()
 
-    def execute_gui_command(event=None):
-        command = command_entry.get()
-        execute_command_in_thread(command)  # Run the command in a separate thread
+    def execute_gui_command(event) -> None:
+        command: str = command_entry.get()
+        execute_command(command)
         command_entry.delete(0, tk.END)
 
     top_frame = tk.Frame(root, bg="grey29")
@@ -265,24 +230,15 @@ def main_gui(suffocater_version: str) -> None:
     tk.Button(left_frame, text="License", width=20, command=on_license).pack(padx=5, pady=5)
     tk.Button(left_frame, text="Changelog", width=20, command=on_changelog).pack(padx=5, pady=5)
 
-    output_text = tk.Text(root, bg="black", fg="white", wrap="word", state=tk.DISABLED)
-    output_text.pack(expand=True, fill="both", padx=10, pady=5)
+    output_text = tk.Text(root, height=15, width=50, bg="grey20", fg='white', state=tk.DISABLED)
+    output_text.pack(pady=10)
 
-    command_entry = tk.Entry(root, bg="grey20", fg="white")
-    command_entry.pack(fill="x", padx=10, pady=5)
+    command_entry = tk.Entry(root, width=53, bg="grey20", fg='white')
+    command_entry.pack(pady=5)
     command_entry.bind("<Return>", execute_gui_command)
 
-    # Here we initialize and start the redirect
-    redirect = Redirect(output_text)
-
-    # Start redirection inside the Tkinter mainloop (after initializing the app)
-    def start_redirect():
-        redirect.start()
-
-    # Schedule the redirect start after the mainloop starts
-    root.after(100, start_redirect)
-
     root.mainloop()
+
 
 if __name__ == "__main__":
     if os.geteuid() == 0:
