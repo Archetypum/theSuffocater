@@ -45,7 +45,7 @@ def openvpn_server_setup() -> None:
             print("[<==] Installing OpenVPN-Installer script...")
             subprocess.run(["curl", "-LJO", "https://raw.githubusercontent.com/angristan/openvpn-install/master/openvpn-install.sh"], check=True, shell=True)
             subprocess.run(["chmod", "+x", "openvpn-install.sh"], check=True, shell=True)
-            subprocess.run(["bash", "./openvpn-install.sh"], check=True, shell=True)
+            subprocess.run(["bash", "openvpn-install.sh"], check=True, shell=True)
             sleep(1)
 
             print("[<==] Restarting OpenVPN service && Finishing installation...")
@@ -73,7 +73,9 @@ def wireguard_server_setup(distro: str, init_system: str) -> None:
             usr.package_handling(distro, package_list=["curl"], command="install")
 
             print("[<==] Installing Wireguard-Installer script...")
-            ...
+            subprocess.run(["curl", "-O", "https://raw.githubusercontent.com/angristan/wireguard-install/master/wireguard-install.sh"], check=True)
+            subprocess.run(["chmod", "+x", "wireguarn-install.sh"], check=True)
+            subrpocess.run(["bash", "wireguard-install.sh"], check=True)
             sleep(1)
 
             print("[<==] Restarting Wireguard service && Finishing installation...")

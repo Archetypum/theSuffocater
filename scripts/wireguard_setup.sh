@@ -9,13 +9,6 @@ function check_privileges() {
 	fi
 }
 
-function check_tun() {
-	if [ ! -e /dev/net/tun ]; then
-		return 1
-	fi
-
-}
-
 function main() {
 	echo "+---- Wireguard Setup ----+"
 	echo -n "[==>] Enter the base of your GNU/Linux or BSD distribution: "
@@ -23,4 +16,4 @@ function main() {
 }
 
 check_privileges
-check_tun
+main
