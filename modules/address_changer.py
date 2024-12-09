@@ -108,7 +108,7 @@ def change_lan_ip() -> None:
         subprocess.run(["ip", "addr", "flush", "dev", interface], check=True)
         subprocess.run(["ip", "addr", "add", f"{new_ip}/{subnet_mask}", "dev", interface], check=True)
         subprocess.run(["ip", "link", "set", interface, "up"], check=True)
-        print("\n{GREEN}[*] Success! IP address changed.{RESET}")
+        print(f"\n{GREEN}[*] Success! IP address changed.{RESET}")
     except (subprocess.CalledProcessError, FileNotFoundError) as error:
         print(f"{RED}[!] Error: cant change IP address: {error}.{RESET}")
         print("[*] We will try another way...")

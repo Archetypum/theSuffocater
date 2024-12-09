@@ -717,16 +717,16 @@ class VoidPackageManagement:
         try:
             subprocess.run(["xbps-install", "-S"], check=True)
             return True
-        except subprocess.CalledProcessError as e:
-            print(f"{RED}[!] Error: {e}{RESET}")
+        except subprocess.CalledProcessError as error:
+            print(f"{RED}[!] Error: {error}{RESET}")
             return False
 
     def upgrade(self) -> bool:
         try:
             subprocess.run(["xbps-install", "-u"], check=True)
             return True
-        except subprocess.CalledProcessError as e:
-            print(f"{RED}[!] Error: {e}{RESET}")
+        except subprocess.CalledProcessError as error:
+            print(f"{RED}[!] Error: {error}{RESET}")
             return False
 
     def install(self, packages: List[str]) -> bool:
@@ -734,8 +734,8 @@ class VoidPackageManagement:
             try:
                 subprocess.run(["xbps-install", package], check=True)
                 return True
-            except subprocess.CalledProcessError as e:
-                print(f"{RED}[!] Error: {e}{RESET}")
+            except subprocess.CalledProcessError as error:
+                print(f"{RED}[!] Error: {error}{RESET}")
                 return False
 
     def remove(self, packages: List[str]) -> bool:
