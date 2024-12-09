@@ -30,6 +30,7 @@ Please consider next rules of writing if you want to help theSuffocater:
 
 Example:
 
+```
 """
 ---------------------------------------
 "Type description here"
@@ -39,22 +40,31 @@ Author: "Type author here"
 Date: "Type  date here"
 ---------------------------------------
 """
+```
 
 - Use Explicit Type Conversion in python scripts:
 
 Examples:
 
+```
 number: int = 1984
+```
 
+```
 string: str = "theSuffocater"
+```
 
+```
 def function(args: str) -> None:
 	...
+```
 
 - And forget to add at the end of your code:
 
+```
 if __name__ == "__main__":
 	function()
+```
 
 ## Pull Requests
 
