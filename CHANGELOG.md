@@ -1,8 +1,6 @@
-theSuffocater 1.0.0-stable changelog:
-    
-    1) bug fix:
+## theSuffocater v1.0.0-stable:
 
-    2) 'usr.py':
+This is the very first stable release of theSuffocater.
+Features CLI and GUI stable versions of the carcass, 11 working modules and 4 scripts.
 
-    3) other changes:
-    
+Nothing to say here, its first stable release.

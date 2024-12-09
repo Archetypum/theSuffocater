@@ -9,7 +9,7 @@ function passgen() {
 	echo -n "We are going to create a strong password."
 	read -p "[?] Proceed? (y/N): " ANSWER
 	
-	ANSWER=$(echo "$ANSWER" | tr '[:upper:]' '[:lower:]')
+	ANSWER=$(echo "$ANSWER" | tr "[:upper:]" "[:lower:]")
 	if [[ "$ANSWER" == "y" || "$ANSWER" == "yes" ]]; then
 		read -p "[==>] Enter password name: " NAME
 		read -p "[==>] Enter password length: " PASSWORD_LENGTH

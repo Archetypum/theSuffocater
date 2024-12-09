@@ -151,7 +151,7 @@ def the_suffocater_main(suffocater_version: str) -> None:
     }
 
     while True:
-        module: str = input("\n# ")
+        module: str = input("\n# ").lower()
         if module.startswith("modules -d"):
             list_imported_modules(show_docs=True)
         elif module == "modules":
