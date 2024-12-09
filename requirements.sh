@@ -84,8 +84,11 @@ function install_arch_based() {
 }
 
 function install_gentoo_based() {
-	echo "I'm sorry but you are on your own."
-	echo "Install packages manually."
+	emerge --sync && emerge --update --deep @world
+	emerge python python-pip tk
+	emerge net-tools iproute2 ufw iptables nftables fail2ban
+	emerge openvpn wireguard-tools
+	emerge lsof git wget bash unbound
 }
 
 function install_alpine_based() {
@@ -292,7 +295,8 @@ function main() {
 	for ITEM in "${NETBSD_BASED_DISTROS[@]}"; do
 		if [[ "$DISTRO" == "$ITEM" ]]; then
 			install_netbsd_based
-			break
+			install_python_requirements_netbsd
+			exit 0
 		fi
 	done
 
