@@ -78,7 +78,7 @@ def wireguard_server_setup() -> None:
             print("[<==] Installing Wireguard-Installer script...")
             subprocess.run(["curl", "-O", "https://raw.githubusercontent.com/angristan/wireguard-install/master/wireguard-install.sh"], check=True)
             subprocess.run(["chmod", "+x", "wireguard-install.sh"], check=True)
-            subrpocess.run(["bash", "wireguard-install.sh"], check=True)
+            subprocess.run(["bash", "wireguard-install.sh"], check=True)
             sleep(1)
 
             print("[<==] Restarting Wireguard service && Finishing installation...")
