@@ -2,8 +2,8 @@
 
 """
 ---------------------------------------
-Can change system's MAC-Address and local IP.
-GNU/Linux supported.
+Changes system MAC-Address and local IP.
+GNU/Linux supported and BSD supported.
 
 Author: iva
 Date: 28.07.2024
@@ -53,10 +53,11 @@ def change_mac() -> None:
     if interface not in interfaces:
         print(f"{RED}[!] Invalid interface. Exiting.{RESET}")
         return
-
-    mac_parts: list = [random.randint(0, 255) for _ in range(6)]
-    new_mac: str = ":".join(f"{part:02x}" for part in mac_parts)
-    print(f"[*] Your new MAC address: {new_mac}")
+    new_mac: str = input("[*] Enter new MAC-address [automatic]: ")
+    if new_mac == "":
+        mac_parts: list = [random.randint(0, 255) for _ in range(6)]
+        new_mac: str = ":".join(f"{part:02x}" for part in mac_parts)
+        print(f"[*] Your new MAC address: {new_mac}")
 
     try:
         subprocess.run(["ifconfig", interface, "down"], check=True)
@@ -65,7 +66,7 @@ def change_mac() -> None:
         
         print(f"\n{GREEN}[*] Success! MAC address changed.{RESET}")
     except (subprocess.CalledProcessError, FileNotFoundError) as error:
-        print(f"{RED}[!] Error while changing MAC address:\n{error}.{RESET}")
+        print(f"{RED}[!] Error while changing MAC address:\n{error}{RESET}")
 
 
 def is_valid_ip(ip: str) -> bool:
@@ -73,11 +74,16 @@ def is_valid_ip(ip: str) -> bool:
     return re.match(pattern, ip) is not None
 
 
+def is_valid_mac(mac: str) -> bool:
+    pattern: str = r"([0-9a-fA-F]{2}[:.-]){5}[0-9a-fA-F]{2}"
+    return re.match(pattern, mac) is not None
+
+
 def change_lan_ip() -> None:
     os.system("clear")
     
     print("We are going to change the local IP address.")
-    answer: str = input("[*] Are you sure you want to change the IP address? (y/N): ").lower()
+    answer: str = input("[?] Are you sure you want to change the IP address? (y/N): ").lower()
     if answer not in ["y", "yes"]:
         print(f"{RED}[!] Operation canceled.{RESET}")
         return
@@ -88,20 +94,25 @@ def change_lan_ip() -> None:
         return
 
     print(f"Available interfaces: {interfaces}")
-    interface: str = input("\n[*] Enter your interface: ").strip()
+    interface: str = input("\n[==>] Enter your interface: ").strip()
 
     if interface not in interfaces:
         print(f"{RED}[!] Invalid interface. Exiting.{RESET}")
         return
 
-    new_ip: str = input("[*] Enter the new IP address (e.g., 192.168.1.10): ").strip()
+    new_ip: str = input("[==>] Enter new IP address (e.g., 192.168.1.10): ").strip()
+    if new_ip == "":
+        new_ip: str = f"192.168.{random.randint(1, 254)}.{random.randint(1, 254)}"
+        print(f"[*] Your new IP address: {new_ip}")
     if not is_valid_ip(new_ip):
         print(f"{RED}[!] Error: Invalid IP address: {new_ip}. Exiting.{RESET}")
         return
 
-    subnet_mask: str = input("[*] Enter the subnet mask (e.g., 255.255.255.0): ").strip()
+    subnet_mask: str = input("[==>] Enter subnet mask (e.g., 255.255.255.0): ").strip()
+    if subnet_mask == "":
+        subnet_mask: str = "255.255.255.0"
     if not is_valid_ip(subnet_mask):
-        print(f"{RED}[!] Error: Invalid subnet mask: {subnet_mask}. Exiting.{RESET}")
+        print(f"{RED}[!] Error: Invalid subnet mask: {subnet_mask}{RESET}")
         return
 
     try:
@@ -111,8 +122,7 @@ def change_lan_ip() -> None:
         print(f"\n{GREEN}[*] Success! IP address changed.{RESET}")
     except (subprocess.CalledProcessError, FileNotFoundError) as error:
         print(f"{RED}[!] Error: cant change IP address: {error}.{RESET}")
-        print("[*] We will try another way...")
-        
+        print("[*] We will try another way...") 
         try:
             subprocess.run(["ifconfig", interface, "inet", new_ip, "netmask", subnet_mask], check=True)
             print(f"\n{GREEN}[*] Success! IP address changed.{RESET}")
@@ -120,7 +130,7 @@ def change_lan_ip() -> None:
             print(f"{RED}[!] Error: still cant change IP address: {error}.{RESET}")
             
 
-def address_changer() -> None:
+def address_management() -> None:
     os.system("clear")
 
     functions: dict = {
@@ -128,7 +138,7 @@ def address_changer() -> None:
         "change_lan_ip": change_lan_ip
     }
 
-    print("+---- Address Changer ----+")
+    print("+---- Address Management ----+")
     print("\nAvailable functions:")
     for function in functions.keys():
         print(f" - {function}")

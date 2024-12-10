@@ -7,6 +7,7 @@ Setups tor functionality on your machine.
 - Installs tor on your machine
 - Setups tor nodes.
 - Setups Snowflake Proxy on FreeBSD and Debian based GNU/Linux distros
+- Setups obfs4 bridges on GNU/Linux and BSD
 - Adds Tor repositories for Devuan and Debian GNU/Linux.
 
 Author: iva
@@ -116,6 +117,7 @@ def snowflake_setup_freebsd() -> None:
 def snowflake_setup_docker() -> None:
     system("clear")
     
+    distro: str = usr.get_user_distro()
     answer: str = input("[?] Proceed (y/N): ").lower()
     if answer in ["y", "yes"]:
         try:
@@ -135,11 +137,10 @@ def snowflake_setup_docker() -> None:
                 sleep(1)
                 subprocess.run(["docker", "compose", "up", "-d", "snowflake-proxy"], check=True)
             
-            print("Looks like you are locked and loaded.")
-            print("Now, dont forget to check your docker logs:")
-            print("    'docker logs -f snowflake-proxy'")
+            print("Looks like you are locked and loaded. Now, dont forget to check your docker logs:")
+            print("- 'docker logs -f snowflake-proxy'")
             print("And update the container with Watchtower:")
-            print("    'docker compose up -d'")
+            print("- 'docker compose up -d'")
             print(f"{GREEN}[*] Success!{RESET}")
         except subprocess.CalledProcessError as error:
             print(f"{RED}[!] Error: {error}{RESET}")
@@ -202,49 +203,175 @@ def torify_apt_debian() -> None:
             print("[?] Start tor service now? (y/N): ")
             if answer in ["y", "yes"]:
                 usr.init_system_handling(init_system, "start", "tor")
+                ...
 
-
+            print(f"{GREEN}[*] Success!{RESET}")
         except (subprocess.CalledProcessError, FileNotFoundError, IOError) as error:
             print(f"{RED}[!] Error: {error}{RESET}")
 
 
 def obfs4_bridge_debian() -> None:
     system("clear")
-    ...
+
+    print("We are going to setup docker obfs4 bridge to help censored users connect to the Tor network.")
+    print("The requirements are:")
+    print("- 24/7 Internet connectivity;")
+    print("- The ability to expose TCP ports to the Internet (make sure that NAT doesn't get in the way;")
+
+    answer: str = input("[?] Proceed? (y/N): ")
+    if answer in ["y", "yes"]:
+        try:
+            ...
+        except subprocess.CalledProcessError as error:
+            print(f"{RED}[!] Error: {error}{RESET}")
 
 
 def obfs4_bridge_arch() -> None:
     system("clear")
-    ...
+
+    print("We are going to setup docker obfs4 bridge to help censored users connect to the Tor network.")
+    print("The requirements are:")
+    print("- 24/7 Internet connectivity;")
+    print("- The ability to expose TCP ports to the Internet (make sure that NAT doesn't get in the way;")
+
+    answer: str = input("[?] Proceed? (y/N): ")
+    if answer in ["y", "yes"]:
+        try:
+            ...
+        except subprocess.CalledProcessError as error:
+            print(f"{RED}[!] Error: {error}{RESET}")
 
 
 def obfs4_bridge_void() -> None:
     system("clear")
-    ...
+
+    print("We are going to setup docker obfs4 bridge to help censored users connect to the Tor network.")
+    print("The requirements are:")
+    print("- 24/7 Internet connectivity;")
+    print("- The ability to expose TCP ports to the Internet (make sure that NAT doesn't get in the way;")
+
+    answer: str = input("[?] Proceed? (y/N): ")
+    if answer in ["y", "yes"]:
+        try:
+            ...
+        except subprocess.CalledProcessError as error:
+            print(f"{RED}[!] Error: {error}{RESET}")
+
 
 def obfs4_bridge_dragonflybsd() -> None:
     system("clear")
-    ...
+
+    print("We are going to setup docker obfs4 bridge to help censored users connect to the Tor network.")
+    print("The requirements are:")
+    print("- 24/7 Internet connectivity;")
+    print("- The ability to expose TCP ports to the Internet (make sure that NAT doesn't get in the way;")
+
+    answer: str = input("[?] Proceed? (y/N): ")
+    if answer in ["y", "yes"]:
+        try:
+            ...
+        except subprocess.CalledProcessError as error:
+            print(f"{RED}[!] Error: {error}{RESET}")
 
 
 def obfs4_bridge_freebsd() -> None:
     system("clear")
-    ...
+    
+    print("We are going to setup docker obfs4 bridge to help censored users connect to the Tor network.")
+    print("The requirements are:")
+    print("- 24/7 Internet connectivity;")
+    print("- The ability to expose TCP ports to the Internet (make sure that NAT doesn't get in the way;")
+    
+    answer: str = input("[?] Proceed? (y/N): ")
+    if answer in ["y", "yes"]:
+        try:
+            ...
+        except subprocess.CalledProcessError as error:
+            print(f"{RED}[!] Error: {error}{RESET}")
 
 
 def obfs4_bridge_openbsd() -> None:
     system("clear")
-    ...
+    
+    print("We are going to setup docker obfs4 bridge to help censored users connect to the Tor network.")
+    print("The requirements are:")
+    print("- 24/7 Internet connectivity;")
+    print("- The ability to expose TCP ports to the Internet (make sure that NAT doesn't get in the way;")
+    
+    answer: str = input("[?] Proceed? (y/N): ")
+    if answer in ["y", "yes"]:
+        try:
+            ...
+        except subprocess.CalledProcessError as error:
+            print(f"{RED}[!] Error: {error}{RESET}")
 
 
 def obfs4_bridge_netbsd() -> None:
     system("clear")
-    ...
+
+    print("We are going to setup docker obfs4 bridge to help censored users connect to the Tor network.")
+    print("The requirements are:")
+    print("- 24/7 Internet connectivity;")
+    print("- The ability to expose TCP ports to the Internet (make sure that NAT doesn't get in the way;")
+
+    answer: str = input("[?] Proceed? (y/N): ")
+    if answer in ["y", "yes"]:
+        try:
+            ...
+        except subprocess.CalledProcessError as error:
+            print(f"{RED}[!] Error: {error}{RESET}")
 
 
 def obfs4_bridge_docker() -> None:
     system("clear")
-    ...
+    
+    print("We are going to setup docker obfs4 bridge to help censored users connect to the Tor network.")
+    print("The requirements are:")
+    print("- 24/7 Internet connectivity;")
+    print("- The ability to expose TCP ports to the Internet (make sure that NAT doesn't get in the way;")
+    
+    answer: str = input("[?] Proceed? (y/N): ")
+    if answer in ["y", "yes"]:
+        try:
+            usr.package_handling(distro, package_list=[], command="update")
+
+            print("[<==] Installing get-docker.sh...")
+            sleep(1)
+            subprocess.run(["curl", "-fsSL", "https://get.docker.com", "-o get-docker.sh"], check=True)
+
+            print("[<==] Installing docker compose file...")
+            sleep(1)
+            subprocess.run(["wget", "https://gitlab.torproject.org/tpo/anti-censorship/docker-obfs4-bridge/-/raw/main/docker-compose.yml"], check=True)
+
+            subrpocess.run(["touch", ".env"], check=True)
+            tor_port: str = input("[==>] Your bridge's Tor port: ")
+            obfs4_port: str = input("[==>] Your bridge's obfs4 port: ")
+            email: str = input("[==>] Your Email: ")
+
+            dotenv_template: str = f"""
+# Your bridge's Tor port.
+OR_PORT={tor_port}
+# Your bridge's obfs4 port.
+PT_PORT={obfs4_port}
+# Your email address.
+EMAIL={email}"""
+            
+            with open(".env", "w") as config_file:
+                config_file.write(dotenv_template)
+
+            answer: str = input("[?] Deploy container now? (y/N): ").lower()
+            if answer in ["y", "yes"]:
+                print("[<==] Deploying bridge...")
+                sleep(1)
+                subprocess.run(["docker-compose", "up", "-d", "obfs4-bridge"], check=True)
+
+                print("Looks like you are locked and loaded. Now, dont forget to check your docker logs:")
+                print("- 'docker logs CONTAINER_ID'")
+                print("And update the container:")
+                print("- 'docker-compose pull obfs4-bridge'")
+                print(f"{GREEN}[*] Success!{RESET}")
+        except subprocess.CalledProcessError as error:
+            print(f"{RED}[!] Error: {error}{RESET}")
 
 
 def tor_node_setup() -> None:

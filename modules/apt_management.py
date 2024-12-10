@@ -5,7 +5,7 @@
 Tweaks for Apt Package Manager.
 - Adds 32-bit libraries.
 - Reduces the risk of vulnerabilities being exploited and helps keep your system stable and secure.
-- Adds Bookworm Backports
+- Adds Debian 12 Bookworm Backports
 Debian-Based GNU/Linux distributions only supported.
 
 Author: iva
@@ -72,20 +72,22 @@ def disable_auto_updates() -> None:
 def enable_debian_backports() -> None:
     system("clear")
     
-    print("Backports are packages taken from the next Debian release")
-    print("called 'testing'), adjusted and recompiled for usage on Debian stable.")
-    print("By adding Debian Backports, you can gradually increase the number")
-    print("of fresh/completely new packages on your system.")
+    print("Backports are packages taken from the next Debian release (called 'testing'), adjusted and recompiled for usage on Debian stable.")
+    print("By adding Debian Backports, you can gradually increase the number of fresh/completely new packages on your system.")
 
-    answer: str = input("Add backports? (y/N): ").lower()
+    answer: str = input("[?] Add backports? (y/N): ").lower()
     if answer in ["y", "yes"]:
         print("[<==] Enabling Backports...")
         try:
-            with open("config_files/debian_backports.txt", "r") as config_file:
+            with open("config_files/apt_debian_backports.txt", "r") as config_file:
                 config_file_text: str = config_file.read()
 
             with open("/etc/apt/sources.list", "a") as true_config_file:
                 true_config_file.write(config_file_text)
+            
+            answer: str = input("[?] Check 'sources.list'? (y/N): ")
+            if answer in ["y", "yes"]:
+                subprocess.run(["nano", "/etc/apt/sources.list"], check=True)
 
             print(f"\n{GREEN}[*] Backports are successfully added.{RESET}")
         except (FileNotFoundError, IOError) as error:
