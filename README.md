@@ -26,7 +26,7 @@ Currently, theSuffocater has a small GUI and 11 working modules:
  - passgen.py
 
 Password generator with customizable key length which uses random symbols and random words from user-specified dictionary.
- - address_changer.py
+ - address_management.py
 
 Provides MAC address/local IP changing functionality on a unix-like operating systems. 
  - apt_management.py
