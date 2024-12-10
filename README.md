@@ -11,7 +11,7 @@ but supports ugly fucking systemd, s6, openrc, and launchd as well.
 
 git clone https://github.com/Kinderfeld/fear-the-suffocater
 
-cd fear-the-suffocater
+cd fear-thesuffocater
 
 bash requirements.sh
 
