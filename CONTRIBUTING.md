@@ -59,7 +59,7 @@ def function(args: str) -> None:
 	...
 ```
 
-- And forget to add at the end of your code:
+- And don't forget to add at the end of your code:
 
 ```
 if __name__ == "__main__":
