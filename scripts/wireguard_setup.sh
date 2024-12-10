@@ -19,6 +19,45 @@ function install_debian_based() {
 
 	SERVER_PRIVATE_KEY=$(wg genkey)
 	SERVER_PUBLIC_KEY=$(echo "${SERVER_PRIV_KEY}" | wg pubkey)
+
+	echo "SERVER_PUB_IP=${SERVER_PUB_IP}
+SERVER_PUB_NIC=${SERVER_PUB_NIC}
+SERVER_WG_NIC=${SERVER_WG_NIC}
+SERVER_WG_IPV4=${SERVER_WG_IPV4}
+SERVER_WG_IPV6=${SERVER_WG_IPV6}
+SERVER_PORT=${SERVER_PORT}
+SERVER_PRIV_KEY=${SERVER_PRIV_KEY}
+SERVER_PUB_KEY=${SERVER_PUB_KEY}
+CLIENT_DNS_1=${CLIENT_DNS_1}
+CLIENT_DNS_2=${CLIENT_DNS_2}
+ALLOWED_IPS=${ALLOWED_IPS}" > /etc/wireguard/params
+
+	echo "[Interface]
+Address = ${SERVER_WG_IPV4}/24,${SERVER_WG_IPV6}/64
+ListenPort = ${SERVER_PORT}
+PrivateKey = ${SERVER_PRIV_KEY}" >"/etc/wireguard/${SERVER_WG_NIC}.conf"
+}
+
+function make_client() {
+	echo "..."
+}
+
+function remove_client() {
+	echo "..."
+}
+
+function list_clients() {
+	echo "..."
+}
+
+function remove_wireguard() {
+	echo -n "[?] Are you sure you want to remove Wireguard? (y/N): "
+	read ANSWER
+	if [[ "$ANSWER" == "y" ]]; then
+		apt purge wireguard wireguard-tools qrencode -y && echo "[*] Success!"
+		rm -rf /etc/wireguard
+		rm -f /etc/sysctl.d/wg.conf
+	fi
 }
 
 function check_privileges() {
@@ -52,6 +91,55 @@ function main() {
 	done
 }
 
-check_privileges
-chech_virt
-main
+function menu() {
+	echo "+---- Ultimate Wireguard ----+"
+}
+
+function parse_args() {
+	if [[ $# -eq 0 ]]; then
+		check_privileges
+		check_virt
+		main
+		return
+	fi
+
+	while [[ $# -gt 0 ]]; do
+		case "$1" in
+			-m|--make-client)
+				make_client
+				exit 0
+				;;
+			-r|--remove-client)
+				remove_client
+				exit 0
+				;;
+			-l|--list-clients)
+				list_clients
+				exit 0
+				;;
+			-I|--install-wireguard)
+				main
+				exit 0
+				;;
+			-R|--remove-wireguard)
+				remove_wireguard
+				exit 0
+				;;
+			*)
+				echo "[!] Error: Unknown argument: $1"
+				exit 1
+				;;
+		esac
+		shift
+	done
+}
+
+if [[ -e /etc/wireguard/params ]]; then
+	source /etc/wireguard/params
+	menu
+else
+	main
+fi
+
+
+parse_args "$@"

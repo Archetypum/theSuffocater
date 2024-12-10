@@ -259,7 +259,7 @@ if __name__ == "__main__":
             spec.loader.exec_module(module)
             globals()[module_name] = module
     else:
-        print(f"[!] Error: This code requires root privileges to run certain modules.")
+        print(f"[!] Error: Carcass requires root privileges to run certain modules.")
         sys.exit(1)
 
     suffocater_version: str = "8.2.3-unstable"

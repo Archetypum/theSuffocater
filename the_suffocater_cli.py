@@ -195,5 +195,5 @@ if __name__ == "__main__":
         suffocater_version: str = "8.2.3-unstable        "
         the_suffocater_main(suffocater_version)
     else:
-        print(f"{RED}[!] Error: This code requires root privileges to run certain modules.{RESET}")
+        print(f"{RED}[!] Error: Carcass requires root privileges to run certain modules.{RESET}")
         sys.exit(1)

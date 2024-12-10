@@ -56,9 +56,12 @@ def openvpn_server_setup() -> None:
             print(f"{RED}[!] Error: {error}{RESET}")
 
 
-def wireguard_server_setup(distro: str, init_system: str) -> None:
+def wireguard_server_setup() -> None:
     system("clear")
     
+    distro: str = usr.get_user_distro()
+    init_system: str = usr.get_init_system()
+
     print("We are going to setup your server for Wireguard.")
     answer: str = input("\n[?] Proceed? (y/N): ").lower()
     if answer in ["y", "yes"]:
@@ -74,7 +77,7 @@ def wireguard_server_setup(distro: str, init_system: str) -> None:
 
             print("[<==] Installing Wireguard-Installer script...")
             subprocess.run(["curl", "-O", "https://raw.githubusercontent.com/angristan/wireguard-install/master/wireguard-install.sh"], check=True)
-            subprocess.run(["chmod", "+x", "wireguarn-install.sh"], check=True)
+            subprocess.run(["chmod", "+x", "wireguard-install.sh"], check=True)
             subrpocess.run(["bash", "wireguard-install.sh"], check=True)
             sleep(1)
 
@@ -86,8 +89,11 @@ def wireguard_server_setup(distro: str, init_system: str) -> None:
             print(f"{RED} Error: {error}{RESET}")
 
 
-def outlinevpn_server_setup(distro: str, init_system: str) -> None:
+def outlinevpn_server_setup() -> None:
     system("clear")
+    
+    distro: str = usr.get_user_distro()
+    init_system: str = usr.get_init_system()
 
     print("We are going to setup your server for OutlineVPN.") 
     answer: str = input("\n[?] Proceed? (y/N): ")
