@@ -18,21 +18,17 @@ try:
     import usr
     import subprocess
     from os import system
+    from time import sleep
     from usr import GREEN, RED, RESET
 except ModuleNotFoundError as error:
     print(f"{RED}[!] Error: modules not found:\n{error}{RESET}")
-
-
-def tor_node_setup() -> None:
-    system("clear")
-    ...
 
 
 def install_tor() -> None:
     system("clear")
     
     distro: str = usr.get_user_distro()
-    print("We are going to install tor on your machine.")
+    print("We are going to install Tor on your machine.")
     answer: str = input("\n[?] Proceed? (y/N): ").lower()
     if answer in ["y", "yes"]:
         try:
@@ -61,6 +57,7 @@ def snowflake_setup_debian() -> None:
     init_system: str = usr.get_init_system()
     if distro not in usr.DEBIAN_BASED_DISTROS:
         print(f"{RED}[!] Error: your OS {distro} in not Debian based.{RESET}")
+    
     print(f"{RED}[!] Warning:")
     print("     On Debian Stable based distributions packages might be outdated and so this setup might not work.")
     print(f"     It is recommended to use another setup method, e.g. Docker.{RESET}")
@@ -95,6 +92,7 @@ def snowflake_setup_freebsd() -> None:
     init_system: str = usr.get_init_system()
     if distro not in usr.FREEBSD_BASED_DISTROS:
         print(f"{RED}[!] Error: your OS {distro} is not FreeBSD based.{RESET}")
+    
     print("Snowflake is a pluggable transport available in Tor Browser to defeat internet censorship.")
     print("Like a Tor bridge, a user can access the open internet when even regular Tor connections are censored.")
     print("To use Snowflake is as easy as to switch to a new bridge configuration in Tor Browser.")
@@ -117,7 +115,34 @@ def snowflake_setup_freebsd() -> None:
 
 def snowflake_setup_docker() -> None:
     system("clear")
-    ...
+    
+    answer: str = input("[?] Proceed (y/N): ").lower()
+    if answer in ["y", "yes"]:
+        try:
+            usr.package_handling(distro, package_list=[], command="update")
+
+            print("[<==] Installing get-docker.sh...")
+            sleep(1)
+            subprocess.run(["curl", "-fsSL", "https://get.docker.com", "-o get-docker.sh"], check=True)
+
+            print("[<==] Installing docker compose file...")
+            sleep(1)
+            subprocess.run(["wget", "https://gitlab.torproject.org/tpo/anti-censorship/docker-snowflake-proxy/raw/main/docker-compose.yml"], check=True)
+
+            print("[?] Deploy Snowflake now? (y/N): ")
+            if answer in ["y", "yes"]:
+                print("[<==] Deploying proxy...")
+                sleep(1)
+                subprocess.run(["docker", "compose", "up", "-d", "snowflake-proxy"], check=True)
+            
+            print("Looks like you are locked and loaded.")
+            print("Now, dont forget to check your docker logs:")
+            print("    'docker logs -f snowflake-proxy'")
+            print("And update the container with Watchtower:")
+            print("    'docker compose up -d'")
+            print(f"{GREEN}[*] Success!{RESET}")
+        except subprocess.CalledProcessError as error:
+            print(f"{RED}[!] Error: {error}{RESET}")
 
 
 def torify_apt_devuan() -> None:
@@ -183,6 +208,50 @@ def torify_apt_debian() -> None:
             print(f"{RED}[!] Error: {error}{RESET}")
 
 
+def obfs4_bridge_debian() -> None:
+    system("clear")
+    ...
+
+
+def obfs4_bridge_arch() -> None:
+    system("clear")
+    ...
+
+
+def obfs4_bridge_void() -> None:
+    system("clear")
+    ...
+
+def obfs4_bridge_dragonflybsd() -> None:
+    system("clear")
+    ...
+
+
+def obfs4_bridge_freebsd() -> None:
+    system("clear")
+    ...
+
+
+def obfs4_bridge_openbsd() -> None:
+    system("clear")
+    ...
+
+
+def obfs4_bridge_netbsd() -> None:
+    system("clear")
+    ...
+
+
+def obfs4_bridge_docker() -> None:
+    system("clear")
+    ...
+
+
+def tor_node_setup() -> None:
+    system("clear")
+    ...
+
+
 def tor_management() -> None:
     system("clear")
 
@@ -190,6 +259,14 @@ def tor_management() -> None:
             "install_tor": install_tor,
             "torify_apt_debian": torify_apt_debian,
             "torify_apt_devuan": torify_apt_devuan,
+            "obfs4_bridge_debian": obfs4_bridge_debian,
+            "obfs4_bridge_arch": obfs4_bridge_arch,
+            "obfs4_bridge_void": obfs4_bridge_void,
+            "obfs4_bridge_drafonflybsd": obfs4_bridge_dragonflybsd,
+            "obfs4_bridge_freebsd": obfs4_bridge_freebsd,
+            "obfs4_bridge_openbsd": obfs4_bridge_openbsd,
+            "obfs4_bridge_netbsd": obfs4_bridge_netbsd,
+            "obfs4_bridge_docker": obfs4_bridge_docker,
             "snowflake_setup_debian": snowflake_setup_debian,
             "snowflake_setup_freebsd": snowflake_setup_freebsd,
             "tor_node_setup": tor_node_setup

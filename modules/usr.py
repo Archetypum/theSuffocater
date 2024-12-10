@@ -338,6 +338,49 @@ class S6Management:
             return False
 
 
+class RunitManagement:
+    """
+    Simple class for working with sv.
+    """
+    
+    def __init__(self, command: str, service: str) -> None:
+        self.command = command
+        self.service = service
+    
+    def _run_sv(self, action: str) -> bool:
+        try:
+            subprocess.run(["sv", action, self.service], check=True)
+            return True
+        except subprocess.CalledProcessError as error:
+            print(f"{RED}[!] Error: {error}{RESET}")
+            return False
+
+    def start_service(self) -> bool:
+        return self._run_sv("up")
+
+    def stop_service(self) -> bool:
+        return self._run_sv("down")
+
+    def restart_service(self) -> bool:
+        return self._run_sv("restart")
+
+    def status_service(self) -> bool:
+        return self._run_sv("status")
+
+    def execute(self) -> bool:
+        commands: dict = {
+            "start": self.start_service,
+            "stop": self.stop_service,
+            "restart": self.restart_service,
+            "status": self.status_service
+            }
+        if self.command in commands:
+            return commands[self.command]()
+        else:
+            print(f"{RED}[!] Error: Unknown command: {self.command}{RESET}")
+            return False
+
+
 class LaunchdManagement:
     """
     Simple class for working with launchctl.
@@ -743,8 +786,8 @@ class VoidPackageManagement:
             try:
                 subprocess.run(["xbps-remove", package], check=True)
                 return True
-            except subprocess.CalledProcessError as e:
-                print(f"{RED}[!] Error: {e}{RESET}")
+            except subprocess.CalledProcessError as error:
+                print(f"{RED}[!] Error: {error}{RESET}")
                 return False
 
 
@@ -1372,6 +1415,8 @@ def init_system_handling(init_system: str, command: str, service: str) -> bool:
             service = SysVInitManagement(command, service)
         elif init_system == "s6":
             s6_svc = S6Management(command, service)
+        elif init_system == "runit":
+            runit = RunitManagement(command, service)
         elif init_system == "launchd":
             launchctl = LaunchdManagement(command, service)
         elif init_system == "openrc":
