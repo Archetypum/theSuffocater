@@ -9,15 +9,33 @@ but supports ugly fucking systemd, s6, openrc, and launchd as well.
 
 ## Installation (as root):
 
+```
 git clone https://github.com/Kinderfeld/fear-the-suffocater
+```
 
+```
 cd fear-thesuffocater
+```
 
+```
 bash requirements.sh
+```
 
+```
 source pkgenv/bin/activate
+```
 
+```
 python3 the_suffocater_cli.py
+```
+
+!!!TheSuffocater is always being updated, so always use 
+
+```
+git pull origin main
+```
+
+to be on the latest version. 
 
 ## Usage
 
@@ -26,7 +44,7 @@ Currently, theSuffocater has a small GUI and 11 working modules:
  - passgen.py
 
 Password generator with customizable key length which uses random symbols and random words from user-specified dictionary.
- - address_changer.py
+ - address_management.py
 
 Provides MAC address/local IP changing functionality on a unix-like operating systems. 
  - apt_management.py
