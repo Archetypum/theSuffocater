@@ -76,9 +76,9 @@ def wireguard_server_setup() -> None:
             usr.package_handling(distro, package_list=["curl"], command="install")
 
             print("[<==] Installing Wireguard-Installer script...")
-            subprocess.run(["curl", "-O", "https://raw.githubusercontent.com/angristan/wireguard-install/master/wireguard-install.sh"], check=True)
+            subprocess.run(["curl", "-LJO", "https://raw.githubusercontent.com/angristan/wireguard-install/master/wireguard-install.sh"], check=True)
             subprocess.run(["chmod", "+x", "wireguard-install.sh"], check=True)
-            subrpocess.run(["bash", "wireguard-install.sh"], check=True)
+            subprocess.run(["bash", "wireguard-install.sh"], check=True)
             sleep(1)
 
             print("[<==] Restarting Wireguard service && Finishing installation...")
@@ -103,7 +103,7 @@ def outlinevpn_server_setup() -> None:
             usr.package_handling(distro, package_list=[], command="update")
 
             print("[<==] Installing Docker...")
-            subprocess.run(["wget", "-O", "https://get.docker.com", "|", "bash"], check=True, shell=True)
+            subprocess.run(["wget", "-0", "https://get.docker.com", "|", "bash"], check=True, shell=True)
 
             print("[<==] Starting Docker...")
             usr.init_system_handling(init_system, "start", "docker")
