@@ -146,11 +146,8 @@ def no_spying() -> None:
     ]
 
     print(f"We are going to block {len(ip_addresses)} of big companies/datacenters/ISPs.")
-    answer: str = input("[?] Proceed? (y/N): ").lower()
-    
-    if answer in ["y", "yes"]:
+    if usr.prompt_user("[?] Proceed?"):
         answer: str = input("[?] Reject or Deny? (r/D): ").lower()
-
         if answer in ["d", "deny", "r", "reject"]:
             if distro in usr.FREEBSD_BASED_DISTROS or distro in usr.OPENBSD_BASED_DISTROS or distro in usr.NETBSD_BASED_DISTROS:
                 try:

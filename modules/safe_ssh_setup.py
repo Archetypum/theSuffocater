@@ -60,9 +60,8 @@ def safe_ssh_setup() -> None:
     print("4. Set MaxAuthTries to 3.")
     print("5. Change port value from 22 to 1984.")
     print("*. Many more.")
-
-    answer: str = input("\n[?] Proceed? (y/N): ").lower()
-    if answer in ["y", "yes"]:
+    
+    if usr.prompt_user("[?] Proceed?"):
         main(distro, init_system)
     else:
         print(f"{RED}[!] Operation canceled.{RESET}")

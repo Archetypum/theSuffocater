@@ -43,9 +43,9 @@ def openvpn_server_setup() -> None:
             usr.package_handling(distro, package_list=["curl"], command="install")
 
             print("[<==] Installing OpenVPN-Installer script...")
-            subprocess.run(["curl", "-LJO", "https://raw.githubusercontent.com/angristan/openvpn-install/master/openvpn-install.sh"], check=True, shell=True)
-            subprocess.run(["chmod", "+x", "openvpn-install.sh"], check=True, shell=True)
-            subprocess.run(["bash", "openvpn-install.sh"], check=True, shell=True)
+            subprocess.run(["curl", "-LJO", "https://raw.githubusercontent.com/angristan/openvpn-install/master/openvpn-install.sh"], check=True)
+            subprocess.run(["chmod", "+x", "openvpn-install.sh"], check=True)
+            subprocess.run(["bash", "openvpn-install.sh"], check=True)
             sleep(1)
 
             print("[<==] Restarting OpenVPN service && Finishing installation...")
@@ -103,8 +103,9 @@ def outlinevpn_server_setup() -> None:
             usr.package_handling(distro, package_list=[], command="update")
 
             print("[<==] Installing Docker...")
-            subprocess.run(["wget", "-0", "https://get.docker.com", "|", "bash"], check=True, shell=True)
-
+            subprocess.run(["wget", "https://get.docker.com", "-O", "get-docker.sh"], check=True)
+            subprocess.run(["bash", "get-docker.sh"], check=True)
+            
             print("[<==] Starting Docker...")
             usr.init_system_handling(init_system, "start", "docker")
 

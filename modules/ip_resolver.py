@@ -12,6 +12,7 @@ Date: 16.08.2024
 
 try:
     import os
+    import usr
     import json
     import urllib.request as urllib2
     from usr import GREEN, RED, RESET
@@ -24,12 +25,19 @@ def get_ip_details(ip_address: str) -> None:
     response = urllib2.urlopen(url + ip_address)
     data = response.read()
     values = json.loads(data)
-    print(f"{GREEN}values{RESET}")
+    if values.get("status") == "fail":
+        print(f"{RED}[!] Error: Could not resolve IP address {ip_address}{RESET}")
+        return
+    
+    print(f"{GREEN}{values}{RESET}")
 
 
 def ip_resolver() -> None:
     ip_address: str = input("[==>] Enter IP address: ")
-    get_ip_details(ip_address)
+    if usr.is_valid_ip(ip_address):
+        get_ip_details(ip_address)
+    else:
+        print(f"{RED}[!] Error: IP is not valid.{RESET}")
 
 
 if __name__ == "__main__":

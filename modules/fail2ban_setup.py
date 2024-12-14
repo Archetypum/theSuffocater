@@ -23,3 +23,6 @@ except ModuleNotFoundError as error:
 def fail2ban_setup() -> None:
     ...
 
+
+if __name__ == "__main__":
+    fail2ban_setup()

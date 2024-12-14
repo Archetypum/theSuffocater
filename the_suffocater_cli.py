@@ -23,7 +23,7 @@ try:
     import importlib.util
     from usr import GREEN, RED, RESET
 except ModuleNotFoundError as error:
-    print(f"{RED}[!] Error: module not found:\n{error}{RESET}")
+    print(f"{RED}[!] Error: modules not found:\n{error}{RESET}")
     sys.exit(1)
 
 

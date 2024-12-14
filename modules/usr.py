@@ -42,6 +42,7 @@ NETBSD_BASED_DISTROS: list = ["netbsd", "blackbsd", "edgebsd"]
 
 try:
     import os
+    import re
     import subprocess
     from sys import exit
     from time import sleep
@@ -73,6 +74,9 @@ def get_user_distro() -> str:
     """
     Detects user GNU/Linux or BSD distribution.
     Detects probably everything.
+
+    Returns:
+        str: User distro name.
     """
 
     try:
@@ -93,7 +97,8 @@ def get_user_distro() -> str:
 
 def is_debian_based(distro: str) -> bool:
     """
-    Detects if provided distro is debian based.
+    Returns:
+        bool: If provided distro is debian based.
     """
 
     return True if distro in DEBIAN_BASED_DISTROS else False
@@ -101,10 +106,52 @@ def is_debian_based(distro: str) -> bool:
 
 def is_arch_based(distro: str) -> bool:
     """
-    Detects if provided distro is arch based.
+    Returns:
+        bool: If provided distro is arch based.
     """
 
     return True if distro is ARCH_BASED_DISTROS else False
+
+
+def is_valid_ip(ip: str) -> bool:
+    """
+    Returns:
+        bool: If provided IP is valid.
+    """
+
+    pattern: str = r"^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$"
+    return re.match(pattern, ip) is not None
+
+
+def is_valid_mac(mac: str) -> bool:
+    """
+    Returns:
+        bool: If provided MAC is valid.
+    """
+
+    pattern: str = r"([0-9a-fA-F]{2}[:.-]){5}[0-9a-fA-F]{2}"
+    return re.match(pattern, mac) is not None
+
+
+def prompt_user(prompt: str, default: str = "N") -> bool:
+    """
+    Prompts the user for input and returns True for 'y/yes' or False for 'n/no'.
+    Allows for a default value to be used if the user presses Enter without typing.
+    
+    Args:
+        prompt (str): The prompt message to display to the user.
+        default (str): The default value ('Y' or 'N') to assume if the user just presses Enter.
+
+    Returns:
+        bool: True for 'y', 'ye', 'yes' (case-insensitive); False for 'n', 'no' (case-insensitive).
+    """
+    
+    user_input: str = input(f"{prompt} (y/N): ").strip().lower()
+    
+    if not user_input:
+       user_input: str = default.lower()
+
+    return user_input in ["y", "ye", "yes"]
 
 
 def get_init_system() -> str:
@@ -551,8 +598,8 @@ class GentooPackageManagement:
             try:
                 subprocess.run(["emerge", "--depclean", package], check=True)
                 return True
-            except subprocess.CalledProcessError as e:
-                print(f"{RED}[!] Error: {e}{RESET}")
+            except subprocess.CalledProcessError as error:
+                print(f"{RED}[!] Error: {error}{RESET}")
                 return False
 
 
@@ -572,16 +619,16 @@ class FedoraPackageManagement:
         try:
             subprocess.run(["dnf", "update", "-y"], check=True)
             return True
-        except subprocess.CalledProcessError as e:
-            print(f"{RED}[!] Error: {e}{RESET}")
+        except subprocess.CalledProcessError as error:
+            print(f"{RED}[!] Error: {error}{RESET}")
             return False
 
     def upgrade(self) -> bool:
         try:
             subprocess.run(["dnf", "update", "-y"], check=True)
             return True
-        except subprocess.CalledProcessError as e:
-            print(f"{RED}[!] Error: {e}{RESET}")
+        except subprocess.CalledProcessError as error:
+            print(f"{RED}[!] Error: {error}{RESET}")
             return False
 
     def install(self, packages: List[str]) -> bool:
@@ -589,8 +636,8 @@ class FedoraPackageManagement:
             try:
                 subprocess.run(["dnf", "install", package, "-y"], check=True)
                 return True
-            except subprocess.CalledProcessError as e:
-                print(f"{RED}[!] Error: {e}{RESET}")
+            except subprocess.CalledProcessError as error:
+                print(f"{RED}[!] Error: {error}{RESET}")
                 return False
 
     def remove(self, packages: List[str]) -> bool:
@@ -598,8 +645,8 @@ class FedoraPackageManagement:
             try:
                 subprocess.run(["dnf", "remove", package, "-y"], check=True)
                 return True
-            except subprocess.CalledProcessError as e:
-                print(f"{RED}[!] Error: {e}{RESET}")
+            except subprocess.CalledProcessError as error:
+                print(f"{RED}[!] Error: {error}{RESET}")
                 return False
 
 
@@ -619,8 +666,8 @@ class CentOSPackageManagement:
         try:
             subprocess.run(["yum", "update", "-y"], check=True)
             return True
-        except subprocess.CalledProcessError as e:
-            print(f"{RED}[!] Error: {e}{RESET}")
+        except subprocess.CalledProcessError as error:
+            print(f"{RED}[!] Error: {error}{RESET}")
             return False
 
     def upgrade(self) -> bool:
@@ -1400,7 +1447,7 @@ def package_handling(distro: str, package_list: List[str], command: str) -> bool
         return False
 
 
-def init_system_handling(init_system: str, command: str, service: str) -> bool:
+def init_system_handling(init_system: str, command: str, service: str) -> None:
     """
     Handles services for GNU/Linux and BSD distributions. 
     """
@@ -1436,7 +1483,11 @@ if __name__ == "__main__":
     
     print(distro)
     print(init_system)
+    
+    if prompt_user("type yes"):
+        print("yes!!!!11")
 
-    package_handling(distro, package_list=["vim"], command="update")
+
+    # package_handling(distro, package_list=["vim"], command="update")
     # package_handling(distro, package_list=["vrms", "htop"], command="install")
     # package_handling(distro, package_list=["vrms"], command="remove")

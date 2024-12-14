@@ -19,7 +19,6 @@ try:
     import usr
     import subprocess
     from os import system
-    from time import sleep
     from usr import GREEN, RED, RESET
 except ModuleNotFoundError as error:
     print(f"{RED}[!] Error: modules not found:\n{error}{RESET}")
@@ -30,20 +29,17 @@ def install_tor() -> None:
     
     distro: str = usr.get_user_distro()
     print("We are going to install Tor on your machine.")
-    answer: str = input("\n[?] Proceed? (y/N): ").lower()
-    if answer in ["y", "yes"]:
+    if usr.prompt_user("[?] Proceed?"):
         try:
             usr.package_handling(distro, package_list=["tor", "torsocks"], command="install")
             
             print("Now you need to install Tor Browser from the web.")
-            answer: str = input("[?] Proceed? (y/N): ")
-            if answer in ["y", "yes"]:
+            if usr.prompt_user("[?] Proceed?"):
                 subprocess.run(["xdg-open", "https://www.torproject.org/download/"], check=True)
             
             print("Looks like you're locked and loaded.")
             print("Tor can't help you if you use it wrong! Learn how to be safe at https://support.torproject.org/faq/staying-anonymous/")
-            answer: str = input("[?] Proceed? (y/N): ")
-            if answer in ["y", "yes"]:
+            if usr.prompt_user("[?] Proceed?"):
                 subprocess.run(["xdg-open", "https://support.torproject.org/faq/staying-anonymous/"], check=True)
             
             print(f"{GREEN}[*] Success! {RESET}")
@@ -56,27 +52,24 @@ def snowflake_setup_debian() -> None:
 
     distro: str = usr.get_user_distro()
     init_system: str = usr.get_init_system()
-    if distro not in usr.DEBIAN_BASED_DISTROS:
+    if distro in usr.DEBIAN_BASED_DISTROS:
         print(f"{RED}[!] Error: your OS {distro} in not Debian based.{RESET}")
     
     print(f"{RED}[!] Warning:")
     print("     On Debian Stable based distributions packages might be outdated and so this setup might not work.")
     print(f"     It is recommended to use another setup method, e.g. Docker.{RESET}")
 
-    answer: str = input("[?] Proceed? (y/N): ")
-    if answer in ["y", "yes"]:
+    if usr.prompt_user("[?] Proceed?"):
         print("Snowflake is a pluggable transport available in Tor Browser to defeat internet censorship.") 
         print("Like a Tor bridge, a user can access the open internet when even regular Tor connections are censored.")
         print("To use Snowflake is as easy as to switch to a new bridge configuration in Tor Browser.")
         print("And we are going to setup a docker snowflake proxy for you.")
 
-        answer: str = input("[?] Proceed? (y/N): ").lower()
-        if answer in ["y", "yes"]:
+        if usr.prompt_user("[?] Proceed?"):
             try:
                 usr.package_handling(distro, package_list=["snowflake-proxy"], command="install")
 
-                answer: str = input("[?] Start Snowflake service now? (y/N): ")
-                if answer in ["y", "yes"]:
+                if usr.prompt_user("[?] Start Snowflake service now?"):
                     usr.init_system_handling(init_system, "start", "snowflake-proxy")
                 
                 print("Looks like you are locked and loaded.\nNow, check snowflake-proxy logs and type")
@@ -98,13 +91,11 @@ def snowflake_setup_freebsd() -> None:
     print("Like a Tor bridge, a user can access the open internet when even regular Tor connections are censored.")
     print("To use Snowflake is as easy as to switch to a new bridge configuration in Tor Browser.")
     
-    answer: str = input("[?] Proceed? (y/N): ").lower()
-    if answer in ["y", "yes"]:
+    if usr.prompt_user("[?] Proceed?"):
         try:
             usr.package_handling(distro, package_list=["showflake-tor"], command="install")
             
-            answer: str = input("[?] Enable Snowflake Proxy daemon on boot and start Snowflake Proxy service now? (y/N): ")
-            if answer in ["y", "yes"]:
+            if usr.prompt_user("[?] Enable Snowflake Proxy daemon on boot and start Snowflake Proxy service now?"):
                 subprocess.run(["sysrc", "snowlake_enable=YES"], check=True)
                 usr.init_system_handling(init_system, "start", "snowflake")
             
@@ -118,8 +109,12 @@ def snowflake_setup_docker() -> None:
     system("clear")
     
     distro: str = usr.get_user_distro()
-    answer: str = input("[?] Proceed (y/N): ").lower()
-    if answer in ["y", "yes"]:
+    
+    print("Snowflake is a pluggable transport available in Tor Browser to defeat internet censorship.")
+    print("Like a Tor bridge, a user can access the open internet when even regular Tor connections are censored.")
+    print("To use Snowflake is as easy as to switch to a new bridge configuration in Tor Browser.")
+    
+    if usr.prompt_user("[?] Proceed?"):
         try:
             usr.package_handling(distro, package_list=[], command="update")
 
@@ -129,10 +124,9 @@ def snowflake_setup_docker() -> None:
 
             print("[<==] Installing docker compose file...")
             sleep(1)
-            subprocess.run(["wget", "https://gitlab.torproject.org/tpo/anti-censorship/docker-snowflake-proxy/raw/main/docker-compose.yml"], check=True)
+            subprocess.run(["wget", "https://gitlab.torproject.org/tpo/anti-censorship/docker-snowflake-proxy/raw/main/docker-compose.yml", "-O"], check=True)
 
-            print("[?] Deploy Snowflake now? (y/N): ")
-            if answer in ["y", "yes"]:
+            if usr.prompt_user("[?] Deploy Snowflake now?"):
                 print("[<==] Deploying proxy...")
                 sleep(1)
                 subprocess.run(["docker", "compose", "up", "-d", "snowflake-proxy"], check=True)
@@ -159,13 +153,11 @@ def torify_apt_devuan() -> None:
     print("users can have their Internet traffic routed via a random path through the network.")
     print("And if you wish, you can use apt over tor (Devuan based GNU/Linux distribution required).")
 
-    answer: str = input("\n[?] Proceed? (y/N): ").lower()
-    if answer in ["y", "yes"]:
+    if usr.prompt_user("[?] Proceed?"):
         try:
             usr.package_handling(distro, package_list=["tor", "apt-transport-tor", "apt-transport-https"], command="install")
             
-            answer: str = input("[?] Start tor service now? (y/N): ").lower()
-            if answer in ["y", "yes"]:
+            if usr.prompt_user("[?] Start tor service now?"):
                 usr.init_system_handling(init_system, "start", "tor")
             
             with open("config_files/apt_tor_devuan_repos.txt", "r") as config_file:
@@ -174,8 +166,7 @@ def torify_apt_devuan() -> None:
             with open("/etc/apt/sources.list", "a") as true_config_file:
                 true_config_file.write(apt_tor_repos)
             
-            answer: str = input("[?] View 'sources.list' (y/N): ")
-            if answer in ["y", "yes"]:
+            if usr.prompt_user("[?] View 'sources.list'?"):
                 subprocess.run(["nano", "/etc/apt/sources.list"], check=True)
             
             print(f"{GREEN}[*] Success!{RESET}")
@@ -196,12 +187,10 @@ def torify_apt_debian() -> None:
     print("users can have their Internet traffic routed via a random path through the network.")
     print("And if you wish, you can use apt over tor (Devuan based GNU/Linux distribution required).")
 
-    answer: str = input("\n[?] Proceed? (y/N): ").lower()
-    if answer in ["y", "yes"]:
+    if usr.prompt_user("[?] Proceed?"):
         try:
             usr.package_handling(distro, package_list=["tor", "apt-transport-tor", "apt-transport-https"], command="install")
-            print("[?] Start tor service now? (y/N): ")
-            if answer in ["y", "yes"]:
+            if usr.prompt_user("[?] Start tor service now?"):
                 usr.init_system_handling(init_system, "start", "tor")
                 ...
 
@@ -218,8 +207,7 @@ def obfs4_bridge_debian() -> None:
     print("- 24/7 Internet connectivity;")
     print("- The ability to expose TCP ports to the Internet (make sure that NAT doesn't get in the way;")
 
-    answer: str = input("[?] Proceed? (y/N): ")
-    if answer in ["y", "yes"]:
+    if usr.prompt_user("[?] Proceed?"):
         try:
             ...
         except subprocess.CalledProcessError as error:
@@ -234,8 +222,7 @@ def obfs4_bridge_arch() -> None:
     print("- 24/7 Internet connectivity;")
     print("- The ability to expose TCP ports to the Internet (make sure that NAT doesn't get in the way;")
 
-    answer: str = input("[?] Proceed? (y/N): ")
-    if answer in ["y", "yes"]:
+    if usr.prompt_user("[?] Proceed?"):
         try:
             ...
         except subprocess.CalledProcessError as error:
@@ -250,8 +237,7 @@ def obfs4_bridge_void() -> None:
     print("- 24/7 Internet connectivity;")
     print("- The ability to expose TCP ports to the Internet (make sure that NAT doesn't get in the way;")
 
-    answer: str = input("[?] Proceed? (y/N): ")
-    if answer in ["y", "yes"]:
+    if usr.prompt_user("[?] Proceed?"):
         try:
             ...
         except subprocess.CalledProcessError as error:
@@ -264,10 +250,9 @@ def obfs4_bridge_dragonflybsd() -> None:
     print("We are going to setup docker obfs4 bridge to help censored users connect to the Tor network.")
     print("The requirements are:")
     print("- 24/7 Internet connectivity;")
-    print("- The ability to expose TCP ports to the Internet (make sure that NAT doesn't get in the way;")
+    print("- The ability to expose TCP ports to the Internet (make sure that NAT doesn't get in the way.")
 
-    answer: str = input("[?] Proceed? (y/N): ")
-    if answer in ["y", "yes"]:
+    if usr.prompt_user("[?] Proceed?"):
         try:
             ...
         except subprocess.CalledProcessError as error:
@@ -282,8 +267,7 @@ def obfs4_bridge_freebsd() -> None:
     print("- 24/7 Internet connectivity;")
     print("- The ability to expose TCP ports to the Internet (make sure that NAT doesn't get in the way;")
     
-    answer: str = input("[?] Proceed? (y/N): ")
-    if answer in ["y", "yes"]:
+    if usr.prompt_user("[?] Proceed?"):
         try:
             ...
         except subprocess.CalledProcessError as error:
@@ -292,14 +276,13 @@ def obfs4_bridge_freebsd() -> None:
 
 def obfs4_bridge_openbsd() -> None:
     system("clear")
-    
+
     print("We are going to setup docker obfs4 bridge to help censored users connect to the Tor network.")
     print("The requirements are:")
     print("- 24/7 Internet connectivity;")
     print("- The ability to expose TCP ports to the Internet (make sure that NAT doesn't get in the way;")
-    
-    answer: str = input("[?] Proceed? (y/N): ")
-    if answer in ["y", "yes"]:
+
+    if usr.prompt_user("[?] Proceed?"):
         try:
             ...
         except subprocess.CalledProcessError as error:
@@ -314,8 +297,7 @@ def obfs4_bridge_netbsd() -> None:
     print("- 24/7 Internet connectivity;")
     print("- The ability to expose TCP ports to the Internet (make sure that NAT doesn't get in the way;")
 
-    answer: str = input("[?] Proceed? (y/N): ")
-    if answer in ["y", "yes"]:
+    if usr.prompt_user("[?] Proceed?"):
         try:
             ...
         except subprocess.CalledProcessError as error:
@@ -330,8 +312,7 @@ def obfs4_bridge_docker() -> None:
     print("- 24/7 Internet connectivity;")
     print("- The ability to expose TCP ports to the Internet (make sure that NAT doesn't get in the way;")
     
-    answer: str = input("[?] Proceed? (y/N): ")
-    if answer in ["y", "yes"]:
+    if usr.prompt_user("[?] Proceed?"):
         try:
             usr.package_handling(distro, package_list=[], command="update")
 
@@ -344,9 +325,9 @@ def obfs4_bridge_docker() -> None:
             subprocess.run(["wget", "https://gitlab.torproject.org/tpo/anti-censorship/docker-obfs4-bridge/-/raw/main/docker-compose.yml"], check=True)
 
             subrpocess.run(["touch", ".env"], check=True)
-            tor_port: str = input("[==>] Your bridge's Tor port: ")
-            obfs4_port: str = input("[==>] Your bridge's obfs4 port: ")
-            email: str = input("[==>] Your Email: ")
+            tor_port: str = input("[==>] Your bridge's Tor port: ").strip()
+            obfs4_port: str = input("[==>] Your bridge's obfs4 port: ").strip()
+            email: str = input("[==>] Your Email: ").strip()
 
             dotenv_template: str = f"""
 # Your bridge's Tor port.
@@ -359,8 +340,7 @@ EMAIL={email}"""
             with open(".env", "w") as config_file:
                 config_file.write(dotenv_template)
 
-            answer: str = input("[?] Deploy container now? (y/N): ").lower()
-            if answer in ["y", "yes"]:
+            if usr.prompt_user("[?] Deploy container now?"):
                 print("[<==] Deploying bridge...")
                 sleep(1)
                 subprocess.run(["docker-compose", "up", "-d", "obfs4-bridge"], check=True)

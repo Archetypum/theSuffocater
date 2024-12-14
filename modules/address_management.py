@@ -11,7 +11,6 @@ Date: 28.07.2024
 """
 
 try:
-    import re
     import os
     import usr
     import random
@@ -37,8 +36,7 @@ def change_mac() -> None:
     os.system("clear")
 
     print("We are going to change the system's MAC address.")
-    answer: str = input("[?] Are you sure you want to change the MAC address? (y/N): ").lower()
-    if answer not in ["y", "yes"]:
+    if not usr.prompt_user("[?] Proceed?"):
         print(f"{RED}[!] Operation canceled.{RESET}")
         return
 
@@ -53,7 +51,8 @@ def change_mac() -> None:
     if interface not in interfaces:
         print(f"{RED}[!] Invalid interface. Exiting.{RESET}")
         return
-    new_mac: str = input("[*] Enter new MAC-address [automatic]: ")
+
+    new_mac: str = input("[==>] Enter new MAC-address [automatic]: ")
     if new_mac == "":
         mac_parts: list = [random.randint(0, 255) for _ in range(6)]
         new_mac: str = ":".join(f"{part:02x}" for part in mac_parts)
@@ -69,22 +68,11 @@ def change_mac() -> None:
         print(f"{RED}[!] Error while changing MAC address:\n{error}{RESET}")
 
 
-def is_valid_ip(ip: str) -> bool:
-    pattern: str = r"^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$"
-    return re.match(pattern, ip) is not None
-
-
-def is_valid_mac(mac: str) -> bool:
-    pattern: str = r"([0-9a-fA-F]{2}[:.-]){5}[0-9a-fA-F]{2}"
-    return re.match(pattern, mac) is not None
-
-
 def change_lan_ip() -> None:
     os.system("clear")
     
     print("We are going to change the local IP address.")
-    answer: str = input("[?] Are you sure you want to change the IP address? (y/N): ").lower()
-    if answer not in ["y", "yes"]:
+    if not usr.prompt_user("[?] Proceed?"):
         print(f"{RED}[!] Operation canceled.{RESET}")
         return
 

@@ -23,8 +23,7 @@ def safe_geoclue_setup() -> None:
     print("This script is going to set all geoclue config variables to 'false'.")
     print("Your GNOME/KDE desktop system will stop using your geolocation.")
 
-    answer: str = input("\n[?] Proceed? (y/N): ").lower()
-    if answer in ["y", "yes"]:
+    if usr.prompt_user("[?] Proceed?"):
         try:
             with open("config_files/safe_geoclue_config.txt", "r") as config_file:
                 geoclue_config_text: str = config_file.read()

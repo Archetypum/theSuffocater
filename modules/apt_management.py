@@ -54,8 +54,7 @@ def disable_auto_updates() -> None:
     print("Disabling automatic updates will stop your system from automatically checking for and installing updates.")
     print("This may leave your system vulnerable to unpatched security issues.")
 
-    answer: str = input("\n[?] Proceed? (y/N): ").lower()
-    if answer in ["y", "yes"]:
+    if usr.prompt_user("[?] Proceed?"):
         print("[<==] Disabling automatic updates...")
         try:
             with open("config_files/disable_auto_update_config.txt", "r") as config_file:
@@ -75,8 +74,7 @@ def enable_debian_backports() -> None:
     print("Backports are packages taken from the next Debian release (called 'testing'), adjusted and recompiled for usage on Debian stable.")
     print("By adding Debian Backports, you can gradually increase the number of fresh/completely new packages on your system.")
 
-    answer: str = input("[?] Add backports? (y/N): ").lower()
-    if answer in ["y", "yes"]:
+    if usr.prompt_user("[?] Enable Backports?"):
         print("[<==] Enabling Backports...")
         try:
             with open("config_files/apt_debian_backports.txt", "r") as config_file:
@@ -85,8 +83,7 @@ def enable_debian_backports() -> None:
             with open("/etc/apt/sources.list", "a") as true_config_file:
                 true_config_file.write(config_file_text)
             
-            answer: str = input("[?] Check 'sources.list'? (y/N): ")
-            if answer in ["y", "yes"]:
+            if usr.prompt_user("[?] Check 'sources.list'?"):
                 subprocess.run(["nano", "/etc/apt/sources.list"], check=True)
 
             print(f"\n{GREEN}[*] Backports are successfully added.{RESET}")
@@ -98,8 +95,7 @@ def add_i386() -> None:
     system("clear")
 
     print("Some specific software requires 32-bit libraries to work.")
-    answer: str = input("Add i386 support? (y/N): ")
-    if answer in ["y", "yes"]:
+    if usr.prompt_user("[?] Add i386 support?"):
         print("[<==] Adding architecture...")
         try:
             subprocess.run(["dpkg", "--add-architecture", "i386"], check=True)
@@ -135,4 +131,4 @@ def apt_management() -> None:
 
 
 if __name__ == "__main__":
-    auto_updates()
+    apt_management()

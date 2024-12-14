@@ -29,7 +29,8 @@ source pkgenv/bin/activate
 python3 the_suffocater_cli.py
 ```
 
-!!!TheSuffocater is always being updated, so always use 
+theSuffocater is constantly being updated.
+Don't forget to
 
 ```
 git pull origin main
@@ -59,7 +60,7 @@ Resolves Country, city and company of provided IP address.
 Disables Geoclue geolocation gathering by changing the config file, improving your OPSEC.
  - safe_ssh_setup.py
 
-Hardens your SSH by configuration by changing the config file. Essential to your server.
+Hardens your SSH by changing the config file. Essential to your server.
  - tor_management.py
 
 Installs tor, adds tor devuan repositories, setups tor nodes. You know what you're doing.
