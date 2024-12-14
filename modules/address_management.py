@@ -92,14 +92,14 @@ def change_lan_ip() -> None:
     if new_ip == "":
         new_ip: str = f"192.168.{random.randint(1, 254)}.{random.randint(1, 254)}"
         print(f"[*] Your new IP address: {new_ip}")
-    if not is_valid_ip(new_ip):
+    if not usr.is_valid_ip(new_ip):
         print(f"{RED}[!] Error: Invalid IP address: {new_ip}. Exiting.{RESET}")
         return
 
     subnet_mask: str = input("[==>] Enter subnet mask (e.g., 255.255.255.0): ").strip()
     if subnet_mask == "":
         subnet_mask: str = "255.255.255.0"
-    if not is_valid_ip(subnet_mask):
+    if not usr.is_valid_ip(subnet_mask):
         print(f"{RED}[!] Error: Invalid subnet mask: {subnet_mask}{RESET}")
         return
 

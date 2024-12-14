@@ -19,6 +19,7 @@ try:
     import usr
     import subprocess
     from os import system
+    from time import sleep
     from usr import GREEN, RED, RESET
 except ModuleNotFoundError as error:
     print(f"{RED}[!] Error: modules not found:\n{error}{RESET}")
@@ -306,7 +307,9 @@ def obfs4_bridge_netbsd() -> None:
 
 def obfs4_bridge_docker() -> None:
     system("clear")
-    
+
+    distro: str = usr.get_user_distro()
+
     print("We are going to setup docker obfs4 bridge to help censored users connect to the Tor network.")
     print("The requirements are:")
     print("- 24/7 Internet connectivity;")
@@ -324,7 +327,7 @@ def obfs4_bridge_docker() -> None:
             sleep(1)
             subprocess.run(["wget", "https://gitlab.torproject.org/tpo/anti-censorship/docker-obfs4-bridge/-/raw/main/docker-compose.yml"], check=True)
 
-            subrpocess.run(["touch", ".env"], check=True)
+            subprocess.run(["touch", ".env"], check=True)
             tor_port: str = input("[==>] Your bridge's Tor port: ").strip()
             obfs4_port: str = input("[==>] Your bridge's obfs4 port: ").strip()
             email: str = input("[==>] Your Email: ").strip()

@@ -11,6 +11,7 @@ Date: 09.11.2024
 """
 
 try:
+    import os
     import usr
     import subprocess
     from sys import exit
@@ -23,6 +24,7 @@ except ModuleNotFoundError as error:
 
 def drop_firewall() -> None:
     system("clear")
+    
     distro: str = usr.get_user_distro()
 
     try:
@@ -190,7 +192,7 @@ def porter() -> None:
     system("clear")
 
     distro: str = usr.get_user_distro()
-    active_ports: str = subprocess.check_output("lsof -i -P -n | grep LISTEN", shell=True).strip()
+    active_ports: bytes = subprocess.check_output("lsof -i -P -n | grep LISTEN", shell=True).strip()
     
     print(f"\nActive listening ports:\n{active_ports}")
     answer: str = input("[?] Open/Close ports? (Open/Close): ").lower()

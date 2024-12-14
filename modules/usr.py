@@ -932,7 +932,7 @@ class SlackwarePackageManagement:
                 return False
 
 
-class GuixPackageManager:
+class GuixPackageManagement:
     """
     Simple class for working with guix in your modules.
     """ 
@@ -960,7 +960,7 @@ class GuixPackageManager:
             print(f"{RED}[!] Error: {e}{RESET}")
             return False
 
-    def install(self, package: List[str]) -> bool:
+    def install(self, packages: List[str]) -> bool:
         for package in packages:
             try:
                 subprocess.run(["guix", "install", package], check=True)
@@ -969,7 +969,7 @@ class GuixPackageManager:
                 print(f"{RED}[!] Error: {e}{RESET}")
                 return False
 
-    def remove(self, package: List[str]) -> bool:
+    def remove(self, packages: List[str]) -> bool:
         for package in packages:
             try:
                 subprocess.run(["guix", "remove", package], check=True)
@@ -977,6 +977,19 @@ class GuixPackageManager:
             except subprocess.CalledProcessError as e:
                 print(f"{RED}[!] Error: {e}{RESET}")
                 return False
+
+
+class UtutoPackageManagement:
+    """
+    Simple class for working with ... with what?
+    """
+
+    def __init__(self, distro: str, packages: List[str]) -> None:
+        self.distro = distro
+        self.packages = packages
+    
+    def name(self) -> str:
+        return self.distro
 
 
 class ArchPackageManagement:
@@ -1447,7 +1460,7 @@ def package_handling(distro: str, package_list: List[str], command: str) -> bool
         return False
 
 
-def init_system_handling(init_system: str, command: str, service: str) -> None:
+def init_system_handling(init_system: str, command: str, service: str) -> bool:
     """
     Handles services for GNU/Linux and BSD distributions. 
     """
@@ -1458,16 +1471,22 @@ def init_system_handling(init_system: str, command: str, service: str) -> None:
     try:
         if init_system == "systemd":
             systemctl = SystemdManagement(command, service)
+            return True
         elif init_system == "sysvinit" or init_system == "init":
             service = SysVInitManagement(command, service)
+            return True
         elif init_system == "s6":
             s6_svc = S6Management(command, service)
+            return True
         elif init_system == "runit":
             runit = RunitManagement(command, service)
+            return True
         elif init_system == "launchd":
             launchctl = LaunchdManagement(command, service)
+            return True
         elif init_system == "openrc":
             rc_service = OpenRCManagement(command, service)
+            return True
         else:
             print(f"{RED}[!] Error: unsupported init system.{RESET}")
             exit(1)
