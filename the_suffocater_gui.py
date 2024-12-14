@@ -24,6 +24,7 @@ try:
     import tkinter as tk
     import importlib.util
     from tkinter import messagebox
+    from tkinter import PhotoImage
 except ModuleNotFoundError as error:
     print(f"[!] Error: modules not found:\n{error}")
     sys.exit(1)
@@ -181,6 +182,8 @@ def main_gui(suffocater_version: str) -> None:
     root.title("theSuffocater GUI")
     root.geometry("700x500")
     root.config(bg="grey24")
+    icon = PhotoImage(file="logo.png")
+    root.iconphoto(False, icon)
 
     def exit_app() -> None:
         final_exit()
