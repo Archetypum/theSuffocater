@@ -2,6 +2,11 @@
 
 clear
 
+# Fancy color codes ;3
+RED="\033[0;31m"
+GREEN="\033[0;32m"
+RESET="\033[0m"
+
 GUIX_BASED_DISTROS=("guix")
 REDHAT_BASED_DISTROS=("redhat")
 CENTOS_BASED_DISTROS=("centos" "oracle")
@@ -57,6 +62,7 @@ function install_python_requirements() {
 	pip install -r python_requirements.txt
 		
 	echo "Don't forget to 'source pkgenv/bin/activate' and you are good to go."
+	echo -e "${GREEN}[*] Success!${RESET}"
 }
 
 function install_python_requirements_netbsd() {
@@ -65,6 +71,7 @@ function install_python_requirements_netbsd() {
 	pip install -r python_requirements.txt
 
 	echo "Don't forget to 'source' pkgenv/bin/activate and you are good to go."
+	echo -e "${GREEN}[*] Success!${RESET}"
 }
 
 function install_debian_based() {
@@ -72,7 +79,7 @@ function install_debian_based() {
 	apt install python3 python3-pip -y
 	apt install net-tools iproute2 ufw iptables fail2ban nftables -y
 	apt install openvpn wireguard wireguard-tools -y
-	apt install lsof git wget bash unbound -y
+	apt install lsof git wget bash curl unbound -y
 }
 
 function install_arch_based() {
@@ -80,7 +87,7 @@ function install_arch_based() {
 	pacman -S python python-pip tk --noconfirm
 	pacman -S net-tools iproute2 ufw iptables nftables fail2ban --noconfirm
 	pacman -S openvpn wireguard-tools --noconfirm
-	pacman -S lsof git wget bash unbound --noconfirm
+	pacman -S lsof git wget bash curl unbound --noconfirm
 }
 
 function install_gentoo_based() {
@@ -88,7 +95,7 @@ function install_gentoo_based() {
 	emerge python python-pip tk
 	emerge net-tools iproute2 ufw iptables nftables fail2ban
 	emerge openvpn wireguard-tools
-	emerge lsof git wget bash unbound
+	emerge lsof git wget bash curl unbound
 }
 
 function install_alpine_based() {
@@ -96,7 +103,7 @@ function install_alpine_based() {
 	apk add python3 py3-pip
 	apk add net-tools iproute2 ufw iptables nftables fail2ban
 	apk add wireguard-tools openvpn
-	apk add lsof git wget bash
+	apk add lsof git wget bash curl unbound
 }
 
 function install_void_based() {
@@ -104,7 +111,7 @@ function install_void_based() {
 	xbps-install python3 python3-pip
 	xbps-install net-tools iproute2 ufw iptables nftables fail2ban
 	xbps-install openvpn wireguard-tools
-	xbps-install lsof git wget bash
+	xbps-install lsof git wget bash curl unbound
 }
 
 function install_fedora_based() {
@@ -112,7 +119,7 @@ function install_fedora_based() {
 	dnf install python3 python3-pip -y
 	dnf install net-tools iproute2 firewalld iptables-services nftables fail2ban -y
 	dnf install openvpn wireguard-tools -y
-	dnf install lsof git wget bash -y
+	dnf install lsof git wget bash curl unbound -y
 }
 
 function install_opensuse_based() {
@@ -120,20 +127,23 @@ function install_opensuse_based() {
 	zypper install -y python3 python3-pip
 	zypper install -y net-tools iproute2 firewalld iptables nftables fail2ban
 	zypper install -y openvpn wireguard-tools
-	zypper install -y lsof git wget bash
+	zypper install -y lsof git wget bash curl unbound
 }
 
 function install_slackware_based() {
-	echo "I'm sorry but you are on your own."
-	echo "Install packages manually."
+	slackpkg update && slackpkg upgrade
+	slackpkg install python3 python3-pip
+	slackpkg install net-tools iproute2 ufw iptables nftables fail2ban
+	slackpkg install openvpn wireguard-tools
+	slackpkg install lsof git wget bash curl unbound
 }
 
 function install_redhat_based() {
-	yum update -y && yum upgrade -y
+	yum update && yum upgrade -y
 	yum install python3 python3-pip -y
 	yum install net-tools iproute2 firewalld iptables-services nftables fail2ban -y
 	yum install openvpn wireguard-tools -y
-	yum install lsof git wget bash unbound -y
+	yum install lsof git wget bash curl unbound -y
 }
 
 function install_freebsd_based() {
@@ -141,12 +151,12 @@ function install_freebsd_based() {
 	pkg install -y python3 py3-pip
 	pkg install -y py311-fail2ban
 	pkg install -y openvpn wireguard-tools
-	pkg install -y lsof git wget bash
+	pkg install -y lsof git wget bash curl unbound
 
-	echo "[!] Warning:"
+	echo -e "${RED}[!] Warning:"
 	echo "    Iptables, nftables, Iproute, and ufw are GNU/Linux specific tools."
 	echo "    To achieve similar functionality, use tools designed for BSD systems,"
-	echo "    like PF (Packet Filter), IPFilter (ipf), or build these packages yourself."
+	echo -e "    like PF (Packet Filter), IPFilter (ipf), or build these packages yourself.${RESET}"
 	echo -n "[==>] Hit enter to proceed: "
 	read PROCEED
 }
@@ -157,12 +167,12 @@ function install_netbsd_based() {
 	python3.12 -m ensurepip --upgrade
 	pkgin install fail2ban
 	pkgin install lsof git wget bash
-	pkgin install openvpn wireguard-tools
+	pkgin install openvpn wireguard-tools curl unbound
 
-	echo "[!] Warning:"
+	echo -e "${RED}[!] Warning:"
 	echo "    Iptables, nftables, Iproute, and ufw are GNU/Linux specific tools."
 	echo "    To achieve similar functionality, use tools designed for BSD systems,"
-	echo "    like PF (Packet Filter), IPFilter (ipf), or build these packages yourself."
+	echo -e "    like PF (Packet Filter), IPFilter (ipf), or build these packages yourself.${RESET}"
 	echo -n "[==>] Hit enter to proceed: "
 	read PROCEED
 }
@@ -171,9 +181,16 @@ function install_openbsd_based() {
 	pkg_add -u
 	pkg_add -uf
 	pkg_add python3 py3-pip
-	pkg_add iproute2 pfctl fail2ban nftables
+	pkg_add iproute2 pfctl fail2ban
 	pkg_add openvpn wireguard-tools
-	pkg_add lsof git wget bash
+	pkg_add lsof git wget bash curl unbound
+
+	echo -e "${RED}[!] Warning:"
+	echo "    Iptables, nftables, Iproute, and ufw are GNU/Linux specific tools."
+	echo "    To achieve similar functionality, use tools designed for BSD systems,"
+	echo -e "    like PF (Packet Filter), IPFilter (ipf), or build these packages yourself.${RESET}"
+	echo -n "[==>] Hit enter to proceed: "
+	read PROCEED
 }
 
 function install_dragora_based() {
@@ -181,7 +198,15 @@ function install_dragora_based() {
 	qi install python3 python3-pip
 	qi install net-tools iproute2 ufw iptables nftables fail2ban
 	qi install openvpn wireguard-tools
-	qi install lsof git wget bash
+	qi install lsof git wget bash curl unbound
+}
+
+function install_guix_based() {
+	guix upgrade
+	guix install python3 python3-pip
+	guix install net-tools iproute2 ufw iptables nftables fail2ban
+	guix install openvpn wireguard-tools
+	guix install lsof git wget curl unbound
 }
 
 function to_lowercase() {
@@ -231,7 +256,7 @@ function main() {
 
 	for ITEM in "${CENTOS_BASED_DISTROS[@]}"; do
 		if [[ "$DISTRO" == "$ITEM" ]]; then
-			install_centos_based
+			install_redhat_based
 			break
 		fi
 	done
@@ -313,6 +338,7 @@ function main() {
 	if [[ "$ANSWER" == "y" ]]; then
 		install_python_requirements
 	else
+		echo -e "${GREEN}[*] Success!${RESET}"
 		exit 0
 	fi
 }
@@ -321,7 +347,7 @@ function check_privileges() {
 	if [ "$(id -u)" -eq 0 ]; then
 		main
 	else
-		echo "[!] Error: This script requires root privileges to install packages."
+		echo -e "${RED}[!] Error: This script requires root privileges to install packages.${RESET}"
 		exit 1
 	fi
 }
@@ -334,10 +360,6 @@ function parse_args() {
 
 	while [[ $# -gt 0 ]]; do
 		case "$1" in
-			-l|--list)
-				list_of_platforms
-				exit 0
-				;;
 			-p|--packages)
 				list_of_packages
 				exit 0
@@ -346,7 +368,7 @@ function parse_args() {
 				check_privileges
 				;;
 			*)
-				echo "[!] Error: Unknown argument: $1"
+				echo -e "${RED}[!] Error: Unknown argument: $1 ${RESET}"
 				exit 1
 				;;
 		esac

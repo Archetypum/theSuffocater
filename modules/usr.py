@@ -766,10 +766,10 @@ class AlpinePackageManagement:
 
     def upgrade(self) -> bool:
         try:
-            subprocess.run(["apk", "upgrade", "-U", "-a"], check=True)
+            subprocess.run(["apk", "upgrade"], check=True)
             return True
-        except subprocess.CalledProcessError as e:
-            print(f"{RED}[!] Error: {e}{RESET}")
+        except subprocess.CalledProcessError as error:
+            print(f"{RED}[!] Error: {error}{RESET}")
             return False
 
     def install(self, packages: List[str]) -> bool:
@@ -854,16 +854,16 @@ class DragoraPackageManagement:
         try:
             subprocess.run(["qi", "upgrade"], check=True)
             return True
-        except subprocess.CalledProcessError as e:
-            print(f"{RED}[!] Error: {e}{RESET}")
+        except subprocess.CalledProcessError as error:
+            print(f"{RED}[!] Error: {error}{RESET}")
             return False
 
     def upgrade(self) -> bool:
         try:
             subprocess.run(["qi", "upgrade"], check=True)
             return True
-        except subprocess.CalledProcessError as e:
-            print(f"{RED}[!] Error: {e}{RESET}")
+        except subprocess.CalledProcessError as error:
+            print(f"{RED}[!] Error: {error}{RESET}")
             return False
 
     def install(self, packages: List[str]) -> bool:
@@ -956,8 +956,8 @@ class GuixPackageManagement:
         try:
             subprocess.run(["guix", "upgrade"], check=True)
             return True
-        except subprocess.CalledProcessError as e:
-            print(f"{RED}[!] Error: {e}{RESET}")
+        except subprocess.CalledProcessError as error:
+            print(f"{RED}[!] Error: {error}{RESET}")
             return False
 
     def install(self, packages: List[str]) -> bool:
@@ -965,8 +965,8 @@ class GuixPackageManagement:
             try:
                 subprocess.run(["guix", "install", package], check=True)
                 return True
-            except subprocess.CalledProcessError as e:
-                print(f"{RED}[!] Error: {e}{RESET}")
+            except subprocess.CalledProcessError as error:
+                print(f"{RED}[!] Error: {error}{RESET}")
                 return False
 
     def remove(self, packages: List[str]) -> bool:
@@ -974,8 +974,8 @@ class GuixPackageManagement:
             try:
                 subprocess.run(["guix", "remove", package], check=True)
                 return True
-            except subprocess.CalledProcessError as e:
-                print(f"{RED}[!] Error: {e}{RESET}")
+            except subprocess.CalledProcessError as error:
+                print(f"{RED}[!] Error: {error}{RESET}")
                 return False
 
 
@@ -1026,8 +1026,8 @@ class ArchPackageManagement:
             try:
                 subprocess.run(["pacman", "-R", package], check=True)
                 return True
-            except subprocess.CalledProcessError as e:
-                print(f"{RED}[!] Error: {e}{RESET}")
+            except subprocess.CalledProcessError as error:
+                print(f"{RED}[!] Error: {error}{RESET}")
                 return False
 
     def purge(self, packages: List[str]) -> bool:
@@ -1035,8 +1035,8 @@ class ArchPackageManagement:
             try:
                 subprocess.run(["pacman", "-Rns", package], check=True)
                 return True
-            except subprocess.CalledProcessError as e:
-                print(f"{RED}[!] Error: {e}{RESET}")
+            except subprocess.CalledProcessError as error:
+                print(f"{RED}[!] Error: {error}{RESET}")
                 return False
 
 
