@@ -98,5 +98,13 @@ Current goals of theSuffocater:
 
 ## License
 
-theSuffocater uses GNU General Public License V3. Full text in LICENSE.md
+theSuffocater uses GNU General Public License V3. 
+
+More information in:
+
+- LICENSE.md
+- https://www.fsf.org
+- https://www.gnu.org
+
 ![gnu](https://github.com/user-attachments/assets/66935a97-374f-4dbc-9f1c-428070fda139)
+
