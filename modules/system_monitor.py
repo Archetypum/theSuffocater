@@ -49,15 +49,18 @@ def get_memory_info() -> str | None:
 def system_monitor() -> None:
     # TODO: finish this module some year.
     while True:
-        system("clear")
-        
-        total, used, available, percent = get_memory_info()
-        if total is not None:
-            print("+-------- MEMORY --------+")
-            print(f"Total: {total} MiB\nUsed: {used} MiB")
-            print(f"Available: {available} MiB\nUsage: {percent:.1f}%")
-            print("-" * 20)
-        sleep(1.5)
+        try:
+            system("clear")
+
+            total, used, available, percent = get_memory_info()
+            if total is not None:
+                print("+-------- MEMORY --------+")
+                print(f"Total: {total} MiB\nUsed: {used} MiB")
+                print(f"Available: {available} MiB\nUsage: {percent:.1f}%")
+                print("-" * 20)
+            sleep(1.5)
+        except KeyboardInterrupt:
+            break
 
 
 if __name__ == "__main__":
