@@ -80,7 +80,7 @@ Installs OpenVPN, Wireguard, OutlineVPN and automatically set them up for proper
 
 ## Credits
 
-theSuffocater is a project by F.E.A.R with:
+theSuffocater is a project by Archetypum with:
  - Kinderfeld as the lead developer.
 (https://github.com/Kinderfeld)
  - wazups as the junior developer, illustrator and GUI maintainer.
