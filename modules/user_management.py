@@ -16,6 +16,7 @@ try:
     import grp
     import subprocess
     from sys import exit
+    from getpass import getpass
     from usr import GREEN, RED, RESET
 except ModuleNotFoundError as error:
     print(f"[!] Error: modules not found:\n{error}")
@@ -29,10 +30,19 @@ def add_user(username: str, password: str, group: str = None) -> None:
         else:
             subprocess.run(["useradd", "-m", username], check=True)
         
-        if password:
-            subprocess.run(f"echo '{username}:{password}' | chpasswd", shell=True, check=True)
-            print(f"{GREEN}[*] User '{username}' added successfully.{RESET}")
-            user_management()
+        passwd_process: str = subprocess.Popen(
+            ["passwd", username],
+            stdin=subprocess.PIPE,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE
+        )
+        passwd_process.communicate(input=f"{password}\n{password}\n".encode())
+
+        if passwd_process.returncode == 0:
+            print(f"{GREEN}[*] User '{username}' added and password set successfully.{RESET}")
+        else:
+            print(f"{RED}[!] Error setting password for user '{username}'.{RESET}")
+            return
     except subprocess.CalledProcessError as error:
         print(f"{RED}[!] Error adding user '{username}': {error}{RESET}")
 
@@ -43,7 +53,7 @@ def remove_user(username: str) -> None:
         print(f"{GREEN}[*] User '{username}' removed successfully.{RESET}")
         user_management()
     except subprocess.CalledProcessError as error:
-        print(f"{RED}[!]Error removing user '{username}': {error}{RESET}")
+        print(f"{RED}[!] Error removing user '{username}': {error}{RESET}")
 
 
 def change_group(username: str, group: str) -> None:
@@ -79,7 +89,7 @@ def list_groups() -> None:
 
 def view_groups(username: str) -> None:
     try:
-        user_info = pwd.getpwnam(username)
+        user_info: str = pwd.getpwnam(username)
         groups: list = [g.gr_name for g in grp.getgrall() if username in g.gr_mem]
         
         if groups:
@@ -133,7 +143,7 @@ def user_management() -> None:
     if your_function in functions:
         if your_function == "add_user":
             username: str = input("[==>] Enter username: ")
-            password: str = input("[==>] Enter password: ")
+            password: str = getpass("[==>] Enter password (will not echo): ")
             group: str = input("[==>] Enter group (optional): ") or None
             functions[your_function](username, password, group)
         elif your_function == "remove_user" or your_function == "change_group" or your_function == "view_groups":

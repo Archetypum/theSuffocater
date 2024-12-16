@@ -79,7 +79,7 @@ function install_debian_based() {
 	apt install python3 python3-pip -y
 	apt install net-tools iproute2 ufw iptables fail2ban nftables -y
 	apt install openvpn wireguard wireguard-tools -y
-	apt install lsof git wget bash curl unbound -y
+	apt install lsof git wget bash curl unbound passwd -y
 }
 
 function install_arch_based() {
@@ -87,7 +87,7 @@ function install_arch_based() {
 	pacman -S python python-pip tk --noconfirm
 	pacman -S net-tools iproute2 ufw iptables nftables fail2ban --noconfirm
 	pacman -S openvpn wireguard-tools --noconfirm
-	pacman -S lsof git wget bash curl unbound --noconfirm
+	pacman -S lsof git wget bash curl unbound shadow --noconfirm
 }
 
 function install_gentoo_based() {
@@ -143,7 +143,7 @@ function install_redhat_based() {
 	yum install python3 python3-pip -y
 	yum install net-tools iproute2 firewalld iptables-services nftables fail2ban -y
 	yum install openvpn wireguard-tools -y
-	yum install lsof git wget bash curl unbound -y
+	yum install lsof git wget bash curl unbound shadow-utils -y
 }
 
 function install_freebsd_based() {
@@ -151,7 +151,7 @@ function install_freebsd_based() {
 	pkg install -y python3 py3-pip
 	pkg install -y py311-fail2ban
 	pkg install -y openvpn wireguard-tools
-	pkg install -y lsof git wget bash curl unbound
+	pkg install -y lsof git wget bash curl unbound bsdadminscripts
 
 	echo -e "${RED}[!] Warning:"
 	echo "    Iptables, nftables, Iproute, and ufw are GNU/Linux specific tools."
@@ -167,7 +167,7 @@ function install_netbsd_based() {
 	python3.12 -m ensurepip --upgrade
 	pkgin install fail2ban
 	pkgin install lsof git wget bash
-	pkgin install openvpn wireguard-tools curl unbound
+	pkgin install openvpn wireguard-tools curl unbound shadow
 
 	echo -e "${RED}[!] Warning:"
 	echo "    Iptables, nftables, Iproute, and ufw are GNU/Linux specific tools."
@@ -183,7 +183,7 @@ function install_openbsd_based() {
 	pkg_add python3 py3-pip
 	pkg_add iproute2 pfctl fail2ban
 	pkg_add openvpn wireguard-tools
-	pkg_add lsof git wget bash curl unbound
+	pkg_add lsof git wget bash curl unbound bsdadminscripts
 
 	echo -e "${RED}[!] Warning:"
 	echo "    Iptables, nftables, Iproute, and ufw are GNU/Linux specific tools."

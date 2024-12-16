@@ -83,11 +83,11 @@ Installs OpenVPN, Wireguard, OutlineVPN and automatically set them up for proper
 theSuffocater is a project by F.E.A.R with:
  - Kinderfeld as the lead developer.
 (https://github.com/Kinderfeld)
- - wazups as the middle developer.
+ - wazups as the junior developer, illustrator and GUI maintainer.
 (https://github.com/wazups)
  - Mxkxdxnski as the GUI maintainer.
 (https://github.com/Mxkxdxnski)
- - NotMakaron as the junior developer.
+ - NotMakaron as the junior developer and documentation writer.
 (https://github.com/NotMakaron)
 
 ## Goals
@@ -107,4 +107,3 @@ More information in:
 - https://www.gnu.org
 
 ![gnu](https://github.com/user-attachments/assets/66935a97-374f-4dbc-9f1c-428070fda139)
-

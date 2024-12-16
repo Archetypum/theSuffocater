@@ -112,7 +112,7 @@ function to_lowercase() {
 }
 
 function main() {
-	echo -n "[==>] Enter the base of your GNU/Linux distribution ('packages' to view requirements): "
+	echo -n "[==>] Enter the base of your GNU/Linux distribution ('packages' to view packages to remove): "
 	read DISTRO
 	if [[ "$DISTRO" == "packages" ]]; then
 		list_of_packages

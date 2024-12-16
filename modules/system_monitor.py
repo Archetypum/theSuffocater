@@ -4,7 +4,7 @@
 ---------------------------------------
 Cheap top/htop analogue.
 
-GNU/Linux and BSD supported.
+GNU/Linux supported.
 Author: iva
 Date: 16.12.2024
 ---------------------------------------
