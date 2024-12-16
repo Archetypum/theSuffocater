@@ -120,8 +120,9 @@ function main() {
 		return
 	fi
 	
-	echo -n "[?!] Are you dead seriuos? (do as i do/N): "
+	echo -ne "${RED}[?!] Are you dead seriuos? (do as i do/N): ${RESET}"
 	read ANSWER
+	ANSWER=$(to_lowercase "$ANSWER")
 	if [[ "$ANSWER" == "do as i do" ]]; then
 		DISTRO=$(to_lowercase "$DISTRO")
 		echo "[<==] Removing non-free firmware..."

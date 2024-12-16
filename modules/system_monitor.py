@@ -2,11 +2,11 @@
 
 """
 ---------------------------------------
-null
+Cheap top/htop analogue.
 
 GNU/Linux and BSD supported.
 Author: iva
-Date: null
+Date: 16.12.2024
 ---------------------------------------
 """
 
@@ -19,6 +19,33 @@ try:
     from usr import GREEN, RED, RESET
 except ModuleNotFoundError as error:
     print(f"{RED}[!] Error: modules not found:\n{error}{RESET}")
+
+
+def get_uptime_info() -> str | None:
+    try:
+        result = subprocess.run(["uptime", "-p"], capture_output=True, text=True, check=True)
+        return result.stdout.strip()
+    except subprocess.CalledProcessError as error:
+        print(f"{RED}[!] Error fetching uptime: {error}{RESET}")
+        return None
+
+
+def get_processes_info() -> str | None:
+    try:
+        result = subprocess.run(["ps", "-eo", "pid,%cpu,%mem,comm"], capture_output=True, text=True, check=True)
+        return result.stdout.strip()
+    except subprocess.CalledProcessError as error:
+        print(f"{RED}[!] Error fetching process information: {error}{RESET}")
+        return None
+
+
+def get_disk_info() -> str | None:
+    try:
+        result: str = subprocess.run(["df", "-h"], capture_output=True, text=True, check=True)
+        return result.stdout.strip()
+    except subprocess.CalledProcessError as error:
+        print(f"{RED}[!] Error fetching disk information: {error}{RESET}")
+        return None
 
 
 def get_memory_info() -> str | None:
