@@ -21,69 +21,87 @@ DEBIAN_BASED_DISTROS=("debian" "ubuntu" "xubuntu" "kubuntu" "mint" "lmde" "trisq
 	"crunchbag++" "pureos" "deepin" "zorin" "peppermintos" "lubuntu" "wubuntu"
 	)
 
-FIRMWARE_PACKAGES="\
-
-	atmel-firmware \
-	bluez-firmware \
-	dahdi-firmware-nonfree \
-	firmware-amd-graphics \
-	firmware-atheros \
-	firmware-bnx2 \
-	firmware-bnx2x \
-	firmware-brcm80211 \
-	firmware-cavium \
-	firmware-intel-sound \
-	firmware-iwlwifi \
-	firmware-libertas \
-	firmware-linux-free \
-	firmware-linux-nonfree \
-	firmware-misc-nonfree \
-	firmware-myricom \
-	firmware-netxen \
-	firmware-qlogic \
-	firmware-realtek \
-	firmware-ti-connectivity \
-	firmware-zd1211
-"
+FIRMWARE_PACKAGES=("atmel-firmware" "bluez-firmware" "dahdi-firmware-nonfree" "firmware-amd-graphics"
+	"firmware-atheros" "firmware-bnx2" "firmware-bnx2x" "firmware-brcm80211" "firmware-cavium"
+	"firmware-intel-sound" "firmware-iwlwifi" "firmware-libertas" "firmware-linux-free"
+	"firmware-linux-nonfree" "firmware-misc-nonfree" "firmware-myricom" "firmware-netxen"
+	"firmware-qlogic" "firmware-realtek" "firmware-ti-connectivity" "firmware-zd1211"
+	)
 
 function remove_redhat_based() {
-	echo ""
+	yum remove atmel-firmware bluez-firmware dahdi-firmware-nonfree firmware-amd-graphics \
+		firmware-atheros firmware-bnx2 firmware-bnx2x firmware-brcm80211 firmware-cavium \
+		firmware-intel-sound firmware-iwlwifi firmware-libertas firmware-linux-free \
+		firmware-linux-nonfree firmware-misc-nonfree firmware-myricom firmware-netxen \
+		firmware-qlogic firmware-realtek firmware-ti-connectivity firmware-zd1211
 }
 
 function remove_fedora_based() {
-	echo ""
+	dnf remove atmel-firmware bluez-firmware dahdi-firmware-nonfree firmware-amd-graphics \
+		firmware-atheros firmware-bnx2 firmware-bnx2x firmware-brcm80211 firmware-cavium \
+		firmware-intel-sound firmware-iwlwifi firmware-libertas firmware-linux-free \
+		firmware-linux-nonfree firmware-misc-nonfree firmware-myricom firmware-netxen \
+		firmware-qlogic firmware-realtek firmware-ti-connectivity firmware-zd1211
 }
 
 function remove_opensuse_based() {
-	echo ""
+	zypper rm atmel-firmware bluez-firmware dahdi-firmware-nonfree firmware-amd-graphics \
+		firmware-atheros firmware-bnx2 firmware-bnx2x firmware-brcm80211 firmware-cavium \
+		firmware-intel-sound firmware-iwlwifi firmware-libertas firmware-linux-free \
+		firmware-linux-nonfree firmware-misc-nonfree firmware-myricom firmware-netxen \
+		firmware-qlogic firmware-realtek firmware-ti-connectivity firmware-zd1211
 }
 
 function remove_slackware_based() {
-	echo ""
+	slackpkg atmel-firmware bluez-firmware dahdi-firmware-nonfree firmware-amd-graphics \
+		firmware-atheros firmware-bnx2 firmware-bnx2x firmware-brcm80211 firmware-cavium \
+		firmware-intel-sound firmware-iwlwifi firmware-libertas firmware-linux-free \
+		firmware-linux-nonfree firmware-misc-nonfree firmware-myricom firmware-netxen \
+		firmware-qlogic firmware-realtek firmware-ti-connectivity firmware-zd1211
 }
 
 function remove_alpine_based() {
-	echo ""
+	apk del atmel-firmware bluez-firmware dahdi-firmware-nonfree firmware-amd-graphics \
+		firmware-atheros firmware-bnx2 firmware-bnx2x firmware-brcm80211 firmware-cavium \
+		firmware-intel-sound firmware-iwlwifi firmware-libertas firmware-linux-free \
+		firmware-linux-nonfree firmware-misc-nonfree firmware-myricom firmware-netxen \
+		firmware-qlogic firmware-realtek firmware-ti-connectivity firmware-zd1211
 }
 
 function remove_void_based() {
-	echo ""
+	xbps-remove atmel-firmware bluez-firmware dahdi-firmware-nonfree firmware-amd-graphics \
+		firmware-atheros firmware-bnx2 firmware-bnx2x firmware-brcm80211 firmware-cavium \
+		firmware-intel-sound firmware-iwlwifi firmware-libertas firmware-linux-free \
+		firmware-linux-nonfree firmware-misc-nonfree firmware-myricom firmware-netxen \
+		firmware-qlogic firmware-realtek firmware-ti-connectivity firmware-zd1211
 }
 
 function remove_gentoo_based() {
-	echo ""
+	emerge --depclean atmel-firmware bluez-firmware dahdi-firmware-nonfree firmware-amd-graphics \
+		firmware-atheros firmware-bnx2 firmware-bnx2x firmware-brcm80211 firmware-cavium \
+		firmware-intel-sound firmware-iwlwifi firmware-libertas firmware-linux-free \
+		firmware-linux-nonfree firmware-misc-nonfree firmware-myricom firmware-netxen \
+		firmware-qlogic firmware-realtek firmware-ti-connectivity firmware-zd1211
 }
 
 function remove_arch_based() {
-	echo ""
+	pacman -R atmel-firmware bluez-firmware dahdi-firmware-nonfree firmware-amd-graphics \
+		firmware-atheros firmware-bnx2 firmware-bnx2x firmware-brcm80211 firmware-cavium \
+		firmware-intel-sound firmware-iwlwifi firmware-libertas firmware-linux-free \
+		firmware-linux-nonfree firmware-misc-nonfree firmware-myricom firmware-netxen \
+		firmware-qlogic firmware-realtek firmware-ti-connectivity firmware-zd1211
 }
 
 function remove_debian_based() {
-	echo ""
+	apt purge atmel-firmware bluez-firmware dahdi-firmware-nonfree firmware-amd-graphics \
+		firmware-atheros firmware-bnx2 firmware-bnx2x firmware-brcm80211 firmware-cavium \
+		firmware-intel-sound firmware-iwlwifi firmware-libertas firmware-linux-free \
+		firmware-linux-nonfree firmware-misc-nonfree firmware-myricom firmware-netxen \
+		firmware-qlogic firmware-realtek firmware-ti-connectivity firmware-zd1211
 }
 
 function list_of_packages() {
-	echo "Packages to install:"
+	echo "Packages to remove:"
 	for ELEMENT in "${FIRMWARE_PACKAGES[@]}"; do 
 		echo " - $ELEMENT" 
 	done
@@ -101,94 +119,98 @@ function main() {
 		main
 		return
 	fi
-
-	DISTRO=$(to_lowercase "$DISTRO")
-	echo "[<==] Installing requirements..."
-	echo "--------------------------------------------------------------------------------------"
-
-	for ITEM in "${DEBIAN_BASED_DISTROS[@]}"; do
-		if [[ "$DISTRO" == "$ITEM" ]]; then
-			remove_debian_based
-			break
-		fi
-	done
 	
-	for ITEM in "${ARCH_BASED_DISTROS[@]}"; do
-		if [[ "$DISTRO" == "$ITEM" ]]; then
-			remove_arch_based
-			break
-		fi
-	done
+	echo -n "[?!] Are you dead seriuos? (do as i do/N): "
+	read ANSWER
+	if [[ "$ANSWER" == "do as i do" ]]; then
+		DISTRO=$(to_lowercase "$DISTRO")
+		echo "[<==] Removing non-free firmware..."
+		echo "--------------------------------------------------------------------------------------"
+
+		for ITEM in "${DEBIAN_BASED_DISTROS[@]}"; do
+			if [[ "$DISTRO" == "$ITEM" ]]; then
+				remove_debian_based
+				break
+			fi
+		done
 	
-	for ITEM in "${GUIX_BASED_DISTROS[@]}"; do
-		if [[ "$DISTRO" == "$ITEM" ]]; then
-			remove_guix_based
-			break
-		fi
-	done
+		for ITEM in "${ARCH_BASED_DISTROS[@]}"; do
+			if [[ "$DISTRO" == "$ITEM" ]]; then
+				remove_arch_based
+				break
+			fi
+		done
 	
-	for ITEM in "${REDHAT_BASED_DISTROS[@]}"; do
-		if [[ "$DISTRO" == "$ITEM" ]]; then
-			remove_redhat_based
-			break
-		fi
-	done
+		for ITEM in "${GUIX_BASED_DISTROS[@]}"; do
+			if [[ "$DISTRO" == "$ITEM" ]]; then
+				remove_guix_based
+				break
+			fi
+		done
+	
+		for ITEM in "${REDHAT_BASED_DISTROS[@]}"; do
+			if [[ "$DISTRO" == "$ITEM" ]]; then
+				remove_redhat_based
+				break
+			fi
+		done
 
-	for ITEM in "${CENTOS_BASED_DISTROS[@]}"; do
-		if [[ "$DISTRO" == "$ITEM" ]]; then
-			remove_centos_based
-			break
-		fi
-	done
+		for ITEM in "${CENTOS_BASED_DISTROS[@]}"; do
+			if [[ "$DISTRO" == "$ITEM" ]]; then
+				remove_centos_based
+				break
+			fi
+		done
+	
+		for ITEM in "${FEDORA_BASED_DISTROS[@]}"; do
+			if [[ "$DISTRO" == "$ITEM" ]]; then
+				remove_fedora_based
+				break
+			fi
+		done
 
-	for ITEM in "${FEDORA_BASED_DISTROS[@]}"; do
-		if [[ "$DISTRO" == "$ITEM" ]]; then
-			remove_fedora_based
-			break
-		fi
-	done
+		for ITEM in "${DRAGORA_BASED_DISTROS[@]}"; do
+			if [[ "$DISTRO" == "$ITEM" ]]; then
+				remove_dragora_based
+				break
+			fi
+		done
 
-	for ITEM in "${DRAGORA_BASED_DISTROS[@]}"; do
-		if [[ "$DISTRO" == "$ITEM" ]]; then
-			remove_dragora_based
-			break
-		fi
-	done
+		for ITEM in "${OPENSUSE_BASED_DISTROS[@]}"; do
+			if [[ "$DISTRO" == "$ITEM" ]]; then
+				remove_opensuse_based
+				break
+			fi
+		done
 
-	for ITEM in "${OPENSUSE_BASED_DISTROS[@]}"; do
-		if [[ "$DISTRO" == "$ITEM" ]]; then
-			remove_opensuse_based
-			break
-		fi
-	done
+		for ITEM in "${SLACKWARE_BASED_DISTROS[@]}"; do
+			if [[ "$DISTRO" == "$ITEM" ]]; then
+				remove_slackware_based
+				break
+			fi
+		done
 
-	for ITEM in "${SLACKWARE_BASED_DISTROS[@]}"; do
-		if [[ "$DISTRO" == "$ITEM" ]]; then
-			remove_slackware_based
-			break
-		fi
-	done
+		for ITEM in "${ALPINE_BASED_DISTROS[@]}"; do
+			if [[ "$DISTRO" == "$ITEM" ]]; then
+				remove_alpine_based
+				break
+			fi
+		done
 
-	for ITEM in "${ALPINE_BASED_DISTROS[@]}"; do
-		if [[ "$DISTRO" == "$ITEM" ]]; then
-			remove_alpine_based
-			break
-		fi
-	done
+		for ITEM in "${VOID_BASED_DISTROS[@]}"; do
+			if [[ "$DISTRO" == "$ITEM" ]]; then
+				remove_void_based
+				break
+			fi
+		done
 
-	for ITEM in "${VOID_BASED_DISTROS[@]}"; do
-		if [[ "$DISTRO" == "$ITEM" ]]; then
-			remove_void_based
-			break
-		fi
-	done
-
-	for ITEM in "${GENTOO_BASED_DISTROS[@]}"; do
-		if [[ "$DISTRO" == "$ITEM" ]]; then
-			remove_gentoo_based
-			break
-		fi
-	done
+		for ITEM in "${GENTOO_BASED_DISTROS[@]}"; do
+			if [[ "$DISTRO" == "$ITEM" ]]; then
+				remove_gentoo_based
+				break
+			fi
+		done
+	fi
 }
 
 function check_privileges() {

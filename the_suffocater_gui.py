@@ -1,22 +1,14 @@
 #!/usr/bin/python3
 #
-# (WHAT IS CARCASS?)
 # This thing is called the "Carcass" - the heart of theSuffocater.
 # Carcass destiny is to load modules located in the /fear-the-suffocater/modules
 # for further using.
 # 
-# (CARCASS UPDATES)
 # Usually carcass don't receive many updates because it's already serving
 # its functionality very good.
-# 
-# (WHAT IS GUI?)
+#
 # This is a graphical frontend, normal cli version is 'the_suffocater_cli.py'.
-#
-# (GUI UPDATES)
-# For now, this is the final graphical version that works fully.
-# The Suffocater-GUI is still not perfect and has big flaws, but all this will be fixed later.
-# All upcoming updates to this code will be cosmetic or from Carcass only.
-#
+
 try:
     # Here we are importing are python modules, and the most importantly,
     # we are importing "usr.py" - module with all possible functions,
@@ -254,10 +246,8 @@ def main_gui(suffocater_version: str) -> None:
 
 if __name__ == "__main__":
     if os.geteuid() == 0:
-        """
-        Checks if user is root.
-        Most of theSuffocater modules can't run without root privileges.
-        """
+        # Checks if user is root.
+        # Most of theSuffocater modules can't run without root privileges.
         current_dir: str = os.path.dirname(__file__)
         modules_dir: str = os.path.join(current_dir, "modules")
         bash_scripts_dir: str = os.path.join(current_dir, "scripts")

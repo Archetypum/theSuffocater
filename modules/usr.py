@@ -572,16 +572,16 @@ class GentooPackageManagement:
         try:
             subprocess.run(["emerge", "--sync"], check=True)
             return True
-        except subprocess.CalledProcessError as e:
-            print(f"{RED}[!] Error: {e}{RESET}")
+        except subprocess.CalledProcessError as error:
+            print(f"{RED}[!] Error: {error}{RESET}")
             return False
 
     def upgrade(self) -> bool:
         try:
             subprocess.run(["emerge", "--update", "--deep", "@world"], check=True)
             return True
-        except subprocess.CalledProcessError as e:
-            print(f"{RED}[!] Error: {e}{RESET}")
+        except subprocess.CalledProcessError as error:
+            print(f"{RED}[!] Error: {error}{RESET}")
             return False
 
     def install(self, packages: List[str]) -> bool:
@@ -589,8 +589,8 @@ class GentooPackageManagement:
             try:
                 subprocess.run(["emerge", package], check=True)
                 return True
-            except subprocess.CalledProcessError as e:
-                print(f"{RED}[!] Error: {e}{RESET}")
+            except subprocess.CalledProcessError as error:
+                print(f"{RED}[!] Error: {error}{RESET}")
                 return False
 
     def remove(self, packages: List[str]) -> bool:
