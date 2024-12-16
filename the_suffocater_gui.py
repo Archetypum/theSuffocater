@@ -15,7 +15,7 @@
 # (GUI UPDATES)
 # For now, this is the final graphical version that works fully.
 # The Suffocater-GUI is still not perfect and has big flaws, but all this will be fixed later.
-# All upcoming updates to this code will be cosmetic or from Carcass only..
+# All upcoming updates to this code will be cosmetic or from Carcass only.
 #
 try:
     # Here we are importing are python modules, and the most importantly,
