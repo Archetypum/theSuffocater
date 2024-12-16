@@ -233,11 +233,12 @@ def main_gui(suffocater_version: str) -> None:
     tk.Button(left_frame, text="License", width=20, command=on_license).pack(padx=5, pady=5)
     tk.Button(left_frame, text="Changelog", width=20, command=on_changelog).pack(padx=5, pady=5)
 
+    """console simulation"""
     output_text = tk.Text(root, height=15, width=50, bg="grey20", fg='white', state=tk.DISABLED)
-    output_text.pack(pady=10)
+    output_text.pack(pady=10, expand=True, fill=tk.BOTH)
 
-    command_entry = tk.Entry(root, width=53, bg="grey20", fg='white')
-    command_entry.pack(pady=5)
+    command_entry = tk.Entry(root, bg="grey20", fg='white')
+    command_entry.pack(pady=5, expand=False, fill=tk.X)
     command_entry.bind("<Return>", execute_gui_command)
 
     root.mainloop()
@@ -245,8 +246,10 @@ def main_gui(suffocater_version: str) -> None:
 
 if __name__ == "__main__":
     if os.geteuid() == 0:
-        # Checks if user is root.
-        # Most of theSuffocater modules can't run without root privileges.
+        """
+        Checks if user is root.
+        Most of theSuffocater modules can't run without root privileges.
+        """
         current_dir: str = os.path.dirname(__file__)
         modules_dir: str = os.path.join(current_dir, "modules")
         bash_scripts_dir: str = os.path.join(current_dir, "scripts")
