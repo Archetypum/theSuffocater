@@ -1,14 +1,22 @@
 #!/usr/bin/python3
 #
+# (WHAT IS CARCASS?)
 # This thing is called the "Carcass" - the heart of theSuffocater.
 # Carcass destiny is to load modules located in the /fear-the-suffocater/modules
 # for further using.
 # 
+# (CARCASS UPDATES)
 # Usually carcass don't receive many updates because it's already serving
 # its functionality very good.
 # 
+# (WHAT IS GUI?)
 # This is a graphical frontend, normal cli version is 'the_suffocater_cli.py'.
-
+#
+# (GUI UPDATES)
+# For now, this is the final graphical version that works fully.
+# The Suffocater-GUI is still not perfect and has big flaws, but all this will be fixed later.
+# All upcoming updates to this code will be cosmetic or from Carcass only..
+#
 try:
     # Here we are importing are python modules, and the most importantly,
     # we are importing "usr.py" - module with all possible functions,
@@ -233,7 +241,7 @@ def main_gui(suffocater_version: str) -> None:
     tk.Button(left_frame, text="License", width=20, command=on_license).pack(padx=5, pady=5)
     tk.Button(left_frame, text="Changelog", width=20, command=on_changelog).pack(padx=5, pady=5)
 
-    """console simulation"""
+    """Console simulation"""
     output_text = tk.Text(root, height=15, width=50, bg="grey20", fg='white', state=tk.DISABLED)
     output_text.pack(pady=10, expand=True, fill=tk.BOTH)
 
