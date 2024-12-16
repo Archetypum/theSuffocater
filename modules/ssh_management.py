@@ -29,7 +29,7 @@ def ssh_logging() -> None:
     system("clear")
 
     print("We are going to log SSH connections to your device.")
-    if usr.prompt_user("Proceed?"):
+    if usr.prompt_user("[?] Proceed?"):
         log_file_path: str = input("[==>] Enter log file path [default]:")
         if log_file_path == "":
             log_file_path: str = "/var/log/auth.log" or "/var/log/secure"

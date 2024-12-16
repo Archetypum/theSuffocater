@@ -23,10 +23,10 @@ try:
     import subprocess
     import tkinter as tk
     import importlib.util
-    from tkinter import messagebox
-    from tkinter import PhotoImage
+    from usr import RED, RESET
+    from tkinter import messagebox, PhotoImage
 except ModuleNotFoundError as error:
-    print(f"[!] Error: modules not found:\n{error}")
+    print(f"{RED}[!] Error: modules not found:\n{error}{RESET}")
     sys.exit(1)
 
 
@@ -263,7 +263,7 @@ if __name__ == "__main__":
             spec.loader.exec_module(module)
             globals()[module_name] = module
     else:
-        print(f"[!] Error: Carcass requires root privileges to run certain modules.")
+        print(f"{RED}[!] Error: Carcass requires root privileges to run certain modules.{RESET}")
         sys.exit(1)
 
     suffocater_version: str = "8.2.3-unstable"
