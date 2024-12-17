@@ -65,8 +65,6 @@ def get_memory_info() -> tuple | str | None:
 
 
 def process_analysis() -> str:
-    system("clear")
-
     ps_command: str = "ps aux --sort=-%mem | awk 'NR<=5{print $0}'"
     result: subprocess.CompletedProcess = subprocess.run(ps_command, shell=True, capture_output=True, text=True)
     if result.returncode == 0:
