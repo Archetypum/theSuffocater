@@ -1,5 +1,24 @@
 #!/bin/bash
 
+# Fancy color codes ;3
+RED="\033[0;31m"
+GREEN="\033[0;32m"
+RESET="\033[0m"
+
+GUIX_BASED_DISTROS=("guix")
+REDHAT_BASED_DISTROS=("redhat")
+CENTOS_BASED_DISTROS=("centos" "oracle")
+FEDORA_BASED_DISTROS=("fedora" "rocky" "mos")
+DRAGORA_BASED_DISTROS=("dragora")
+OPENSUSE_BASED_DISTROS=("opensuse")
+SLACKWARE_BASED_DISTROS=("slackware")
+ALPINE_BASED_DISTROS=("alpine" "postmarket")
+VOID_BASED_DISTROS=("void" "argon" "shikake" "pristine")
+GENTOO_BASED_DISTROS=("gentoo" "funtoo" "calculate" "chromeos")
+OPENBSD_BASED_DISTROS=("openbsd" "adj" "libertybsd")
+NETBSD_BASED_DISTROS=("netbsd" "blackbsd" "edgebsd")
+FREEBSD_BASED_DISTROS=("freebsd" "ghostbsd" "midnightbsd" "bastillebsd" "cheribsd" "trueos" "dragonflybsd" "hardenedbsd" "hellosystem" "truenas")
+ARCH_BASED_DISTROS=("arch" "artix" "manjaro" "garuda" "hyperbola" "parabola" "endeavouros" "blackarch" "librewolfos")
 DEBIAN_BASED_DISTROS=("debian" "ubuntu" "xubuntu" "kubuntu" "mint" "lmde" "trisquel" "devuan" "kali" 
 	"parrot" "pop" "elementary" "mx" "antix" "steamos" "tails" "astra" "crunchbag"
 	"crunchbag++" "pureos" "deepin" "zorin" "peppermintos" "lubuntu" "wubuntu"
@@ -8,11 +27,12 @@ DEBIAN_BASED_DISTROS=("debian" "ubuntu" "xubuntu" "kubuntu" "mint" "lmde" "trisq
 function install_debian_based() {
 	echo "[<==] Installing requirements..."
 	sleep 1
+	
 	apt update
 	apt upgrade -y
 	apt install wireguard wireguard-tools iptables resolvconf qrencode
 	
-	echo "[<==] Creatinf /etc/wireguard/ and generating keys..."
+	echo "[<==] Creating /etc/wireguard/ and generating keys..."
 	sleep 1
 	mkdir /etc/wireguard >/dev/null 2>&1
 	chmod 600 -R /etc/wireguard/
@@ -38,46 +58,49 @@ ListenPort = ${SERVER_PORT}
 PrivateKey = ${SERVER_PRIV_KEY}" >"/etc/wireguard/${SERVER_WG_NIC}.conf"
 }
 
+function remove_debian_based() {
+	echo "[<==] Removing Wireguard..."
+	sleep 1
+
+	apt update
+	apt upgrade -y
+	apt purge wireguard wireguard-tools qrencode -y
+}
+
+function remove_arch_based() {
+	echo "[<==] Removing Wireguard..."
+	sleep 1
+	
+	pacman -Syu
+	pacman -Rs --noconfirm wireguard-tools qrencode
+}
+
 function make_client() {
+	clear
+
 	echo "..."
 }
 
 function remove_client() {
+	clear
+
 	echo "..."
 }
 
 function list_clients() {
-	echo "..."
-}
+	clear
 
-function remove_wireguard() {
-	echo -n "[?] Are you sure you want to remove Wireguard? (y/N): "
-	read ANSWER
-	if [[ "$ANSWER" == "y" ]]; then
-		apt purge wireguard wireguard-tools qrencode -y && echo "[*] Success!"
-		rm -rf /etc/wireguard
-		rm -f /etc/sysctl.d/wg.conf
+	CLIENTS_COUNT=$(grep -c -E "^### Client" "/etc/wireguard/${SERVER_WG_NIC}.conf")
+	if [[ ${CLIENTS_COUNT} -eq 0 ]]; then
+		echo "You don't have any clients yet."
 	fi
+
+	grep -E "^### Client" "/etc/wireguard/${SERVER_WG_NIC}.conf" | cut -d " " -f 3 | nl -s ") "
 }
 
-function check_privileges() {
-	if [ "$(id -u)" -eq 0 ]; then
-		main
-	else
-		echo "[!] Error: This script requires root privileges to install packages."
-		exit 1
-	fi
-}
+function install_wireguard() {
+	clear
 
-
-function check_virt() {
-	if [[ "$(systemd-detect-virt)" == "openvz" ]]; then
-		echo "[!] Error: OpenVZ is not supported."
-		exit 1
-	fi
-}
-
-function main() {
 	echo "+---- Wireguard Setup ----+"
 	echo -n "[==>] Enter the base of your GNU/Linux or BSD distribution: "
 	read DISTRO
@@ -91,14 +114,78 @@ function main() {
 	done
 }
 
+function remove_wireguard() {
+	clear
+
+	echo -e "${RED}WARNING: This will uninstall WireGuard and remove all the configuration files!"
+	echo -e "Please backup the /etc/wireguard directory if you want to keep your configuration files.${RESET}"
+	echo -n "Proceed? (y/N): "
+	read REMOVE
+	
+	REMOVE=$(echo "$REMOVE" | tr "[:upper:]" "[:lower:]")	
+	if [[ "$REMOVE" == "y" ]]; then
+		echo -n "[==>] Enter the base of your GNU/Linux or BSD distribution: "
+		read DISTRO
+		
+		DISTRO=$(echo "$(DISTRO)" | tr "[:upper:]" "[:lower:]")
+		for ITEM in "${DEBIAN_BASED_DISTROS[@]}"; do
+			if [[ "$DISTRO" == "$ITEM" ]]; then
+				remove_debian_based
+				rm -rf /etc/wireguard
+				rm -f /etc/sysctl.d/wg.conf && echo -e "${GREEN}[*] Success!${RESET}"
+			fi
+		done
+		
+		for ITEM in "${ARCH_BASED_DISTROS[@]}"; do
+			if [[ "$DISTRO" == "$ITEM" ]]; then
+				remove_arch_based
+				rm -rf /etc/wireguard
+				rm -f /etc/sysctl.d/wg.conf && echo -e "${GREEN}[*] Success!${RESET}"
+			fi
+		done
+	fi
+}
+
 function menu() {
+	clear
+
 	echo "+---- Ultimate Wireguard ----+"
+	echo "  - add_users"
+	echo "  - list_users"
+	echo "  - remove_users"
+	echo "  - remove_wireguard"
+	echo "  - exit"
+	echo -n "[==>] Enter function: "
+	read FUNCTION
+	case "${FUNCTION}" in
+		add_users)
+			new_client
+			exit 0
+			;;
+		list_users)
+			list_clients
+			exit 0
+			;;
+		remove_users)
+			remove_client
+			exit 0
+			;;
+		remove_wireguard)
+			remove_wireguard
+			exit 0
+			;;
+		exit)
+			exit 0
+			;;
+		@)
+			echo -e "${RED}[!] Error: Invalid input.${RESET}"
+			;;
+	esac
 }
 
 function parse_args() {
 	if [[ $# -eq 0 ]]; then
 		check_privileges
-		check_virt
 		main
 		return
 	fi
@@ -118,7 +205,7 @@ function parse_args() {
 				exit 0
 				;;
 			-I|--install-wireguard)
-				main
+				install_wireguard
 				exit 0
 				;;
 			-R|--remove-wireguard)
@@ -126,7 +213,7 @@ function parse_args() {
 				exit 0
 				;;
 			*)
-				echo "[!] Error: Unknown argument: $1"
+				echo -e "${RED}[!] Error: Unknown argument: $1 ${RESET}"
 				exit 1
 				;;
 		esac
@@ -134,12 +221,20 @@ function parse_args() {
 	done
 }
 
+function check_privileges() {
+	if [ "$(id -u)" -eq 0 ]; then
+		menu
+	else
+		echo "[!] Error: This script requires root privileges to install packages."
+		exit 1
+	fi
+}
+
 if [[ -e /etc/wireguard/params ]]; then
 	source /etc/wireguard/params
 	menu
 else
-	main
+	install_wireguard
 fi
-
 
 parse_args "$@"

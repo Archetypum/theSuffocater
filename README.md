@@ -10,30 +10,30 @@ but supports ugly fucking systemd, s6, openrc, and launchd as well.
 
 ## Installation (as root):
 
-```
+```bash
 git clone https://github.com/Archetypum/thesuffocater
 ```
 
-```
+```bash
 cd thesuffocater
 ```
 
-```
+```bash
 bash requirements.sh
 ```
 
-```
+```bash
 source pkgenv/bin/activate
 ```
 
-```
+```bash
 python3 the_suffocater_cli.py
 ```
 
 theSuffocater is constantly being updated.
 Don't forget to
 
-```
+```bash
 git pull origin main
 ```
 
@@ -41,7 +41,9 @@ to be on the latest version.
 
 ## Usage
 
-Currently, theSuffocater has a small GUI and 11 working modules:
+Currently, theSuffocater has a small GUI, 11 working modules and 5 working scripts:
+
+Modules:
 
  - passgen.py
 
@@ -78,10 +80,29 @@ Most important module to make all others to work properly: simply usr.py is a bi
 
 Installs OpenVPN, Wireguard, OutlineVPN and automatically set them up for proper VPN server work.
 
+Scripts:
+
+ - install_latest_version.sh
+
+Installs the latest version of theSuffocater to your machine. 
+ - remove_firmware.sh
+
+Removes binary firmware from your system, making it free.
+ - passgen.sh
+
+Password generator with customizable key length which uses random symbols.
+
+ - openvpn_setup.sh
+
+NOT FINISHED YET.
+ - wireguard_setup.sh
+
+NOT FINISHED YET.
+
 ## Credits
 
 theSuffocater is a project by Archetypum with:
- - Kinderfeld as the lead developer.
+ - Kinderfeld as the lead developer and creator.
 (https://github.com/Kinderfeld)
  - wazups as the junior developer, illustrator and GUI maintainer.
 (https://github.com/wazups)
