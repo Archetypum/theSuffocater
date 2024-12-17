@@ -30,7 +30,9 @@ Please consider next rules of writing if you want to help theSuffocater:
 
 Example:
 
-```
+```python3
+#!/usr/bin/python3
+
 """
 ---------------------------------------
 "Type description here"
@@ -46,22 +48,22 @@ Date: "Type  date here"
 
 Examples:
 
-```
+```python3
 number: int = 1984
 ```
 
-```
+```python3
 string: str = "theSuffocater"
 ```
 
-```
-def function(args: str) -> None:
+```python3
+def function(arg: str = "default_value") -> None:
 	...
 ```
 
 - And don't forget to add at the end of your code:
 
-```
+```python3
 if __name__ == "__main__":
 	function()
 ```

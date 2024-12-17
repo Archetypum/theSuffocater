@@ -18,8 +18,8 @@ try:
     from sys import exit
     from getpass import getpass
     from usr import GREEN, RED, RESET
-except ModuleNotFoundError as error:
-    print(f"[!] Error: modules not found:\n{error}")
+except ModuleNotFoundError as import_error:
+    print(f"[!] Error: modules not found:\n{import_error}")
     exit(1)
 
 
@@ -30,7 +30,7 @@ def add_user(username: str, password: str, group: str = None) -> None:
         else:
             subprocess.run(["useradd", "-m", username], check=True)
         
-        passwd_process: str = subprocess.Popen(
+        passwd_process: subprocess.Popen[bytes] = subprocess.Popen(
             ["passwd", username],
             stdin=subprocess.PIPE,
             stdout=subprocess.PIPE,
@@ -89,7 +89,7 @@ def list_groups() -> None:
 
 def view_groups(username: str) -> None:
     try:
-        user_info: str = pwd.getpwnam(username)
+        user_info: pwd.struct_passwd = pwd.getpwnam(username)
         groups: list = [g.gr_name for g in grp.getgrall() if username in g.gr_mem]
         
         if groups:

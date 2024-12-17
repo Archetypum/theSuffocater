@@ -17,8 +17,8 @@ try:
     from os import system
     from time import sleep
     from usr import GREEN, RED, RESET
-except ModuleNotFoundError as error:
-    print(f"{RED}[!] Error: modules not found:\n{error}{RESET}")
+except ModuleNotFoundError as import_error:
+    print(f"{RED}[!] Error: modules not found:\n{import_error}{RESET}")
 
 
 def get_uptime_info() -> str | None:
@@ -30,16 +30,7 @@ def get_uptime_info() -> str | None:
         return None
 
 
-def get_processes_info() -> str | None:
-    try:
-        result = subprocess.run(["ps", "-eo", "pid,%cpu,%mem,comm"], capture_output=True, text=True, check=True)
-        return result.stdout.strip()
-    except subprocess.CalledProcessError as error:
-        print(f"{RED}[!] Error fetching process information: {error}{RESET}")
-        return None
-
-
-def get_disk_info() -> str | None:
+def get_disk_info() -> tuple | str | None:
     try:
         result: str = subprocess.run(["df", "-h"], capture_output=True, text=True, check=True)
         return result.stdout.strip()
@@ -48,7 +39,7 @@ def get_disk_info() -> str | None:
         return None
 
 
-def get_memory_info() -> str | None:
+def get_memory_info() -> tuple | str | None:
     try:
         result: str = subprocess.run(["cat", "/proc/meminfo"], capture_output=True, text=True, check=True)
         lines: str = result.stdout.splitlines()
@@ -73,11 +64,25 @@ def get_memory_info() -> str | None:
         return None, None, None, None
 
 
+def process_analysis() -> str:
+    system("clear")
+
+    ps_command: str = "ps aux --sort=-%mem | awk 'NR<=5{print $0}'"
+    result: subprocess.CompletedProcess = subprocess.run(ps_command, shell=True, capture_output=True, text=True)
+    if result.returncode == 0:
+        return result.stdout
+
+
 def system_monitor() -> None:
     # TODO: finish this module some year.
     while True:
         try:
             system("clear")
+
+            uptime: str = get_uptime_info()
+            if uptime is not None:
+                print("+-------- UPTIME --------+")
+                print(uptime)
 
             total, used, available, percent = get_memory_info()
             if total is not None:
@@ -85,6 +90,16 @@ def system_monitor() -> None:
                 print(f"Total: {total} MiB\nUsed: {used} MiB")
                 print(f"Available: {available} MiB\nUsage: {percent:.1f}%")
                 print("-" * 20)
+
+            disk_usage = get_disk_info()
+            if disk_usage is not None:
+                print("+--------- DISK ---------+")
+                print(disk_usage)
+            
+            processes_info = process_analysis()
+            if processes_info is not None:
+                print("+------------------------+")
+                print(processes_info)
             sleep(1.5)
         except KeyboardInterrupt:
             break

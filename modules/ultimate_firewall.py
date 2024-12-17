@@ -17,8 +17,8 @@ try:
     from sys import exit
     from os import system, listdir
     from usr import GREEN, RED, RESET
-except ModuleNotFoundError as error:
-    print(f"{RED}[!] Error: modules not found:\n{error}{RESET}")
+except ModuleNotFoundError as import_error:
+    print(f"{RED}[!] Error: modules not found:\n{import_error}{RESET}")
     exit(1)
 
 

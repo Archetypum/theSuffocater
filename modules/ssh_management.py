@@ -7,7 +7,7 @@ Manages your OpenSSH. It can:
 - Logs SSH connections to your server
 GNU/Linux and BSD supported.
 
-Author: iva,
+Authors: iva,
         zaw (ssh_logging)
 Date: 03.07.2024
 ---------------------------------------
@@ -20,8 +20,8 @@ try:
     from os import system
     from time import sleep
     from usr import RED, GREEN, RESET
-except ModuleNotFoundError as error:
-    print(f"{RED}[!] Error: modules not found:\n{error}{RESET}")
+except ModuleNotFoundError as import_error:
+    print(f"{RED}[!] Error: modules not found:\n{import_error}{RESET}")
     exit(1)
 
 

@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 #
 # This thing is called the "Carcass" - the heart of theSuffocater.
-# Carcass destiny is to load modules located in the /fear-the-suffocater/modules
+# Carcass destiny is to load modules located in the thesuffocater/modules
 # for further using.
 # 
 # Usually carcass don't receive many updates because it's already serving
@@ -22,8 +22,8 @@ try:
     import subprocess
     import importlib.util
     from usr import GREEN, RED, RESET
-except ModuleNotFoundError as error:
-    print(f"{RED}[!] Error: modules not found:\n{error}{RESET}")
+except ModuleNotFoundError as import_error:
+    print(f"{RED}[!] Error: modules not found:\n{import_error}{RESET}")
     sys.exit(1)
 
 

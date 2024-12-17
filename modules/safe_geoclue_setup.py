@@ -13,8 +13,8 @@ try:
     import usr
     from os import system
     from usr import GREEN, RED, RESET
-except ModuleNotFoundError as error:
-    print(f"{RED}[!] Error: modules not found:\n{error}{RESET}")
+except ModuleNotFoundError as import_error:
+    print(f"{RED}[!] Error: modules not found:\n{import_error}{RESET}")
 
 
 def safe_geoclue_setup() -> None:
@@ -32,8 +32,8 @@ def safe_geoclue_setup() -> None:
                 true_config_file.write(geoclue_config_text)
 
             print(f"{GREEN}[*] Geoclue is successfully disabled.{RESET}")
-        except (FileNotFoundError, IOError) as error:
-            print(f"{RED}[!] Error: {error}{RESET}")
+        except (FileNotFoundError, IOError) as file_error:
+            print(f"{RED}[!] Error: {file_error}{RESET}")
 
 
 if __name__ == "__main__":

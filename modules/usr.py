@@ -22,7 +22,8 @@ DEBIAN_BASED_DISTROS: list = ["debian", "ubuntu", "xubuntu", "linuxmint", "lmde"
                               "kali", "parrot", "pop", "elementary", "mx", "antix", "crunchbag",
                               "crunchbag++", "pure", "deepin", "zorin", "peppermint", "lubuntu",
                               "kubuntu", "wubuntu", "steamos", "astra", "tails"]
-ARCH_BASED_DISTROS: list = ["arch", "artix", "manjaro", "endeavour", "garuda", "parabola", "hyperbola", "blackarch", "librewolf"]
+ARCH_BASED_DISTROS: list = ["arch", "artix", "manjaro", "endeavour", "garuda", "parabola", "hyperbola",
+                            "blackarch", "librewolf"]
 ALPINE_BASED_DISTROS: list = ["alpine", "postmarket"]
 GENTOO_BASED_DISTROS: list = ["gentoo", "pentoo", "funtoo", "calculate" "chrome"]
 VOID_BASED_DISTROS: list = ["void", "argon", "shikake", "pristine"]
@@ -32,11 +33,10 @@ FEDORA_BASED_DISTROS: list = ["fedora", "mos"]
 CENTOS_BASED_DISTROS: list = ["centos"]
 GUIX_BASED_DISTROS: list = ["guix"]
 UTUTO_BASED_DISTROS: list = ["ututo"]
-CENTOS_BASED_DISTROS: list = ["centos"]
 
-###### BSD ######
-FREEBSD_BASED_DISTROS: list = ["freebsd", "midnightbsd", "ghostbsd", "bastillebsd", "cheribsd", "dragonflybsd", "trueos",
-                               "hardenedbsd", "hellosystem", "truenas"]
+# BSD
+FREEBSD_BASED_DISTROS: list = ["freebsd", "midnightbsd", "ghostbsd", "bastillebsd", "cheribsd", "dragonflybsd",
+                               "trueos", "hardenedbsd", "hellosystem", "truenas"]
 OPENBSD_BASED_DISTROS: list = ["openbsd", "adj", "libertybsd"]
 NETBSD_BASED_DISTROS: list = ["netbsd", "blackbsd", "edgebsd"]
 
@@ -47,11 +47,11 @@ try:
     from sys import exit
     from time import sleep
     from typing import List
-except ModuleNotFoundError:
-    print(f"{RED}Error: python modules not found.\nBroken installation?{RESET}")
+except ModuleNotFoundError as import_error:
+    print(f"{RED}Error: python modules not found. Broken installation?:\n{import_error}{RESET}")
 
 
-def tester() -> None:
+def usr() -> None:
     os.system("clear")
     
     functions: dict = {
