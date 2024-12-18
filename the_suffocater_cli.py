@@ -101,7 +101,7 @@ def list_imported_modules(show_docs: bool = True) -> None:
         module = globals().get(module_name)
 
         if module:
-            print(f"\n-> {module_name}:")
+            print(f"-> {module_name}:")
 
             if show_docs and module.__doc__:
                 print(module.__doc__.strip())

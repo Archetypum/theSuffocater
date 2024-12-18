@@ -8,7 +8,7 @@ Manages your OpenSSH. It can:
 GNU/Linux and BSD supported.
 
 Authors: iva,
-        zaw (ssh_logging)
+         zaw (ssh_logging)
 Date: 03.07.2024
 ---------------------------------------
 """
