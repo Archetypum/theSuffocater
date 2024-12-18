@@ -208,11 +208,12 @@ def obfs4_bridge_debian() -> None:
     print("- 24/7 Internet connectivity;")
     print("- The ability to expose TCP ports to the Internet (make sure that NAT doesn't get in the way;")
     
+    distro: str = usr.get_user_distro()
     init_system: str = usr.get_init_system()
 
     if usr.prompt_user("[?] Proceed?"):
         try:
-            package_handling(distro, package_list=["tor", "obfs4proxy"], command="install")
+            usr.package_handling(distro, package_list=["tor", "obfs4proxy"], command="install")
             
             print("[<==] Editing torrc...")
             sleep(1)
@@ -253,7 +254,7 @@ def obfs4_bridge_arch() -> None:
             print("[<==] Building obfs4proxy from source...")
             sleep(1)
             subprocess.run(["git", "clone", "https://aur.archlinux.org/obfs4proxy"], check=True)
-            subrocess.run(["cd", "obfs4proxy"], check=True)
+            subprocess.run(["cd", "obfs4proxy"], check=True)
             subprocess.run(["makepkg", "-irs"], check=True)
             
             print("[<==] Editing torrc...")
@@ -268,7 +269,7 @@ def obfs4_bridge_arch() -> None:
             subprocess.run(["nano", "/etc/tor/torrc"], check=True)
 
             if usr.prompt_user("[?] Start Tor now?"):
-                usr.init_system_handiling(init_system, "start", "tor")
+                usr.init_system_handling(init_system, "start", "tor")
             print("Looks like you are locked and loaded.\nDon't forget to monitor logs!")
             print("{GREEN}[*] Success!{RESET}")
         except subprocess.CalledProcessError as error:

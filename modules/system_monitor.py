@@ -23,7 +23,7 @@ except ModuleNotFoundError as import_error:
 
 def get_uptime_info() -> str | None:
     try:
-        result = subprocess.run(["uptime", "-p"], capture_output=True, text=True, check=True)
+        result: subprocess.CompletedProcess = subprocess.run(["uptime", "-p"], capture_output=True, text=True, check=True)
         return result.stdout.strip()
     except subprocess.CalledProcessError as error:
         print(f"{RED}[!] Error fetching uptime: {error}{RESET}")
@@ -32,7 +32,7 @@ def get_uptime_info() -> str | None:
 
 def get_disk_info() -> tuple | str | None:
     try:
-        result: str = subprocess.run(["df", "-h"], capture_output=True, text=True, check=True)
+        result: subprocess.CompletedProcess = subprocess.run(["df", "-h"], capture_output=True, text=True, check=True)
         return result.stdout.strip()
     except subprocess.CalledProcessError as error:
         print(f"{RED}[!] Error fetching disk information: {error}{RESET}")
