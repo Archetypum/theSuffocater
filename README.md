@@ -106,7 +106,7 @@ theSuffocater is a project by Archetypum with:
 (https://github.com/Kinderfeld)
  - wazups as the junior developer, illustrator and GUI maintainer.
 (https://github.com/wazups)
- - Mxkxdxnski as the GUI maintainer.
+ - Mxkxdxnski as the GUI maintainer and tester.
 (https://github.com/Mxkxdxnski)
  - NotMakaron as the junior developer and documentation writer.
 (https://github.com/NotMakaron)
