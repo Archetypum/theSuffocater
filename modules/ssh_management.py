@@ -108,7 +108,7 @@ def ssh_management() -> None:
     functions: dict = {
         "safe_ssh_setup": safe_ssh_setup,
         "ssh_logging": ssh_logging,
-        "key_management:" key_management
+        "key_management": key_management
     }
 
     print("+---- SSH Management  ----+")
