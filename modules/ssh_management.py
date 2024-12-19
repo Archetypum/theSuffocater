@@ -25,6 +25,11 @@ except ModuleNotFoundError as import_error:
     exit(1)
 
 
+def key_management() -> None:
+    system("clear")
+    ...
+
+
 def ssh_logging() -> None:
     system("clear")
 
@@ -63,7 +68,7 @@ def safe_ssh_setup() -> None:
     distro: str = usr.get_user_distro()
     init_system: str = usr.get_init_system()
 
-    print("[*] After running this module, the following changes will be made:")
+    print("After running this module, the following changes will be made:")
     print("0. Install openssh-client and openssh-server.")
     print("1. Remove password authentication.")
     print("2. Add Pubkey authentication.")
@@ -102,7 +107,8 @@ def ssh_management() -> None:
 
     functions: dict = {
         "safe_ssh_setup": safe_ssh_setup,
-        "ssh_logging": ssh_logging
+        "ssh_logging": ssh_logging,
+        "key_management:" key_management
     }
 
     print("+---- SSH Management  ----+")
@@ -110,7 +116,7 @@ def ssh_management() -> None:
     for function in functions.keys():
         print(f" - {function}")
 
-    your_function: str = input("[==>] Enter function name: ").lower()
+    your_function: str = input("[==>] Enter function: ").lower()
     if your_function in functions:
         functions[your_function]()
 

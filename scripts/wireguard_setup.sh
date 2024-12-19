@@ -126,14 +126,10 @@ get_home() {
 }
 
 function make_client() {
-	clear
-
 	echo "..."
 }
 
 function remove_client() {
-	clear
-
 	list_clients
 	echo -n "[==>] Enter client to remove: "
 	read CLIENT
@@ -146,8 +142,6 @@ function remove_client() {
 }
 
 function list_clients() {
-	clear
-
 	CLIENTS_COUNT=$(grep -c -E "^### Client" "/etc/wireguard/${SERVER_WG_NIC}.conf")
 	if [[ ${CLIENTS_COUNT} -eq 0 ]]; then
 		echo "You don't have any clients yet."
@@ -156,11 +150,18 @@ function list_clients() {
 	grep -E "^### Client" "/etc/wireguard/${SERVER_WG_NIC}.conf" | cut -d " " -f 3 | nl -s ") "
 }
 
+function install_questions() {
+	clear
+
+	echo "..."
+}
+
 function install_wireguard() {
+	install_questions
 	clear
 
 	echo "+---- Wireguard Setup ----+"
-	echo -n "[==>] Enter the base of your GNU/Linux or BSD distribution: "
+	echo -n "[==>] Enter the base of your GNU/Linux distribution: "
 	read DISTRO
 	
 	DISTRO=$(echo "$DISTRO" | tr "[:upper:]" "[:lower:]")
@@ -182,7 +183,7 @@ function install_wireguard() {
 function remove_wireguard() {
 	clear
 
-	echo -e "${RED}WARNING: This will uninstall WireGuard and remove all the configuration files!"
+	echo -e "${RED}[!] WARNING: This will uninstall WireGuard and remove all the configuration files!"
 	echo -e "Please backup the /etc/wireguard directory if you want to keep your configuration files.${RESET}"
 	echo -n "Proceed? (y/N): "
 	read REMOVE
@@ -251,7 +252,7 @@ function menu() {
 function parse_args() {
 	if [[ $# -eq 0 ]]; then
 		check_privileges
-		main
+		menu
 		return
 	fi
 
@@ -287,10 +288,10 @@ function parse_args() {
 }
 
 function check_privileges() {
-	if [ "$(id -u)" -eq 0 ]; then
+	if [[ "$(id -u)" -eq 0 ]]; then
 		menu
 	else
-		echo "[!] Error: This script requires root privileges to install packages."
+		echo -e "${RED}[!] Error: This script requires root privileges to install packages.${RESET}"
 		exit 1
 	fi
 }

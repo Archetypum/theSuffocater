@@ -141,14 +141,7 @@ function main() {
 				break
 			fi
 		done
-	
-		for ITEM in "${GUIX_BASED_DISTROS[@]}"; do
-			if [[ "$DISTRO" == "$ITEM" ]]; then
-				remove_guix_based
-				break
-			fi
-		done
-	
+		
 		for ITEM in "${REDHAT_BASED_DISTROS[@]}"; do
 			if [[ "$DISTRO" == "$ITEM" ]]; then
 				remove_redhat_based
@@ -158,7 +151,7 @@ function main() {
 
 		for ITEM in "${CENTOS_BASED_DISTROS[@]}"; do
 			if [[ "$DISTRO" == "$ITEM" ]]; then
-				remove_centos_based
+				remove_redhat_based
 				break
 			fi
 		done
@@ -166,13 +159,6 @@ function main() {
 		for ITEM in "${FEDORA_BASED_DISTROS[@]}"; do
 			if [[ "$DISTRO" == "$ITEM" ]]; then
 				remove_fedora_based
-				break
-			fi
-		done
-
-		for ITEM in "${DRAGORA_BASED_DISTROS[@]}"; do
-			if [[ "$DISTRO" == "$ITEM" ]]; then
-				remove_dragora_based
 				break
 			fi
 		done
