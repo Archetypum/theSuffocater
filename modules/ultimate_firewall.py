@@ -15,6 +15,7 @@ try:
     import usr
     import subprocess
     from sys import exit
+    from typing import List
     from os import system, listdir
     from usr import GREEN, RED, RESET
 except ModuleNotFoundError as import_error:
@@ -22,29 +23,57 @@ except ModuleNotFoundError as import_error:
     exit(1)
 
 
+def toggle_interfaces(state: str, interfaces: List[str]) -> None:
+    for interface in interfaces:
+        try:
+            subprocess.run(["ifconfig", interface, state], check=True)
+        except subprocess.CalledProcessError as error:
+            print(f"{RED}[!] Error with interface {interface}: {error}{RESET}")
+            raise
+
+
+def toggle_bsd_firewall(enable: bool) -> None:
+    action: str = "e" if enable else "d"
+    try:
+        subprocess.run(["pfctl", f"-{action}"], check=True)
+        action_str: str = "accept_all" if enable else "block_all"
+        subprocess.run(["pfctl", "-f", "/etc/pf.conf", "-a", action_str, "pass all" if enable else "block all"], check=True)
+    except subprocess.CalledProcessError as error:
+        print(f"{RED}[!] error: {error}{RESET}")
+        raise
+
+
+def toggle_gnulinux_firewall(enable: bool) -> None:
+    action: str = "ACCEPT" if enable else "DROP"
+    try:
+        subprocess.run(["iptables", "-P", "INPUT", action], check=True)
+        subprocess.run(["iptables", "-P", "OUTPUT", action], check=True)
+    except subprocess.CalledProcessError as error:
+        print(f"{RED}[!] Error: {error}{RESET}")
+        raise
+
+
 def drop_firewall() -> None:
     system("clear")
     
     distro: str = usr.get_user_distro()
+    bsd_distros: list = [usr.FREEBSD_BASED_DISTROS, usr.OPENBSD_BASED_DISTROS, usr.NETBSD_BASED_DISTROS]
+    interfaces: list = ["wlan0", "eth0"]
 
     try:
-        if distro in usr.FREEBSD_BASED_DISTROS or distro in usr.OPENBSD_BASED_DISTROS or distro in usr.NETBSD_BASED_DISTROS:
+        if distro in bsd_distros:
             print("[<==] Disabling radio (if supported by system)...")
-            subprocess.run(["ifconfig", "wlan0", "down"], check=True)
-            subprocess.run(["ifconfig", "eth0", "down"], check=True)
-            
+            toggle_interfaces("down", interfaces)
+
             print("[<==] Blocking all input/output traffic...")
-            subprocess.run(["pfctl", "-d"], check=True)
-            subprocess.run(["pfctl", "-f", "/etc/pf.conf", "-a", "block_all", "block all"], check=True)
+            toggle_bsd_firewall(enable=False)
         else:
             print("[<==] Stopping radio...")
-            subprocess.run(["ifconfig", "wlan0", "down"], check=True)
-            subprocess.run(["ifconfig", "eth0", "down"], check=True)
+            toggle_interfaces("down", interfaces)
             subprocess.run(["nmcli", "radio", "all", "off"], check=True)
 
             print("[<==] Disabling input/output traffic...")
-            subprocess.run(["iptables", "-P", "INPUT", "DROP"], check=True)
-            subprocess.run(["iptables", "-P", "OUTPUT", "DROP"], check=True)
+            toggle_gnulinux_firewall(enable=False)
 
         print(f"{GREEN}[*] Success!{RESET}")
     except subprocess.CalledProcessError as error:
@@ -53,27 +82,29 @@ def drop_firewall() -> None:
 
 def accept_firewall() -> None:
     system("clear")
+    
     distro: str = usr.get_user_distro()
+    bsd_distros: list = [usr.FREEBSD_BASED_DISTROS, usr.OPENBSD_BASED_DISTROS, usr.NETBSD_BASED_DISTROS]
+    interfaces: list = ["wlan0", "eth0"]
 
     try:
-        if distro in usr.FREEBSD_BASED_DISTROS or distro in usr.OPENBSD_BASED_DISTROS or distro in usr.NETBSD_BASED_DISTROS:
+        if distro in bsd_distros:
             print("[<==] Enabling radio (if supported by system)...")
-            subprocess.run(["ifconfig", "wlan0", "up"], check=True)
+            toggle_interfaces("up", interfaces)
 
             print("[<==] Enabling input/output traffic...")
-            subprocess.run(["pfctl", "-e"], check=True)
-            subprocess.run(["pfctl", "-f", "/etc/pf.conf", "-a", "accept_all", "pass all"], check=True)
+            toggle_bsd_firewall(enable=True)
         else:
             print("[<==] Enabling radio...")
             subprocess.run(["nmcli", "radio", "all", "on"], check=True)
 
             print("[<==] Enabling input/output traffic...")
-            subprocess.run(["iptables", "-P", "INPUT", "ACCEPT"], check=True)
-            subprocess.run(["iptables", "-P", "OUTPUT", "ACCEPT"], check=True)
+            toggle_gnulinux_firewall(enable=True)
 
         print(f"{GREEN}[*] Success!{RESET}")
     except subprocess.CalledProcessError as error:
         print(f"{RED}[!] Error: {error}{RESET}")
+
 
 
 def iptables_setup() -> None:
@@ -82,7 +113,7 @@ def iptables_setup() -> None:
     print("We are going to set up basic iptables rules to secure your machine.")
     answer: str = input("[?] Proceed? (y/N): ").lower()
     if answer in ["y", "yes"]:
-        interfaces = listdir("/sys/class/net")
+        interfaces: str = listdir("/sys/class/net")
         print(f"Interfaces:\n{[interface for interface in interfaces if os.path.islink(f'/sys/class/net/{interface}')]}")
         interface: str = input("\n[==>] Enter your interface: ")
 
@@ -101,9 +132,9 @@ def iptables_setup() -> None:
             choice: str = input(f"\n[?] Allow {rule_name}? (y/N): ").lower()
             if choice in ["y", "yes"]:
                 for port in input_ports:
-                    subprocess.run(f"iptables -A INPUT -i {interface} -p tcp --dport {port} -j ACCEPT", check=True)
+                    subprocess.run(["iptables", "-A", "INPUT", "-i", interface, "-p", "tcp", "--dport", port, "-j", "ACCEPT"], check=True)
                 for port in output_ports:
-                    subprocess.run(f"iptables -A OUTPUT -o {interface} -p tcp --dport {port} -j ACCEPT", check=True)
+                    subprocess.run(["iptables", "-A", "OUTPUT", "-o", interface, "-p", "tcp", "--dport", port, "-j", "ACCEPT"], check=True)
 
         reject_choice: str = input("\n[?] Reject everything else that was not explicitly allowed? (y/N): ").lower()
         if reject_choice in ["y", "yes"]:
@@ -113,11 +144,35 @@ def iptables_setup() -> None:
         print(f"{GREEN}[*] Success!{RESET}")
 
 
+def block_ip_addresses(ip_addresses: list) -> None:
+    try:
+        for ip in ip_addresses:
+            subprocess.run(["pfctl", "-t", "blocklist", "-T", "add", ip], check=True)
+        print(f"{GREEN}[*] IPs successfully blocked with pfctl.{RESET}")
+    except subprocess.CalledProcessError as error:
+        print(f"{RED}[!] Error while blocking IPs using pfctl: {error}{RESET}")
+
+
+def handle_ufw(ip_addresses: list, action: str, init_system: str) -> None:
+    try:
+        for ip in ip_addresses:
+            subprocess.run(["ufw", action, "out", "from", ip], check=True)
+            subprocess.run(["ufw", action, "out", "to", ip], check=True)
+        
+        subprocess.run(["ufw", "enable"], check=True)
+        usr.init_system_handling(init_system, "start", "ufw")
+        subprocess.run(["ufw", "reload"], check=True)
+        print(f"{GREEN}[*] Success!{RESET}")
+    except subprocess.CalledProcessError as error:
+        print(f"{RED}[!] Error while executing UFW {action}: {error}{RESET}")
+
+
 def no_spying() -> None:
     system("clear")
     
     distro: str = usr.get_user_distro()
     init_system: str = usr.get_init_system()
+    bsd_distros: list = [usr.FREEBSD_BASED_DISTROS, usr.OPENBSD_BASED_DISTROS, usr.NETBSD_BASED_DISTROS]
     ip_addresses: list = [
         "91.207.136.55",    # starvapol_datacenter_ip
         "20.54.36.64",      # dublin_microsoft_ip
@@ -150,56 +205,33 @@ def no_spying() -> None:
     print(f"We are going to block {len(ip_addresses)} of big companies/datacenters/ISPs.")
     if usr.prompt_user("[?] Proceed?"):
         answer: str = input("[?] Reject or Deny? (r/D): ").lower()
+        
         if answer in ["d", "deny", "r", "reject"]:
-            if distro in usr.FREEBSD_BASED_DISTROS or distro in usr.OPENBSD_BASED_DISTROS or distro in usr.NETBSD_BASED_DISTROS:
-                try:
-                    for ip in ip_addresses:
-                        subprocess.run(["pfctl", "-t", "blocklist", "-T", "add", ip], check=True)
-                    print(f"{GREEN}[*] Success!{RESET}")
-                except subprocess.CalledProcessError as error:
-                    print(f"{RED}[!] Error: {error}{RESET}")
+            if distro in bsd_distros:
+                block_ip_addresses(ip_addresses)
             
             if answer in ["d", "deny"]:
-                try:
-                    for ip in ip_addresses:
-                        subprocess.run(["ufw", "deny", "out", "from", ip], check=True)
-                        subprocess.run(["ufw", "deny", "out", "to", ip], check=True)
-                    
-                    subprocess.run(["ufw", "enable"], check=True)
-                    usr.init_system_handling(init_system, "start", "ufw")
-                    subprocess.run(["ufw", "reload"], check=True)
-                    
-                    print(f"{GREEN}[*] Success!{RESET}")
-                except subprocess.CalledProcessError as error:
-                    print(f"{RED}[!] Error: {error}{RESET}")
-            
+                handle_ufw(ip_addresses, "deny", init_system)
             elif answer in ["r", "reject"]:
-                try:
-                    for ip in ip_addresses:
-                        subprocess.run(["ufw", "reject", "out", "from", ip], check=True)
-                        subprocess.run(["ufw", "reject", "out", "to", ip], check=True)
-                    
-                    subprocess.run(["ufw", "enable"], check=True)
-                    usr.init_system_handling(init_system, "start", "ufw")
-                    subprocess.run(["ufw", "reload"], check=True)
-                    
-                    print(f"{GREEN}[*] Success!{RESET}")
-                except subprocess.CalledProcessError as error:
-                    print(f"{RED}[!] Error: {error}{RESET}")
+                handle_ufw(ip_addresses, "reject", init_system)
 
 
 def porter() -> None:
     system("clear")
 
     distro: str = usr.get_user_distro()
-    active_ports: bytes = subprocess.check_output("lsof -i -P -n | grep LISTEN", shell=True).strip()
-    
-    print(f"\nActive listening ports:\n{active_ports}")
+    active_ports: bytes = subprocess.check_output(["lsof", "-i", "-P", "-n", "|", "grep", "LISTEN"], shell=True)
+    bsd_distros: list = [usr.FREEBSD_BASED_DISTROS, usr.OPENBSD_BASED_DISTROS, usr.NETBSD_BASED_DISTROS]
+
+    print(f"\nActive listening ports:\n{active_ports.strip().decode()}")
     answer: str = input("[?] Open/Close ports? (Open/Close): ").lower()
     if answer in ["o", "open"]:
         port: str = input("[==>] Enter the port number you want to open: ")
+        while not port.isdigit() or not (1 <= int(port) <= 65535):
+            port: str = input("[==>] Enter a valid port number (1-65535): ")
+        
         try:
-            if distro in usr.FREEBSD_BASED_DISTROS or distro in usr.OPENBSD_BASED_DISTROS or distro in usr.NETBSD_BASED_DISTROS:
+            if distro in bsd_distros:
                 subprocess.run(["pfctl", "-f", "/etc/pf.conf", "-a", f"port_open_{port}", f"pass in on any proto tcp from any to any port {port}"], check=True)
                 print(f"{GREEN}[*] Port {port} has been opened.{RESET}")
             else:
@@ -210,9 +242,11 @@ def porter() -> None:
 
     elif answer in ["c", "close"]:
         port: str = input("[==>] Enter the port number you want to close: ")
+        while not port.isdigit() or not (1 <= int(port) <= 65535):
+            port: str = input("[==>] Enter a valid port number (1-65535): ")
         try:
-            if distro in usr.FREEBSD_BASED_DISTROS or distro in usr.OPENBSD_BASED_DISTROS or distro in usr.NETBSD_BASED_DISTROS:
-                subprocess.run(["pfctl", "-f", "/etc/pf.conf", "-a", f"port_close_{port}", f"block in on any proto tcp from any to any port {port}"], shell=True)
+            if distro in bsd_distros:
+                subprocess.run(["pfctl", "-f", "/etc/pf.conf", "-a", f"port_close_{port}", f"block in on any proto tcp from any to any port {port}"], check=True)
                 print(f"{GREEN}[*] Port {port} has been closed using pfctl.{RESET}")
             else:
                 subprocess.run(["ufw", "deny", port], check=True)

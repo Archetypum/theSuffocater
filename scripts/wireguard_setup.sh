@@ -36,9 +36,11 @@ function install_debian_based() {
 	sleep 1
 	mkdir /etc/wireguard >/dev/null 2>&1
 	chmod 600 -R /etc/wireguard/
-
+	
+	echo "[<==] Generating keys..."
+	sleep 1
 	SERVER_PRIVATE_KEY=$(wg genkey)
-	SERVER_PUBLIC_KEY=$(echo "${SERVER_PRIV_KEY}" | wg pubkey)
+	SERVER_PUBLIC_KEY=$(echo "${SERVER_PRIVATE_KEY}" | wg pubkey)
 
 	echo "SERVER_PUB_IP=${SERVER_PUB_IP}
 SERVER_PUB_NIC=${SERVER_PUB_NIC}
@@ -51,11 +53,41 @@ SERVER_PUB_KEY=${SERVER_PUB_KEY}
 CLIENT_DNS_1=${CLIENT_DNS_1}
 CLIENT_DNS_2=${CLIENT_DNS_2}
 ALLOWED_IPS=${ALLOWED_IPS}" > /etc/wireguard/params
-
+	
 	echo "[Interface]
 Address = ${SERVER_WG_IPV4}/24,${SERVER_WG_IPV6}/64
 ListenPort = ${SERVER_PORT}
-PrivateKey = ${SERVER_PRIV_KEY}" >"/etc/wireguard/${SERVER_WG_NIC}.conf"
+PrivateKey = ${SERVER_PRIV_KEY}" > "/etc/wireguard/${SERVER_WG_NIC}.conf"
+	
+	echo "[<==] Setting up firewall rules..."
+	sleep 1
+	echo "PostUp = iptables -I INPUT -p udp --dport ${SERVER_PORT} -j ACCEPT
+PostUp = iptables -I FORWARD -i ${SERVER_PUB_NIC} -o ${SERVER_WG_NIC} -j ACCEPT
+PostUp = iptables -I FORWARD -i ${SERVER_WG_NIC} -j ACCEPT
+PostUp = iptables -t nat -A POSTROUTING -o ${SERVER_PUB_NIC} -j MASQUERADE
+PostUp = ip6tables -I FORWARD -i ${SERVER_WG_NIC} -j ACCEPT
+PostUp = ip6tables -t nat -A POSTROUTING -o ${SERVER_PUB_NIC} -j MASQUERADE
+PostDown = iptables -D INPUT -p udp --dport ${SERVER_PORT} -j ACCEPT
+PostDown = iptables -D FORWARD -i ${SERVER_PUB_NIC} -o ${SERVER_WG_NIC} -j ACCEPT
+PostDown = iptables -D FORWARD -i ${SERVER_WG_NIC} -j ACCEPT
+PostDown = iptables -t nat -D POSTROUTING -o ${SERVER_PUB_NIC} -j MASQUERADE
+PostDown = ip6tables -D FORWARD -i ${SERVER_WG_NIC} -j ACCEPT
+PostDown = ip6tables -t nat -D POSTROUTING -o ${SERVER_PUB_NIC} -j MASQUERADE" >> "/etc/wireguard/${SERVER_WG_NIC}.conf"
+	echo "net.ipv4.ip_forward = 1
+net.ipv6.conf.all.forwarding = 1" > /etc/sysctl.d/wg.conf
+	
+	sysctl --system
+
+	echo -n "[==>] Enter your init systemm: "
+	read INIT_SYSTEM
+	if [[ "$INIT_SYSTEM" == "sysvinit" ]]; then
+		service "wg-quick@${SERVER_WG_NIC}" start
+	elif [[ "$INIT_SYSTEM" == "systemd" ]]; then
+		systemctl start "wg-quick@${SERVER_WG_NIC}"
+		systemctl enable "wg-quick@${SERVER_WG_NIC}"
+	else
+		echo -e "${RED}[!] Error: Unsupported init system '${INIT_SYSTEM}'${RESET}"
+	fi
 }
 
 function remove_debian_based() {
@@ -75,6 +107,24 @@ function remove_arch_based() {
 	pacman -Rs --noconfirm wireguard-tools qrencode
 }
 
+get_home() {
+	clear
+
+	CLIENT=$1
+	if [[ -z "${CLIENT}" ]]; then
+		echo -e "${RED}[!] Error: No client name specified.${RESET}"
+		exit 1
+	fi
+
+	if [[ -e "/home/${CLIENT}" ]]; then
+		HOME_DIRECTORY="/home/${CLIENT}"
+	else
+		HOME_DIRECTORY="/root"
+	fi
+
+	echo "$HOME_DIRECTORY"
+}
+
 function make_client() {
 	clear
 
@@ -84,7 +134,15 @@ function make_client() {
 function remove_client() {
 	clear
 
-	echo "..."
+	list_clients
+	echo -n "[==>] Enter client to remove: "
+	read CLIENT
+
+	sed -i "/^### Client ${CLIENT}\$/,/^$/d" "/etc/wireguard/${SERVER_WG_NIC}.conf"
+	HOME=$(get_home "${CLIENT}")
+	rm -f "${HOME}/${SERVER_WG_NIC}-client-${CLIENT}.conf"
+	wg syncconf "${SERVER_WG_NIC}" < (wg-quick strip "${SERVER_WG_NIC}")
+	echo -e "${GREEN}[*] Success!${RESET}"
 }
 
 function list_clients() {
@@ -112,6 +170,13 @@ function install_wireguard() {
 			break
 		fi
 	done
+
+	for ITEM in "${ARCH_BASED_DISTROS[@]}"; do
+		if [[ "$DISTRO" == "$ITEM" ]]; then
+			install_arch_based
+			break
+		fi
+	done
 }
 
 function remove_wireguard() {
@@ -127,7 +192,7 @@ function remove_wireguard() {
 		echo -n "[==>] Enter the base of your GNU/Linux or BSD distribution: "
 		read DISTRO
 		
-		DISTRO=$(echo "$(DISTRO)" | tr "[:upper:]" "[:lower:]")
+		DISTRO=$(echo "$DISTRO" | tr "[:upper:]" "[:lower:]")
 		for ITEM in "${DEBIAN_BASED_DISTROS[@]}"; do
 			if [[ "$DISTRO" == "$ITEM" ]]; then
 				remove_debian_based
