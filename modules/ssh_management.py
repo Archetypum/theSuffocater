@@ -14,6 +14,7 @@ Date: 03.07.2024
 """
 
 try:
+    import os
     import re
     import usr
     import subprocess
@@ -35,31 +36,46 @@ def ssh_logging() -> None:
 
     print("We are going to log SSH connections to your device.")
     if usr.prompt_user("[?] Proceed?"):
-        log_file_path: str = input("[==>] Enter log file path [default]:")
+        log_file_path: str = input("[==>] Enter log file path [default]: ")
+        
         if log_file_path == "":
-            log_file_path: str = "/var/log/auth.log" or "/var/log/secure"
-
-        with open(log_file_path, "r") as log_file:
-            log_file.seek(0, 2)
-            loading: int = 0
-
-            while True:
+            if os.path.exists("/var/log/auth.log"):
+                log_file_path: str = "/var/log/auth.log"
+            elif os.path.exists("/var/log/secure"):
+                log_file_path: str = "/var/log/secure"
+            else:
+                print(f"{RED}[!] Error: Log file not found. Creating a new one...")
                 try:
-                    line: str = log_file.readline()
-                    if not line:
-                        print("+-------- No new log entries --------+")
-                        print("." * (loading % 3 + 1), end="\r")
-                        loading += 1
-                        sleep(5)
-                        continue
-                    else:
-                        loading: int = 0
+                    subprocess.run(["touch", "/var/log/auth.log"], check=True)
+                    log_file_path: str = "/var/log/auth.log"
+                except subprocess.CalledProcessError as error:
+                    print(f"{RED}[!] Error: Failed to create log file: {error}")
+                    return
 
-                    if re.search(r"Accepted.*from", line):
-                        print("+-------- SSH connection detected --------+")
-                        print({line.strip()})
-                except KeyboardInterrupt:
-                    break
+        try:
+            with open(log_file_path, "r") as log_file:
+                log_file.seek(0, 2)
+                loading: int = 0
+
+                while True:
+                    try:
+                        line: str = log_file.readline()
+                        if not line:
+                            print("+-------- No new log entries --------+")
+                            print("." * (loading % 3 + 1), end="\r")
+                            loading += 1
+                            sleep(5)
+                            continue
+                        else:
+                            loading: int = 0
+                            
+                        if re.search(r"Accepted.*from", line):
+                            print("+-------- SSH connection detected --------+")
+                            print(line.strip())
+                    except KeyboardInterrupt:
+                        break
+        except FileNotFoundError:
+            print(f"{RED}[!] Error: Log file {log_file_path} does not exist.")
 
 
 def safe_ssh_setup() -> None:

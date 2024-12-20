@@ -990,6 +990,18 @@ class UtutoPackageManagement:
     
     def name(self) -> str:
         return self.distro
+    
+    def update(self) -> bool:
+        return "idk"
+
+    def upgrade(self) -> bool:
+        return "idk"
+
+    def install(self, packages: List[str]) -> bool:
+        return "idk"
+
+    def remove(self, packages: List[str]) -> bool:
+        return "idk"
 
 
 class ArchPackageManagement:
