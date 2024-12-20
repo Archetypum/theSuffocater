@@ -15,9 +15,6 @@ SLACKWARE_BASED_DISTROS=("slackware")
 ALPINE_BASED_DISTROS=("alpine" "postmarket")
 VOID_BASED_DISTROS=("void" "argon" "shikake" "pristine")
 GENTOO_BASED_DISTROS=("gentoo" "funtoo" "calculate" "chromeos")
-OPENBSD_BASED_DISTROS=("openbsd" "adj" "libertybsd")
-NETBSD_BASED_DISTROS=("netbsd" "blackbsd" "edgebsd")
-FREEBSD_BASED_DISTROS=("freebsd" "ghostbsd" "midnightbsd" "bastillebsd" "cheribsd" "trueos" "dragonflybsd" "hardenedbsd" "hellosystem" "truenas")
 ARCH_BASED_DISTROS=("arch" "artix" "manjaro" "garuda" "hyperbola" "parabola" "endeavouros" "blackarch" "librewolfos")
 DEBIAN_BASED_DISTROS=("debian" "ubuntu" "xubuntu" "kubuntu" "mint" "lmde" "trisquel" "devuan" "kali" 
 	"parrot" "pop" "elementary" "mx" "antix" "steamos" "tails" "astra" "crunchbag"
@@ -48,8 +45,8 @@ SERVER_WG_NIC=${SERVER_WG_NIC}
 SERVER_WG_IPV4=${SERVER_WG_IPV4}
 SERVER_WG_IPV6=${SERVER_WG_IPV6}
 SERVER_PORT=${SERVER_PORT}
-SERVER_PRIV_KEY=${SERVER_PRIV_KEY}
-SERVER_PUB_KEY=${SERVER_PUB_KEY}
+SERVER_PRIVATE_KEY=${SERVER_PRIVATE_KEY}
+SERVER_PUBLIC_KEY=${SERVER_PUBLIC_KEY}
 CLIENT_DNS_1=${CLIENT_DNS_1}
 CLIENT_DNS_2=${CLIENT_DNS_2}
 ALLOWED_IPS=${ALLOWED_IPS}" > /etc/wireguard/params
@@ -57,7 +54,7 @@ ALLOWED_IPS=${ALLOWED_IPS}" > /etc/wireguard/params
 	echo "[Interface]
 Address = ${SERVER_WG_IPV4}/24,${SERVER_WG_IPV6}/64
 ListenPort = ${SERVER_PORT}
-PrivateKey = ${SERVER_PRIV_KEY}" > "/etc/wireguard/${SERVER_WG_NIC}.conf"
+PrivateKey = ${SERVER_PRIVATE_KEY}" > "/etc/wireguard/${SERVER_WG_NIC}.conf"
 	
 	echo "[<==] Setting up firewall rules..."
 	sleep 1
@@ -99,17 +96,23 @@ function remove_debian_based() {
 	apt purge wireguard wireguard-tools qrencode -y
 }
 
+function install_arch_based() {
+	echo "[<==] Installing Wireguard..."
+	sleep 1
+
+	pacman -Syu
+	pacman -S wireguard-tools qrencode --noconfirm 
+}
+
 function remove_arch_based() {
 	echo "[<==] Removing Wireguard..."
 	sleep 1
 	
 	pacman -Syu
-	pacman -Rs --noconfirm wireguard-tools qrencode
+	pacman -Rs wireguard-tools qrencode --noconfirm
 }
 
 get_home() {
-	clear
-
 	CLIENT=$1
 	if [[ -z "${CLIENT}" ]]; then
 		echo -e "${RED}[!] Error: No client name specified.${RESET}"
@@ -126,18 +129,91 @@ get_home() {
 }
 
 function make_client() {
-	echo "..."
+	if [[ ${SERVER_PUBLIC_IP} =~ .*:.* && ${SERVER_PUBLIC_IP} != *"["* && ${SERVER_PUBLIC_IP} != *"]"* ]]; then
+		SERVER_PUBLIC_IP="[${SERVER_PUBLIC_IP}]"
+	fi
+
+	ENDPOINT="${SERVER_PUBLIC_IP}:${SERVER_PORT}"
+
+	until [[ ${CLIENT_NAME} =~ ^[a-zA-Z0-9_-]+$ && ${CLIENT_EXISTS} == "0" && ${#CLIENT_NAME} -lt 16 ]]; do
+		echo -n "[==>] New client name: "
+		read CLIENT_NAME
+		CLIENT_EXISTS=$(grep -c -E "^### Client ${CLIENT_NAME}$" "/etc/wireguard/${SERVER_WG_NIC}.conf")
+		[[ ${CLIENT_EXISTS} != 0 ]] && echo -e "${RED}[!] Error: Client with the specified name already exists.${RESET}"
+	done
+
+	for DOT_IP in {2..254}; do
+		DOT_EXISTS=$(grep -c "${SERVER_WG_IPV4::-1}${DOT_IP}" "/etc/wireguard/${SERVER_WG_NIC}.conf")
+		[[ "${DOT_EXISTS}" == "0" ]] && break
+	done
+
+	[[ "${DOT_EXISTS}" == "1" ]] && { echo -e "${RED}[!] Error: The subnet supports only 253 clients.${RESET}"; exit 1; }
+
+	BASE_IP=$(echo "$SERVER_WG_IPV4" | awk -F "." '{ print $1"."$2"."$3 }')
+
+	until [[ ${IPV4_EXISTS} == "0" ]]; do
+		read -rp "[==>] Client WireGuard IPv4: ${BASE_IP}." -e -i "${DOT_IP}" DOT_IP
+		CLIENT_WG_IPV4="${BASE_IP}.${DOT_IP}"
+		IPV4_EXISTS=$(grep -c "$CLIENT_WG_IPV4/32" "/etc/wireguard/${SERVER_WG_NIC}.conf")
+		[[ ${IPV4_EXISTS} != 0 ]] && echo -e "${RED}[!] Error: Client with the specified IPv4 already exists.${RESET}"
+	done
+
+	BASE_IP=$(echo "$SERVER_WG_IPV6" | awk -F "::" "{ print $1 }")
+
+	until [[ ${IPV6_EXISTS} == "0" ]]; do
+		read -rp "[==>] Client WireGuard IPv6: ${BASE_IP}::" -e -i "${DOT_IP}" DOT_IP
+		CLIENT_WG_IPV6="${BASE_IP}::${DOT_IP}"
+		IPV6_EXISTS=$(grep -c "${CLIENT_WG_IPV6}/128" "/etc/wireguard/${SERVER_WG_NIC}.conf")
+		if [[ ${IPV6_EXISTS} != 0 ]]; then
+			echo -e "${RED}[!] Error: Client with the specified IPv6 already exists.${RESET}"
+		fi
+	done
+
+	CLIENT_PRIVATE_KEY=$(wg genkey)
+	CLIENT_PUBLIC_KEY=$(echo "${CLIENT_PRIVATE_KEY}" | wg pubkey)
+	CLIENT_PRE_SHARED_KEY=$(wg genpsk)
+
+	HOME_DIRECTORY=$(get_home "${CLIENT_NAME}")
+
+	echo "[Interface]
+PrivateKey = ${CLIENT_PRIVATE_KEY}
+Address = ${CLIENT_WG_IPV4}/32,${CLIENT_WG_IPV6}/128
+DNS = ${CLIENT_DNS_1},${CLIENT_DNS_2}
+
+[Peer]
+PublicKey = ${SERVER_PUBLIC_KEY}
+PresharedKey = ${CLIENT_PRE_SHARED_KEY}
+Endpoint = ${ENDPOINT}
+AllowedIPs = ${ALLOWED_IPS}" > "${HOME_DIRECTORY}/${SERVER_WG_NIC}-client-${CLIENT_NAME}.conf"
+
+	echo -e "### Client ${CLIENT_NAME}
+[Peer]
+PublicKey = ${CLIENT_PUBLIC_KEY}
+PresharedKey = ${CLIENT_PRE_SHARED_KEY}
+AllowedIPs = ${CLIENT_WG_IPV4}/32,${CLIENT_WG_IPV6}/128" >> "/etc/wireguard/${SERVER_WG_NIC}.conf"
+
+	TMPFILE=$(mktemp)
+	wg-quick strip "${SERVER_WG_NIC}" > "$TMPFILE"
+	wg syncconf "${SERVER_WG_NIC}" < "$TMPFILE"
+	rm -f "$TMPFILE"
+
+	if command -v qrencode &>/dev/null; then
+		echo -e "${GREEN}[*] Client QR Code:${RESET}"
+		qrencode -t ansiutf8 -l L <"${HOME_DIRECTORY}/${SERVER_WG_NIC}-client-${CLIENT_NAME}.conf"
+	fi
+
+	echo -e "${GREEN}[*] Config file location:${HOME_DIRECTORY}/${SERVER_WG_NIC}-client-${CLIENT_NAME}.conf${RESET}"
+	echo -e "${GREEN}[*] Success!"
 }
 
 function remove_client() {
-	list_clients
 	echo -n "[==>] Enter client to remove: "
+	
 	read CLIENT
-
 	sed -i "/^### Client ${CLIENT}\$/,/^$/d" "/etc/wireguard/${SERVER_WG_NIC}.conf"
 	HOME=$(get_home "${CLIENT}")
 	rm -f "${HOME}/${SERVER_WG_NIC}-client-${CLIENT}.conf"
-	wg syncconf "${SERVER_WG_NIC}" < (wg-quick strip "${SERVER_WG_NIC}")
+	wg syncconf "${SERVER_WG_NIC}" <(wg-quick strip "${SERVER_WG_NIC}")
 	echo -e "${GREEN}[*] Success!${RESET}"
 }
 
@@ -225,7 +301,7 @@ function menu() {
 	read FUNCTION
 	case "${FUNCTION}" in
 		add_users)
-			new_client
+			make_client
 			exit 0
 			;;
 		list_users)
