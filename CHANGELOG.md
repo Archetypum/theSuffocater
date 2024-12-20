@@ -14,15 +14,15 @@ Nothing left to say here anymore, its just first stable release.
       43 unique files.                              
        3 files ignored.
 
-github.com/AlDanial/cloc v 1.96  T=0.04 s (1100.3 files/s, 167327.9 lines/s)
+github.com/AlDanial/cloc v 1.96  T=0.04 s (1095.5 files/s, 167299.3 lines/s)
 -------------------------------------------------------------------------------
 Language                     files          blank        comment           code
 -------------------------------------------------------------------------------
-Python                          15            769            328           2650
+Python                          15            774            328           2673
 Bourne Shell                     6            176              6           1082
 Markdown                         6            246              0            799
 Text                            16             87              0            396
 -------------------------------------------------------------------------------
-SUM:                            43           1278            334           4927
+SUM:                            43           1283            334           4950
 -------------------------------------------------------------------------------
 ```
