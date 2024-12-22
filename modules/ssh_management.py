@@ -169,7 +169,7 @@ def ssh_management() -> None:
         "ssh_key_gen": ssh_key_gen     
     }
 
-    print("+---- SSH Management  ----+")
+    print("+---- SSH Management ----+")
     print("\nAvailable functions:")
     for function in functions.keys():
         print(f" - {function}")

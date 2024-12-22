@@ -104,12 +104,12 @@ function install_arch_based() {
 	pacman -S wireguard-tools qrencode --noconfirm 
 }
 
-function remove_arch_based() {
+function remove_alpine_based() {
 	echo "[<==] Removing Wireguard..."
 	sleep 1
-	
-	pacman -Syu
-	pacman -Rs wireguard-tools qrencode --noconfirm
+
+	apk update && apk upgrade
+	apk del wireguard-tools qrencode
 }
 
 get_home() {

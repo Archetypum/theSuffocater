@@ -45,7 +45,6 @@ def toggle_gnulinux_firewall(enable: bool) -> None:
 def drop_firewall() -> None:
     system("clear")
     
-    distro: str = usr.get_user_distro()
     interfaces: list = ["wlan0", "eth0"]
 
     try:
@@ -64,7 +63,6 @@ def drop_firewall() -> None:
 def accept_firewall() -> None:
     system("clear")
     
-    distro: str = usr.get_user_distro()
     interfaces: list = ["wlan0", "eth0"]
 
     try:

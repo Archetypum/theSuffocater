@@ -233,7 +233,6 @@ def main_gui(suffocater_version: str) -> None:
     tk.Button(left_frame, text="License", width=20, command=on_license).pack(padx=5, pady=5)
     tk.Button(left_frame, text="Changelog", width=20, command=on_changelog).pack(padx=5, pady=5)
 
-    """Console simulation"""
     output_text = tk.Text(root, height=15, width=50, bg="grey20", fg='white', state=tk.DISABLED)
     output_text.pack(pady=10, expand=True, fill=tk.BOTH)
 
