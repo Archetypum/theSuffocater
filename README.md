@@ -61,9 +61,9 @@ Resolves Country, city and company of provided IP address.
  - safe_geoclue_setup.py
 
 Disables Geoclue geolocation gathering by changing the config file, improving your OPSEC.
- - safe_ssh_setup.py
+ - ssh_management.py
 
-Hardens your SSH by changing the config file. Essential to your server.
+Hardens your SSH by changing the config file, manages SSH keys and logs connections. Essential to your server.
  - tor_management.py
 
 Installs tor, adds tor devuan repositories, setups tor nodes. You know what you're doing.
@@ -108,8 +108,8 @@ theSuffocater is a project by Archetypum with:
 (https://github.com/wazups)
  - Mxkxdxnski as the GUI maintainer and tester.
 (https://github.com/Mxkxdxnski)
- - NotMakaron as the junior developer and documentation writer.
-(https://github.com/NotMakaron)
+ - WretchOfLights as the junior developer and documentation writer.
+(https://github.com/WretchOfLights)
 
 ## Goals
 
