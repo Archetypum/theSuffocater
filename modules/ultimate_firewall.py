@@ -3,7 +3,7 @@
 """
 ---------------------------------------
 Setups firewalls for you using pre-build profiles.
-GNU/Linux and BSD supported.
+GNU/Linux supported.
 
 Author: iva
 Date: 09.11.2024
@@ -32,17 +32,6 @@ def toggle_interfaces(state: str, interfaces: List[str]) -> None:
             raise
 
 
-def toggle_bsd_firewall(enable: bool) -> None:
-    action: str = "e" if enable else "d"
-    try:
-        subprocess.run(["pfctl", f"-{action}"], check=True)
-        action_str: str = "accept_all" if enable else "block_all"
-        subprocess.run(["pfctl", "-f", "/etc/pf.conf", "-a", action_str, "pass all" if enable else "block all"], check=True)
-    except subprocess.CalledProcessError as error:
-        print(f"{RED}[!] error: {error}{RESET}")
-        raise
-
-
 def toggle_gnulinux_firewall(enable: bool) -> None:
     action: str = "ACCEPT" if enable else "DROP"
     try:
@@ -57,23 +46,15 @@ def drop_firewall() -> None:
     system("clear")
     
     distro: str = usr.get_user_distro()
-    bsd_distros: list = [usr.FREEBSD_BASED_DISTROS, usr.OPENBSD_BASED_DISTROS, usr.NETBSD_BASED_DISTROS]
     interfaces: list = ["wlan0", "eth0"]
 
     try:
-        if distro in bsd_distros:
-            print("[<==] Disabling radio (if supported by system)...")
-            toggle_interfaces("down", interfaces)
+        print("[<==] Stopping radio...")
+        toggle_interfaces("down", interfaces)
+        subprocess.run(["nmcli", "radio", "all", "off"], check=True)
 
-            print("[<==] Blocking all input/output traffic...")
-            toggle_bsd_firewall(enable=False)
-        else:
-            print("[<==] Stopping radio...")
-            toggle_interfaces("down", interfaces)
-            subprocess.run(["nmcli", "radio", "all", "off"], check=True)
-
-            print("[<==] Disabling input/output traffic...")
-            toggle_gnulinux_firewall(enable=False)
+        print("[<==] Disabling input/output traffic...")
+        toggle_gnulinux_firewall(enable=False)
 
         print(f"{GREEN}[*] Success!{RESET}")
     except subprocess.CalledProcessError as error:
@@ -84,27 +65,18 @@ def accept_firewall() -> None:
     system("clear")
     
     distro: str = usr.get_user_distro()
-    bsd_distros: list = [usr.FREEBSD_BASED_DISTROS, usr.OPENBSD_BASED_DISTROS, usr.NETBSD_BASED_DISTROS]
     interfaces: list = ["wlan0", "eth0"]
 
     try:
-        if distro in bsd_distros:
-            print("[<==] Enabling radio (if supported by system)...")
-            toggle_interfaces("up", interfaces)
+        print("[<==] Enabling radio...")
+        subprocess.run(["nmcli", "radio", "all", "on"], check=True)
 
-            print("[<==] Enabling input/output traffic...")
-            toggle_bsd_firewall(enable=True)
-        else:
-            print("[<==] Enabling radio...")
-            subprocess.run(["nmcli", "radio", "all", "on"], check=True)
-
-            print("[<==] Enabling input/output traffic...")
-            toggle_gnulinux_firewall(enable=True)
+        print("[<==] Enabling input/output traffic...")
+        toggle_gnulinux_firewall(enable=True)
 
         print(f"{GREEN}[*] Success!{RESET}")
     except subprocess.CalledProcessError as error:
         print(f"{RED}[!] Error: {error}{RESET}")
-
 
 
 def iptables_setup() -> None:
@@ -118,8 +90,6 @@ def iptables_setup() -> None:
         interface: str = input("\n[==>] Enter your interface: ")
 
         rules: list = [
-            ("Loopback", ["lo"], ["lo"]),
-            ("Ping", ["icmp"], ['icmp']),
             ("Web", ["80", "443"], ["80", "443"]),
             ("DNS", ["53"], ["53"]),
             ("NTP", ["123"], ["123"]),
@@ -135,6 +105,10 @@ def iptables_setup() -> None:
                     subprocess.run(["iptables", "-A", "INPUT", "-i", interface, "-p", "tcp", "--dport", port, "-j", "ACCEPT"], check=True)
                 for port in output_ports:
                     subprocess.run(["iptables", "-A", "OUTPUT", "-o", interface, "-p", "tcp", "--dport", port, "-j", "ACCEPT"], check=True)
+        
+        choice: str = input("\n[?] Allow ping? (y/n)").lower()
+        if choice in ["y", "yes"]:
+            subprocess.run(["iptables", "-A", "INPUT", "-p", "icmp", "--icmp-type", "echo-request", "-j", "ACCEPT"], check=True)
 
         reject_choice: str = input("\n[?] Reject everything else that was not explicitly allowed? (y/N): ").lower()
         if reject_choice in ["y", "yes"]:
@@ -142,15 +116,6 @@ def iptables_setup() -> None:
             subprocess.run(["iptables", "-A", "OUTPUT", "-j", "REJECT"], check=True)
 
         print(f"{GREEN}[*] Success!{RESET}")
-
-
-def block_ip_addresses(ip_addresses: list) -> None:
-    try:
-        for ip in ip_addresses:
-            subprocess.run(["pfctl", "-t", "blocklist", "-T", "add", ip], check=True)
-        print(f"{GREEN}[*] IPs successfully blocked with pfctl.{RESET}")
-    except subprocess.CalledProcessError as error:
-        print(f"{RED}[!] Error while blocking IPs using pfctl: {error}{RESET}")
 
 
 def handle_ufw(ip_addresses: list, action: str, init_system: str) -> None:
@@ -172,7 +137,6 @@ def no_spying() -> None:
     
     distro: str = usr.get_user_distro()
     init_system: str = usr.get_init_system()
-    bsd_distros: list = [usr.FREEBSD_BASED_DISTROS, usr.OPENBSD_BASED_DISTROS, usr.NETBSD_BASED_DISTROS]
     ip_addresses: list = [
         "91.207.136.55",    # starvapol_datacenter_ip
         "20.54.36.64",      # dublin_microsoft_ip
@@ -206,10 +170,7 @@ def no_spying() -> None:
     if usr.prompt_user("[?] Proceed?"):
         answer: str = input("[?] Reject or Deny? (r/D): ").lower()
         
-        if answer in ["d", "deny", "r", "reject"]:
-            if distro in bsd_distros:
-                block_ip_addresses(ip_addresses)
-            
+        if answer in ["d", "deny", "r", "reject"]: 
             if answer in ["d", "deny"]:
                 handle_ufw(ip_addresses, "deny", init_system)
             elif answer in ["r", "reject"]:
@@ -221,7 +182,6 @@ def porter() -> None:
 
     distro: str = usr.get_user_distro()
     active_ports: bytes = subprocess.check_output(["lsof", "-i", "-P", "-n", "|", "grep", "LISTEN"], shell=True)
-    bsd_distros: list = [usr.FREEBSD_BASED_DISTROS, usr.OPENBSD_BASED_DISTROS, usr.NETBSD_BASED_DISTROS]
 
     print(f"\nActive listening ports:\n{active_ports.strip().decode()}")
     answer: str = input("[?] Open/Close ports? (Open/Close): ").lower()
@@ -231,12 +191,8 @@ def porter() -> None:
             port: str = input("[==>] Enter a valid port number (1-65535): ")
         
         try:
-            if distro in bsd_distros:
-                subprocess.run(["pfctl", "-f", "/etc/pf.conf", "-a", f"port_open_{port}", f"pass in on any proto tcp from any to any port {port}"], check=True)
-                print(f"{GREEN}[*] Port {port} has been opened.{RESET}")
-            else:
-                subprocess.run(["ufw", "allow", port], check=True)
-                print(f"{GREEN}[*] Port {port} has been opened.{RESET}")
+            subprocess.run(["ufw", "allow", port], check=True)
+            print(f"{GREEN}[*] Port {port} has been opened.{RESET}")
         except (subprocess.CalledProcessError, ValueError) as error:
             print(f"{RED}[!] Failed to open port {port}:\n{error}{RESET}")
 
@@ -245,12 +201,8 @@ def porter() -> None:
         while not port.isdigit() or not (1 <= int(port) <= 65535):
             port: str = input("[==>] Enter a valid port number (1-65535): ")
         try:
-            if distro in bsd_distros:
-                subprocess.run(["pfctl", "-f", "/etc/pf.conf", "-a", f"port_close_{port}", f"block in on any proto tcp from any to any port {port}"], check=True)
-                print(f"{GREEN}[*] Port {port} has been closed using pfctl.{RESET}")
-            else:
-                subprocess.run(["ufw", "deny", port], check=True)
-                print(f"{GREEN}[*] Port {port} has been closed.{RESET}")
+            subprocess.run(["ufw", "deny", port], check=True)
+            print(f"{GREEN}[*] Port {port} has been closed.{RESET}")
         except (subprocess.CalledProcessError, ValueError) as error:
             print(f"{RED}[!] Error: Failed to close port {port}:\n{error}{RESET}")
 
