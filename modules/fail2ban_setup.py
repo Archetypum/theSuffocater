@@ -2,33 +2,77 @@
 
 """
 ---------------------------------------
-null
+Pre-build fail2ban configurations.
+Saves your server from bruteforce and DDoS attacks.
 
-GNU/Linux, BSD supported.
+GNU/Linux supported.
 Author: iva
-Date: null
+Date: 23.12.2024
 ---------------------------------------
 """
 
 try:
+    import os
     import usr
     import subprocess
     from sys import exit
     from os import system
+    from time import sleep
     from usr import GREEN, RED, RESET
 except ModuleNotFoundError as import_error:
     print(f"{RED}[!] Error: modules not found:\n{import_error}{RESET}")
 
 
+def ssh_bruteforce() -> None:
+    system("clear")
+    
+    init_system: str = usr.get_init_system()
+
+    print("We are going to configure fail2ban to prevent SSH bruteforce")
+    if usr.prompt_user("[?] Proceed?"):
+        try:
+            print("[<==] Creating a copy of 'jail.conf' file...")
+            sleep(1)
+            if not os.path.exists("/etc/fail2ban/jail.local"):
+                subprocess.run(["cp", "/etc/fail2ban/jail.conf", "/etc/fail2ban/jail.local"], check=True)
+
+            with open("config_files/fail2ban_ssh_bruteforce.txt", "r") as config_file:
+                config_file_text: str = config_file.read()
+
+            with open("/etc/fail2ban/jail.local", "a") as true_config_file:
+                true_config_file.write(config_file_text)
+
+            input("[==>] Hit enter to check /etc/fail2ban/jail.local ...")
+            subprocess.run(["nano", "/etc/fail2ban/jail.local"], check=True)
+            
+            if init_system == "systemd":
+                usr.init_system_handling("systemd", "enable", "sshd")
+                usr.init_system_handling("systemd", "enable", "sshd")
+                usr.init_system_handling("systemd", "reload", "ssh")
+                usr.init_system_handling("systemd", "start", "ssh")
+            else:
+                usr.init_system_handling(init_system, "reload", "ssh")
+                usr.init_system_handling(init_system, "start", "ssh")
+            usr.init_system_handling(init_system, "start", "fail2ban")
+
+            print(f"{GREEN}[*] Success!{RESET}")
+            sleep(3)
+            fail2ban_setup()
+        except (IOError, FileNotFoundError) as error:
+            print(f"{RED}[!] Error: {error}{RESET}")
+
+
 def fail2ban_setup() -> None:
     system("clear")
 
-    profiles: dict = {}
+    profiles: dict = {
+            "ssh_bruteforce": ssh_bruteforce
+            }
     
     print("+---- Fail2Ban Setup ----+")
     print("\nAvailable functions:")
     for profile in profiles.keys():
-        print(f" - {function}")
+        print(f" - {profile}")
     
     while True:
         try:
