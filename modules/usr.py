@@ -157,7 +157,7 @@ def prompt_user(prompt: str, default: str = "N") -> bool:
 def get_init_system() -> str:
     """
     Detects init system.
-    Can detect ugly fucking systemd, sysvinit, openrc, s6, init, and launchd.
+    Can detect ugly fucking systemd, runit, sysvinit, openrc, s6, init, and launchd.
 
     Returns:
         str: Name of the init system (e.g., "systemd", "sysvinit", "upstart", "openrc", etc.)
@@ -174,6 +174,8 @@ def get_init_system() -> str:
     
     elif os.path.exists("/etc/s6"):
         return "s6"
+    elif os.path.exists("/etc/runit"):
+        return "runit"
 
     try:
         init_pid = subprocess.check_output(["ps", "-p", "1", "-o", "comm="]).decode().strip()
@@ -1123,8 +1125,8 @@ class OpenBSDPackageManagement:
         try:
             subprocess.run(["pkg_add", "-uf"], check=True)
             return True
-        except subprocess.CalledProcessError as e:
-            print(f"{RED}[!] Error: {e}{RESET}")
+        except subprocess.CalledProcessError as error:
+            print(f"{RED}[!] Error: {error}{RESET}")
             return False
     
     def install(self, packages: List[str]) -> bool:
@@ -1500,7 +1502,7 @@ def init_system_handling(init_system: str, command: str, service: str) -> bool:
             rc_service = OpenRCManagement(command, service)
             return True
         else:
-            print(f"{RED}[!] Error: unsupported init system.{RESET}")
+            print(f"{RED}[!] Error: unsupported init system: {init_system}.{RESET}")
             exit(1)
 
     except subprocess.CalledProcessError as error:

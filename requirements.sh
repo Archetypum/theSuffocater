@@ -76,7 +76,7 @@ function install_python_requirements_netbsd() {
 
 function install_debian_based() {
 	apt update && apt full-upgrade -y
-	apt install python3 python3-pip -y
+	apt install python3 python3-pip python3.11-venv -y
 	apt install net-tools iproute2 ufw iptables fail2ban nftables -y
 	apt install openvpn wireguard wireguard-tools -y
 	apt install lsof git wget bash curl unbound passwd -y
