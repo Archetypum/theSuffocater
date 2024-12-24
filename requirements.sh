@@ -22,7 +22,7 @@ NETBSD_BASED_DISTROS=("netbsd" "blackbsd" "edgebsd")
 FREEBSD_BASED_DISTROS=("freebsd" "ghostbsd" "midnightbsd" "bastillebsd" "cheribsd" "trueos" "dragonflybsd" "hardenedbsd" "hellosystem" "truenas")
 ARCH_BASED_DISTROS=("arch" "artix" "manjaro" "garuda" "hyperbola" "parabola" "endeavouros" "blackarch" "librewolfos")
 DEBIAN_BASED_DISTROS=("debian" "ubuntu" "xubuntu" "kubuntu" "mint" "lmde" "trisquel" "devuan" "kali" 
-	"parrot" "pop" "elementary" "mx" "antix" "steamos" "tails" "astra" "crunchbag"
+	"parrot" "pop" "elementary" "mx" "antix" "steamos" "tails" "astra" "crunchbag" "ututo"
 	"crunchbag++" "pureos" "deepin" "zorin" "peppermintos" "lubuntu" "wubuntu"
 	)
 	

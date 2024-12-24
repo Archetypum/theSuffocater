@@ -21,7 +21,7 @@ RESET: str = "\033[0m"
 DEBIAN_BASED_DISTROS: list = ["debian", "ubuntu", "xubuntu", "linuxmint", "lmde", "trisquel", "devuan", 
                               "kali", "parrot", "pop", "elementary", "mx", "antix", "crunchbag",
                               "crunchbag++", "pure", "deepin", "zorin", "peppermint", "lubuntu",
-                              "kubuntu", "wubuntu", "steamos", "astra", "tails"]
+                              "kubuntu", "wubuntu", "steamos", "astra", "tails", "ututo"]
 ARCH_BASED_DISTROS: list = ["arch", "artix", "manjaro", "endeavour", "garuda", "parabola", "hyperbola",
                             "blackarch", "librewolf"]
 ALPINE_BASED_DISTROS: list = ["alpine", "postmarket"]
@@ -32,7 +32,6 @@ SLACKWARE_BASED_DISTROS: list = ["slackware"]
 FEDORA_BASED_DISTROS: list = ["fedora", "mos"]
 CENTOS_BASED_DISTROS: list = ["centos"]
 GUIX_BASED_DISTROS: list = ["guix"]
-UTUTO_BASED_DISTROS: list = ["ututo"]
 
 # BSD
 FREEBSD_BASED_DISTROS: list = ["freebsd", "midnightbsd", "ghostbsd", "bastillebsd", "cheribsd", "dragonflybsd",
@@ -981,31 +980,6 @@ class GuixPackageManagement:
                 return False
 
 
-class UtutoPackageManagement:
-    """
-    Simple class for working with ... with what?
-    """
-
-    def __init__(self, distro: str, packages: List[str]) -> None:
-        self.distro = distro
-        self.packages = packages
-    
-    def name(self) -> str:
-        return self.distro
-    
-    def update(self) -> bool:
-        return "idk"
-
-    def upgrade(self) -> bool:
-        return "idk"
-
-    def install(self, packages: List[str]) -> bool:
-        return "idk"
-
-    def remove(self, packages: List[str]) -> bool:
-        return "idk"
-
-
 class ArchPackageManagement:
     """
     Simple class for working with pacman in your modules.
@@ -1274,13 +1248,6 @@ def package_handling(distro: str, package_list: List[str], command: str) -> bool
                 guix.install(package_list)
                 return True
 
-            elif distro in UTUTO_BASED_DISTROS:
-                ututo = UtutoPackageManagement(distro, packages=package_list)
-                ututo.update()
-                ututo.upgrade()
-                ututo.install(package_list)
-                return True
-
             elif distro in FREEBSD_BASED_DISTROS:
                 freebsd = FreeBSDPackageManagement(distro, packages=package_list)
                 freebsd.update()
@@ -1355,11 +1322,6 @@ def package_handling(distro: str, package_list: List[str], command: str) -> bool
             elif distro in GUIX_BASED_DISTROS:
                 guix = GuixPackageManagement(distro, packages=package_list)
                 guix.remove(package_list)
-                return True
-
-            elif distro in UTUTO_BASED_DISTROS:
-                ututo = UtutoPackageManagement(distro, packages=package_list)
-                ututo.remove(package_list)
                 return True
 
             elif distro in FREEBSD_BASED_DISTROS:
@@ -1439,12 +1401,6 @@ def package_handling(distro: str, package_list: List[str], command: str) -> bool
                 guix = GuixPackageManagement(distro, packages=[])
                 guix.update()
                 guix.upgrade()
-                return True
-
-            elif distro in UTUTO_BASED_DISTROS:
-                ututo = UtutoPackageManagement(distro, packages=[])
-                ututo.update()
-                ututo.upgrade()
                 return True
 
             elif distro in FREEBSD_BASED_DISTROS:
