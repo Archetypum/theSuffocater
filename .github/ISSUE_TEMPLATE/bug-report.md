@@ -2,8 +2,8 @@
 name: Bug report
 about: Create a issue to help us improve
 title: "[BUG]"
-labels: bug
-assignees: WretchOfLights
+labels: bug, help wanted, invalid, question, wontfix
+assignees: Kinderfeld, Mxkxdxnski, wazups, WretchOfLights
 
 ---
 
