@@ -21,7 +21,7 @@ After vulnerability got fixed we will not:
 
 ## Known Vulnerabilities
 
-- theSuffocater can't launch on RHEL, OpenSUSE and Fedora.
+- theSuffocater can't launch on RHEL, OpenSUSE, Dragora and Fedora.
 Reason: old Python version (3.8)
 Solution: remove explicit type conversion in system_monitor.py and others.  
 
