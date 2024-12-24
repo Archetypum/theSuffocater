@@ -76,6 +76,9 @@ Unix user management for new users.
  - usr.py
 
 Most important module to make all others to work properly: simply usr.py is a big list of functions that theSuffocater modules rely on.
+ - fail2ban_setup
+
+Setups fail2ban for you by changing his configurations 
  - vpn_server_setup.py
 
 Installs OpenVPN, Wireguard, OutlineVPN and automatically set them up for proper VPN server work.
@@ -91,7 +94,6 @@ Removes binary firmware from your system, making it free.
  - passgen.sh
 
 Password generator with customizable key length which uses random symbols.
-
  - openvpn_setup.sh
 
 NOT FINISHED YET.
