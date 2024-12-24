@@ -69,7 +69,7 @@ def ssh_key_gen() -> None:
         print(f"Your SSH-keys: {key_file} и {key_file}.pub")
         print(f"{GREEN}[*] Success!{RESET}")
     except subprocess.CalledProcessError:
-        print("{RED}[!] Error: failed to create SSH-keys: {error}")
+        print(f"{RED}[!] Error: failed to create SSH-keys: {error}{RESET}")
         return
 
 
@@ -86,12 +86,12 @@ def ssh_logging() -> None:
             elif os.path.exists("/var/log/secure"):
                 log_file_path: str = "/var/log/secure"
             else:
-                print(f"{RED}[!] Error: Log file not found. Creating a new one...")
+                print(f"{RED}[!] Error: Log file not found. Creating a new one...{RESET}")
                 try:
                     subprocess.run(["touch", "/var/log/auth.log"], check=True)
                     log_file_path: str = "/var/log/auth.log"
                 except subprocess.CalledProcessError as error:
-                    print(f"{RED}[!] Error: Failed to create log file: {error}")
+                    print(f"{RED}[!] Error: Failed to create log file: {error}{RESET}")
                     return
 
         try:
@@ -117,7 +117,7 @@ def ssh_logging() -> None:
                     except KeyboardInterrupt:
                         break
         except FileNotFoundError:
-            print(f"{RED}[!] Error: Log file {log_file_path} does not exist.")
+            print(f"{RED}[!] Error: Log file {log_file_path} does not exist.{RESET}")
 
 
 def safe_ssh_setup() -> None:
