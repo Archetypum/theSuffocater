@@ -1,4 +1,4 @@
-## theSuffocater v1.0.0-stable:
+# theSuffocater v1.0.0-stable:
 
 This is the very first stable release of theSuffocater.
 Features CLI and GUI stable versions of the carcass, 11 working modules and 4 scripts.
@@ -7,22 +7,24 @@ everything in next stable releases.
 
 Nothing left to say here anymore, its just first stable-unstable release.
 
+## Happy New Year!
+
 "cloc ." statistics:
 
 ```text
-      45 text files.
-      44 unique files.                              
-       3 files ignored.
+      44 text files.
+      43 unique files.                              
+      16 files ignored.
 
-github.com/AlDanial/cloc v 1.96  T=0.04 s (1096.7 files/s, 167663.5 lines/s)
+github.com/AlDanial/cloc v 1.96  T=0.04 s (1007.1 files/s, 158422.3 lines/s)
 -------------------------------------------------------------------------------
 Language                     files          blank        comment           code
 -------------------------------------------------------------------------------
-Python                          15            787            328           2711
+Python                          15            798            328           2746
 Bourne Shell                     6            193              6           1141
-Markdown                         7            253              0            823
-Text                            16             90              0            395
+Markdown                         7            254              0            824
+Text                            15             89              0            385
 -------------------------------------------------------------------------------
-SUM:                            44           1323            334           5070
+SUM:                            43           1334            334           5096
 -------------------------------------------------------------------------------
 ```
