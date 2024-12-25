@@ -3,7 +3,7 @@
 """
 ---------------------------------------
 Changes system MAC-Address and local IP.
-GNU/Linux supported and BSD supported.
+GNU/Linux supported.
 
 Author: iva
 Date: 28.07.2024
@@ -29,7 +29,12 @@ def get_valid_interfaces() -> list:
         return valid_interfaces
     except FileNotFoundError:
         print(f"{RED}[!] Error: /sys/class/net directory not found.{RESET}")
-        return []
+        
+        input_interface: str = ("[==>] Enter your interface manually: ")
+        interfaces.clear()
+        input_interface.append(interfaces)
+        
+        return interfaces
 
 
 def change_mac() -> None:
@@ -56,7 +61,7 @@ def change_mac() -> None:
     if new_mac == "":
         mac_parts: list = [random.randint(0, 255) for _ in range(6)]
         new_mac: str = ":".join(f"{part:02x}" for part in mac_parts)
-        print(f"[*] Your new MAC address: {new_mac}")
+        print(f"{GREEN}[*] Your new MAC address: {new_mac}{RESET}")
 
     try:
         subprocess.run(["ifconfig", interface, "down"], check=True)

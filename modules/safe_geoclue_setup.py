@@ -10,6 +10,7 @@ Date: 02.12.2024
 """
 
 try:
+    import os
     import usr
     from os import system
     from usr import GREEN, RED, RESET
@@ -21,7 +22,7 @@ def safe_geoclue_setup() -> None:
     system("clear")
 
     print("This script is going to set all geoclue config variables to 'false'.")
-    print("Your GNOME/KDE desktop system will stop using your geolocation.")
+    print("Your system will stop using your geolocation.")
 
     if usr.prompt_user("[?] Proceed?"):
         try:
@@ -32,9 +33,13 @@ def safe_geoclue_setup() -> None:
                 true_config_file.write(geoclue_config_text)
 
             print(f"{GREEN}[*] Geoclue is successfully disabled.{RESET}")
-        except (FileNotFoundError, IOError) as file_error:
-            print(f"{RED}[!] Error: {file_error}{RESET}")
-
+        except (FileNotFoundError, IOError):
+            if not os.path.exists("/etc/geoclue/geoclue.conf"):
+                print(f"{GREEN}[*] '/etc/geoclue/geoclue.conf' not found. What a relief!")
+                print(f"[*] Success!{RESET}")
+            else:
+                print(f"{RED}[!] Error: {file_error}{RESET}")
+            
 
 if __name__ == "__main__":
     safe_geoclue_setup()

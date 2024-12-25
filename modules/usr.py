@@ -5,7 +5,7 @@
 Here you can find list of common functions
 used by theSuffocater.
 
-Required by all theSuffocater modules
+Required by all theSuffocater modules.
 
 Author: iva
 Date: 26.11.2024
@@ -13,6 +13,10 @@ Date: 26.11.2024
 """
 
 # Fancy color codes ;3
+BLACK: str = "\033[90m"
+YELLOW: str = "\033[93m"
+BLUE: str = "\033[94m"
+PURPLE: str = "\033[95m"
 GREEN: str = "\033[92m"
 RED: str = "\033[91m"
 RESET: str = "\033[0m"
@@ -1469,10 +1473,15 @@ def init_system_handling(init_system: str, command: str, service: str) -> bool:
 if __name__ == "__main__":
     init_system: str = get_init_system()
     distro: str = get_user_distro()
-    
-    print(distro)
-    print(init_system)
-    
+    print(f"user distro: {distro}")
+    print(f"user init system: {init_system}")
+    print(f"{BLACK}black text{RESET}")
+    print(f"{YELLOW}yellow text{RESET}")
+    print(f"{BLUE}blue text{RESET}")
+    print(f"{PURPLE}purple text{RESET}")
+    print(f"{GREEN}green text{RESET}")
+    print(f"{RED}red text{RESET}")
+
     if prompt_user("type yes"):
         print("yes!!!!11")
 

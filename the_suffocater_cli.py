@@ -21,7 +21,7 @@ try:
     import glob
     import subprocess
     import importlib.util
-    from usr import GREEN, RED, RESET
+    from usr import GREEN, RED, PURPLE, RESET
 except ModuleNotFoundError as import_error:
     print(f"{RED}[!] Error: modules not found:\n{import_error}{RESET}")
     sys.exit(1)
@@ -49,7 +49,7 @@ def the_suffocater_help() -> None:
     print(" documentation - ultimate guide to theSuffocater.")
     print(" license - check the license.")
     print(" changelog - check whats new in this version.")
-    print("\nFor more info, check 'documentation'.")
+    print(f"\nFor more info, check 'documentation'.")
 
 
 def the_suffocater_version(suffocater_version: str) -> str:
@@ -134,7 +134,7 @@ def the_suffocater_main(suffocater_version: str) -> None:
     """
 
     os.system("clear")
-    version = the_suffocater_version(suffocater_version)
+    version: str = the_suffocater_version(suffocater_version)
     print(f"+---------------- Welcome to theSuffocater ----------------+")
     print(f"| {version}                 |")
 
@@ -151,7 +151,7 @@ def the_suffocater_main(suffocater_version: str) -> None:
     }
 
     while True:
-        module: str = input("\n# ").lower()
+        module: str = input(f"{PURPLE}\n(root){RESET} -> # ").lower().strip()
         if module.startswith("modules -d"):
             list_imported_modules(show_docs=True)
         elif module == "modules":
