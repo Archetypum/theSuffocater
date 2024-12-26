@@ -15,6 +15,7 @@ Date: 26.11.2024
 # Fancy color codes ;3
 BLACK: str = "\033[90m"
 YELLOW: str = "\033[93m"
+ORANGE: str = "\033[38;5;214m"
 BLUE: str = "\033[94m"
 PURPLE: str = "\033[95m"
 GREEN: str = "\033[92m"
@@ -1477,6 +1478,7 @@ if __name__ == "__main__":
     print(f"user init system: {init_system}")
     print(f"{BLACK}black text{RESET}")
     print(f"{YELLOW}yellow text{RESET}")
+    print(f"{ORANGE}orange text{RESET}")
     print(f"{BLUE}blue text{RESET}")
     print(f"{PURPLE}purple text{RESET}")
     print(f"{GREEN}green text{RESET}")
