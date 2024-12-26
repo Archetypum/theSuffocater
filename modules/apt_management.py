@@ -101,8 +101,8 @@ def add_i386() -> None:
             subprocess.run(["dpkg", "--add-architecture", "i386"], check=True)
             usr.package_handling("debian", package_list=[], command="update")
             print(f"{GREEN}[*] Success!{RESET}")
-        except subprocess.CalledProcessError as error:
-            print(f"{RED}[!] Error: {error}{RESET}")
+        except (subprocess.CalledProcessError, FileNotFoundError) as dpkg_error:
+            print(f"{RED}[!] Error: {dpkg_error}{RESET}")
 
 
 def apt_management() -> None:

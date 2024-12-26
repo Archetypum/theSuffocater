@@ -148,10 +148,10 @@ function install_redhat_based() {
 
 function install_freebsd_based() {
 	pkg update && pkg upgrade -y
-	pkg install -y python3 py3-pip
+	pkg install -y python3 python
 	pkg install -y py311-fail2ban
 	pkg install -y openvpn wireguard-tools
-	pkg install -y lsof git wget bash curl unbound bsdadminscripts
+	pkg install -y lsof git wget bash curl unbound shuf 
 
 	echo -e "${RED}[!] Warning:"
 	echo "    Iptables, nftables, Iproute, and ufw are GNU/Linux specific tools."

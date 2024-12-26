@@ -39,7 +39,7 @@ function install_latest_version_new_dir() {
 			echo "[<==] Installing latest theSuffocater version..."
 			sleep 1
 			
-			git clone https://github.com/Kinderfeld/fear-thesuffocater fear-the-suffocater-new && echo -e "${GREEN}[*] Success!${RESET}"
+			git clone https://github.com/Archetym/thesuffocater thesuffocater-new && echo -e "${GREEN}[*] Success!${RESET}"
 		fi
 	fi
 }

@@ -5,6 +5,9 @@ Features CLI and GUI stable versions of the carcass, 11 working modules and 4 sc
 Code can be very strange, messy, buggy and even unfinished, but we promise to fix
 everything in next stable releases.
 
+If you are a BSD user, then i have bad news for you: theSuffocater BSD port sucks.
+I promise it will work as good as on GNU/Linux in 2025.
+
 Nothing left to say here anymore, its just first stable-unstable release.
 
 ## Happy New Year!
