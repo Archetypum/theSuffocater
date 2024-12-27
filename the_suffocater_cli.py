@@ -9,6 +9,19 @@
 # 
 # Graphical frontend - the_suffocater_gui.py
 
+suffocater_version: str = "v1.0.1-unstable       "
+neofetch: str = f"""
+  GOLOGOLOGOLOGOLO      theSuffocater version - {suffocater_version}
+ OGOLOGOLOGOLOGOLOG
+LOGOLOGOLOGOLOGOLOGO
+LOGOLOGOLOGOLOGOLOGO
+LOGOLOGOLOGOLOGOLOGO
+LOGOLOGOLOGOLOGOLOGO
+LOGOLOGOLOGOLOGOLOGO
+ OGOLOGOLOGOLOGOLOG
+  GOLOGOLOGOLOGOLO
+"""
+
 try:
     # Here we are importing are python modules, and the most importantly,
     # we are importing "usr.py" - module with all possible functions,
@@ -50,6 +63,11 @@ def the_suffocater_help() -> None:
     print(" license - check the license.")
     print(" changelog - check whats new in this version.")
     print(f"\nFor more info, check 'documentation'.")
+
+
+def the_suffocater_neofetch(suffocater_version: str) -> str:
+    """Displays brief statistic about theSuffocater."""
+    return f"{neofetch}"
 
 
 def the_suffocater_version(suffocater_version: str) -> str:
@@ -145,6 +163,7 @@ def the_suffocater_main(suffocater_version: str) -> None:
         "modules": lambda: list_imported_modules(show_docs=True),
         "license": the_suffocater_license,
         "scripts": list_available_scripts,
+        "neofetch": lambda: print(the_suffocater_neofetch(suffocater_version)),
         "changelog": the_suffocater_changelog,
         "version": lambda: print(the_suffocater_version(suffocater_version)),
         "documentation": the_suffocater_documentation
@@ -192,7 +211,6 @@ if __name__ == "__main__":
             spec.loader.exec_module(module)
             globals()[module_name] = module
 
-        suffocater_version: str = "8.2.3-unstable        "
         the_suffocater_main(suffocater_version)
     else:
         print(f"{RED}[!] Error: Carcass requires root privileges to run certain modules.{RESET}")

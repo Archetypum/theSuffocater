@@ -1,16 +1,23 @@
-# theSuffocater v1.0.0-stable:
+# theSuffocater v1.0.0-stable
 
-This is the very first stable release of theSuffocater.
-Features CLI and GUI stable versions of the carcass, 11 working modules and 4 scripts.
-Code can be very strange, messy, buggy and even unfinished, but we promise to fix
-everything in next stable releases.
+This is the second stable release of theSuffocater.
+Features CLI and GUI stable versions of the carcass, (more?..) 
 
-If you are a BSD user, then i have bad news for you: theSuffocater BSD port sucks.
-I promise it will work as good as on GNU/Linux in 2025.
+Main changes:
+    1) Improved 'requirements.sh':
+        * added '-h' and '-s' arguments to the parser.
+        * added normal screen cleaning.
+        * general polishing and refactoring.
 
-Nothing left to say here anymore, its just first stable-unstable release.
+    2) Improved theCarcass:
+        * added 'neofetch' function.
+        * general polishing and refactoring.
 
-## Happy New Year!
+    3) Improved 'usr.py':
+        * added 'clear_screen' function for more compatibility.
+    
+    4) Added 'community_modules/' directory:
+        * nothing here yet.
 
 "cloc ." statistics:
 
@@ -19,15 +26,15 @@ Nothing left to say here anymore, its just first stable-unstable release.
       44 unique files.                              
        3 files ignored.
 
-github.com/AlDanial/cloc v 1.96  T=0.04 s (1015.7 files/s, 156863.1 lines/s)
+github.com/AlDanial/cloc v 1.96  T=0.04 s (1094.4 files/s, 170721.0 lines/s)
 -------------------------------------------------------------------------------
 Language                     files          blank        comment           code
 -------------------------------------------------------------------------------
-Python                          15            788            325           2736
-Bourne Shell                     6            193              6           1141
-Markdown                         8            274              0            858
+Python                          15            794            341           2751
+Bourne Shell                     6            193              7           1165
+Markdown                         8            275              0            864
 Text                            15             89              0            385
 -------------------------------------------------------------------------------
-SUM:                            44           1344            331           5120
+SUM:                            44           1351            348           5165
 -------------------------------------------------------------------------------
 ```

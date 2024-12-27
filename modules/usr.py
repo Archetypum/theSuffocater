@@ -47,6 +47,7 @@ NETBSD_BASED_DISTROS: list = ["netbsd", "blackbsd", "edgebsd"]
 try:
     import os
     import re
+    import platform
     import subprocess
     from sys import exit
     from time import sleep
@@ -72,6 +73,23 @@ def usr() -> None:
     your_function: str = input("[==>] Enter function name (or anything to leave) >>> ").lower()
     if your_function in functions:
         functions[your_function]()
+
+
+def clear_screen() -> bool:
+    """
+    Clears user's screen.
+
+    Returns:
+        bool: cleaning status.
+    """
+    
+    user_platform: str = platform.system()
+    if user_platform == "Windows":
+        os.system("cls")
+        return True
+    else:
+        os.system("clear")
+        return True
 
 
 def get_user_distro() -> str:
@@ -1486,8 +1504,9 @@ if __name__ == "__main__":
 
     if prompt_user("type yes"):
         print("yes!!!!11")
-
-
+    else:
+        clear_screen()
+    
     # package_handling(distro, package_list=["vim"], command="update")
     # package_handling(distro, package_list=["vrms", "htop"], command="install")
     # package_handling(distro, package_list=["vrms"], command="remove")

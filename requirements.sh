@@ -1,12 +1,11 @@
 #!/bin/bash
 
-clear
-
 # Fancy color codes ;3
 RED="\033[0;31m"
 GREEN="\033[0;32m"
 RESET="\033[0m"
 
+# Supported systems
 GUIX_BASED_DISTROS=("guix")
 REDHAT_BASED_DISTROS=("redhat")
 CENTOS_BASED_DISTROS=("centos" "oracle")
@@ -25,23 +24,32 @@ DEBIAN_BASED_DISTROS=("debian" "ubuntu" "xubuntu" "kubuntu" "mint" "lmde" "trisq
 	"parrot" "pop" "elementary" "mx" "antix" "steamos" "tails" "astra" "crunchbag" "ututo"
 	"crunchbag++" "pureos" "deepin" "zorin" "peppermintos" "lubuntu" "wubuntu"
 	)
-	
-echo "Supported Platforms:"
-for ELEMENT in "${GUIX_BASED_DISTROS[@]}"; do echo " - $ELEMENT"; done 
-for ELEMENT in "${REDHAT_BASED_DISTROS[@]}"; do echo " - $ELEMENT"; done 
-for ELEMENT in "${CENTOS_BASED_DISTROS[@]}"; do echo " - $ELEMENT"; done 
-for ELEMENT in "${FEDORA_BASED_DISTROS[@]}"; do echo " - $ELEMENT"; done 
-for ELEMENT in "${DRAGORA_BASED_DISTROS[@]}"; do echo " - $ELEMENT"; done 
-for ELEMENT in "${OPENSUSE_BASED_DISTROS[@]}"; do echo " - $ELEMENT"; done 
-for ELEMENT in "${SLACKWARE_BASED_DISTROS[@]}"; do echo " - $ELEMENT"; done 
-for ELEMENT in "${ALPINE_BASED_DISTROS[@]}"; do echo " - $ELEMENT"; done 
-for ELEMENT in "${VOID_BASED_DISTROS[@]}"; do echo " - $ELEMENT"; done 
-for ELEMENT in "${GENTOO_BASED_DISTROS[@]}"; do echo " - $ELEMENT"; done 
-for ELEMENT in "${OPENBSD_BASED_DISTROS[@]}"; do echo " - $ELEMENT"; done 
-for ELEMENT in "${NETBSD_BASED_DISTROS[@]}"; do echo " - $ELEMENT"; done 
-for ELEMENT in "${FREEBSD_BASED_DISTROS[@]}"; do echo " - $ELEMENT"; done 
-for ELEMENT in "${ARCH_BASED_DISTROS[@]}"; do echo " - $ELEMENT"; done 
-for ELEMENT in "${DEBIAN_BASED_DISTROS[@]}"; do echo " - $ELEMENT"; done
+
+function list_of_commands() {
+	echo "Help page:"
+	echo " -h/--help - lists commands."
+	echo " -p/--packages - lists packages to install."
+	echo " -s/--systems - lists supported platforms."
+}
+
+function list_of_platforms() {	
+	echo "Supported Platforms:"
+	for ELEMENT in "${GUIX_BASED_DISTROS[@]}"; do echo " - $ELEMENT"; done 
+	for ELEMENT in "${REDHAT_BASED_DISTROS[@]}"; do echo " - $ELEMENT"; done 
+	for ELEMENT in "${CENTOS_BASED_DISTROS[@]}"; do echo " - $ELEMENT"; done 
+	for ELEMENT in "${FEDORA_BASED_DISTROS[@]}"; do echo " - $ELEMENT"; done 
+	for ELEMENT in "${DRAGORA_BASED_DISTROS[@]}"; do echo " - $ELEMENT"; done 
+	for ELEMENT in "${OPENSUSE_BASED_DISTROS[@]}"; do echo " - $ELEMENT"; done 
+	for ELEMENT in "${SLACKWARE_BASED_DISTROS[@]}"; do echo " - $ELEMENT"; done 
+	for ELEMENT in "${ALPINE_BASED_DISTROS[@]}"; do echo " - $ELEMENT"; done 
+	for ELEMENT in "${VOID_BASED_DISTROS[@]}"; do echo " - $ELEMENT"; done 
+	for ELEMENT in "${GENTOO_BASED_DISTROS[@]}"; do echo " - $ELEMENT"; done 
+	for ELEMENT in "${OPENBSD_BASED_DISTROS[@]}"; do echo " - $ELEMENT"; done 
+	for ELEMENT in "${NETBSD_BASED_DISTROS[@]}"; do echo " - $ELEMENT"; done 
+	for ELEMENT in "${FREEBSD_BASED_DISTROS[@]}"; do echo " - $ELEMENT"; done 
+	for ELEMENT in "${ARCH_BASED_DISTROS[@]}"; do echo " - $ELEMENT"; done 
+	for ELEMENT in "${DEBIAN_BASED_DISTROS[@]}"; do echo " - $ELEMENT"; done
+}
 
 function list_of_packages() {
 	PACKAGES=("python3" "python3-pip"
@@ -60,7 +68,7 @@ function install_python_requirements() {
 	python3 -m venv pkgenv
 	source pkgenv/bin/activate
 	pip install -r python_requirements.txt
-		
+
 	echo "Don't forget to 'source pkgenv/bin/activate' and you are good to go."
 	echo -e "${GREEN}[*] Success!${RESET}"
 }
@@ -70,7 +78,7 @@ function install_python_requirements_netbsd() {
 	. pkgenv/bin/activate
 	pip install -r python_requirements.txt
 
-	echo "Don't forget to 'source' pkgenv/bin/activate and you are good to go."
+	echo "Don't forget to '. pkgenv/bin/activate' and you are good to go."
 	echo -e "${GREEN}[*] Success!${RESET}"
 }
 
@@ -214,17 +222,25 @@ function to_lowercase() {
 }
 
 function main() {
-	echo -n "[==>] Enter the base of your GNU/Linux or BSD distribution ('packages' to view requirements): "
+	echo -n "[==>] Enter your GNU/Linux or BSD distribution ('packages' to view requirements): "
 	read DISTRO
+	DISTRO=$(to_lowercase "$DISTRO")
 	if [[ "$DISTRO" == "packages" ]]; then
 		list_of_packages
 		main
 		return
+	elif [[ "$DISTRO" == "platforms" ]]; then
+		list_of_platforms
+		main
+		return
+	elif [[ "$DISTRO" == "help" ]]; then
+		list_of_commands
+		main
+		return
 	fi
 
-	DISTRO=$(to_lowercase "$DISTRO")
 	echo "[<==] Installing requirements..."
-	echo "--------------------------------------------------------------------------------------"
+	echo "--------------------------------"
 
 	for ITEM in "${DEBIAN_BASED_DISTROS[@]}"; do
 		if [[ "$DISTRO" == "$ITEM" ]]; then
@@ -354,12 +370,21 @@ function check_privileges() {
 
 function parse_args() {
 	if [[ $# -eq 0 ]]; then
+		clear
 		check_privileges
 		return
 	fi
 
 	while [[ $# -gt 0 ]]; do
 		case "$1" in
+			-h|--help)
+				list_of_commands
+				exit 0
+				;;
+			-s|--systems)
+				list_of_platforms
+				exit 0
+				;;
 			-p|--packages)
 				list_of_packages
 				exit 0
