@@ -9,18 +9,26 @@
 # 
 # Graphical frontend - the_suffocater_gui.py
 
-suffocater_version: str = "v1.0.1-unstable       "
-neofetch: str = f"""
-  GOLOGOLOGOLOGOLO      theSuffocater version - {suffocater_version}
- OGOLOGOLOGOLOGOLOG
-LOGOLOGOLOGOLOGOLOGO
-LOGOLOGOLOGOLOGOLOGO
-LOGOLOGOLOGOLOGOLOGO
-LOGOLOGOLOGOLOGOLOGO
-LOGOLOGOLOGOLOGOLOGO
- OGOLOGOLOGOLOGOLOG
-  GOLOGOLOGOLOGOLO
+suffocater_version: str = "v1.0.1-unstable"
+neofetch: str = f"""    
+                   /000000000000.         theSuffocater version - {suffocater_version}               
+                 /00           000.                  
+                /00          0000000.                                            
+                 /0000                   
+                   /000000000000.                         
+                             0000.                  
+               /0000000          00.                  
+                 /000           00.                  
+                   /000000000000.                 
+        /0000000000000000000000000000000000.        
+        /00                        000   00.        
+        /00000000000000000         000   00.        
+        /0000000000000000000000000000000000.        
+        /00000000000000000         000   00.        
+        /00                        000   00.
+        /0000000000000000000000000000000000.
 """
+# TODO: full neofetch coming soon
 
 try:
     # Here we are importing are python modules, and the most importantly,
