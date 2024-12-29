@@ -72,7 +72,6 @@ def process_analysis() -> str:
 
 
 def system_monitor() -> None:
-    # TODO: finish this module some year.
     while True:
         try:
             system("clear")
