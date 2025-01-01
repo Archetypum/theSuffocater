@@ -24,25 +24,32 @@ Main changes:
     5) Added latest theUnixManager version to the repo:
         * Removed every 'usr' mentions.
     
+    6) Fixed 'tor_management.py':
+        * Fixed FreeBSD snowlake-proxy setup process name.
+    
+    7) Improved 'ssh_management':
+        * Renamed 'ssh_key_gen()' to 'ssh_keygen()'.
+
     *) Minor fixes:
+        * Removed useless/redundant imports.
         * Typos, spelling mistakes, markdown syntax errors, etc.
 
 "cloc ." statistics:
 
 ```text
-      48 text files.
-      47 unique files.                              
+      49 text files.
+      48 unique files.                              
        3 files ignored.
 
-github.com/AlDanial/cloc v 1.96  T=0.04 s (1185.2 files/s, 176114.9 lines/s)
+github.com/AlDanial/cloc v 1.96  T=0.04 s (1269.9 files/s, 198159.0 lines/s)
 -------------------------------------------------------------------------------
 Language                     files          blank        comment           code
 -------------------------------------------------------------------------------
-Python                          16            802            359           2768
-Bourne Shell                     7            199             14           1191
-Markdown                         9            291              0            886
+Python                          16            900            528           2943
+Bourne Shell                     8            201             34           1207
+Markdown                         9            299              0            904
 Text                            15             89              0            385
 -------------------------------------------------------------------------------
-SUM:                            47           1381            373           5230
+SUM:                            48           1489            562           5439
 -------------------------------------------------------------------------------
 ```

@@ -8,6 +8,7 @@
 # its functionality very good.
 # 
 # Graphical frontend - the_suffocater_gui.py
+from typing import Any
 
 try:
     # Here we are importing are python modules, and the most importantly,
