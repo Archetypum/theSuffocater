@@ -1,9 +1,10 @@
-# theSuffocater v1.0.8-unstable
+# theSuffocater v1.1.8-unstable
 
 This is going to be the second stable release of theSuffocater.
 Features CLI and GUI stable versions of the carcass, (more?..) 
 
 Main changes:
+    
     1) Improved 'requirements.sh':
         * Added '-h' and '-s' arguments to the parser.
         * Added normal screen cleaning.
@@ -15,10 +16,16 @@ Main changes:
         * General polishing and refactoring.
 
     3) Improved 'usr.py':
-        * Added 'clear_screen' function for more compatibility.
+        * Just removed it.
     
     4) Added 'community_modules/' directory:
         * Added 'desktop.py' module. Not finished yet.
+    
+    5) Added latest theUnixManager version to the repo:
+        * Removed every 'usr' mentions.
+    
+    *) Minor fixes:
+        * Typos, spelling mistakes, markdown syntax errors, etc.
 
 "cloc ." statistics:
 

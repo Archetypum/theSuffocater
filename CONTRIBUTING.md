@@ -58,7 +58,17 @@ string: str = "theSuffocater"
 
 ```python3
 def function(arg: str = "default_value") -> None:
-	...
+	"""
+    Function documentation.
+
+    Args:
+        arg (str): Something. "default_value" if not specified        
+
+    Returns:
+        None: none.
+    """
+
+    ...
 ```
 
 - And don't forget to add at the end of your code:

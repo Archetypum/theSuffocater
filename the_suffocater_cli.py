@@ -1,27 +1,27 @@
 #!/usr/bin/python3
 #
-# This thing is called the "Carcass" - the heart of theSuffocater.
-# Carcass destiny is to load modules located in the thesuffocater/modules
+# This thing is called "theCarcass" - the heart of theSuffocater.
+# theCarcass destiny is to load modules located in the theSuffocater/modules
 # for further using.
 # 
-# Usually carcass don't receive many updates because it's already serving
+# Usually theCarcass don't receive many updates because it's already serving
 # its functionality very good.
 # 
 # Graphical frontend - the_suffocater_gui.py
 
 try:
     # Here we are importing are python modules, and the most importantly,
-    # we are importing "usr.py" - module with all possible functions,
+    # we are importing "the_unix_manager.py" - module with all possible functions,
     # widely used by theSuffocater modules.
     import os
     import sys
     modules_dir: str = os.path.join(os.path.dirname(__file__), "modules")
     sys.path.append(modules_dir)
-    import usr
     import glob
     import subprocess
     import importlib.util
-    from usr import GREEN, RED, PURPLE, RESET
+    import the_unix_manager as tum
+    from the_unix_manager import GREEN, RED, PURPLE, RESET
 except ModuleNotFoundError as import_error:
     print(f"{RED}[!] Error: modules not found:\n{import_error}{RESET}")
     sys.exit(1)
@@ -31,7 +31,7 @@ suffocater_version: str = "v1.0.8-unstable       "
 folder_path: str = "modules"
 modules_count: int = len([f for f in os.listdir(folder_path) if f.endswith(".py")])
 neofetch: str = f"""    
-                   /000000000000.           theSuffocater version - {suffocater_version}               
+                   /000000000000.           theSuffocater version - {suffocater_version}
                  /00           000.         Available modules - {modules_count}                  
                 /00          0000000.                                           
                  /0000                   
@@ -67,6 +67,7 @@ def the_suffocater_help() -> None:
     print(" exit - exit theSuffocater.")
     print(" clear - clear screen.")
     print(" help - this message.")
+    print(" neofetch - brief theSuffocater statistics.")
     print(" modules [-d] - list imported modules (use -d to include documentation).")
     print(" scripts - list available bash scripts")
     print(" version - current version of theSuffocater.")

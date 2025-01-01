@@ -13,28 +13,27 @@ Date: 23.12.2024
 
 try:
     import os
-    import usr
     import subprocess
     from sys import exit
-    from os import system
     from time import sleep
-    from usr import GREEN, RED, RESET
+    import unix_manager as tum
+    from the_unix_manager import GREEN, RED, RESET
 except ModuleNotFoundError as import_error:
     print(f"{RED}[!] Error: modules not found:\n{import_error}{RESET}")
 
 
 def reload_fail2ban() -> bool:
-    init_system: str = usr.get_init_system()
+    init_system: str = tum.get_init_system()
 
-    usr.init_system_handling(init_system, "reload", "fail2ban")
-    usr.init_system_handling(init_system, "start", "fail2ban")	
+    tum.init_system_handling(init_system, "reload", "fail2ban")
+    tum.init_system_handling(init_system, "start", "fail2ban")	
 
 	
 def create_jail_copy() -> None:
-    system("clear")
+    tum.clear_screen()
 
     print("We are going to create a copy of 'jail.conf' with name 'jail.local'.")
-    if usr.prompt_user("[?] Proceed?"):
+    if tum.prompt_user("[?] Proceed?"):
         try:
             print("[<==] Creating a copy of 'jail.conf' file...")
             sleep(1)
@@ -48,12 +47,12 @@ def create_jail_copy() -> None:
 
 
 def ssh_bruteforce() -> None:
-    system("clear")
+    tum.clear_screen()
     
-    init_system: str = usr.get_init_system()
+    init_system: str = tum.get_init_system()
 
     print("We are going to configure fail2ban to prevent SSH bruteforce.")
-    if usr.prompt_user("[?] Proceed?"):
+    if tum.prompt_user("[?] Proceed?"):
         try:
             with open("config_files/fail2ban_ssh_bruteforce.txt", "r") as config_file:
                 config_file_text: str = config_file.read()
@@ -65,12 +64,12 @@ def ssh_bruteforce() -> None:
             subprocess.run(["nano", "/etc/fail2ban/jail.local"], check=True)
             
             if init_system == "systemd":
-                usr.init_system_handling("systemd", "enable", "sshd")
-                usr.init_system_handling("systemd", "reload", "ssh")
-                usr.init_system_handling("systemd", "start", "ssh")
+                tum.init_system_handling("systemd", "enable", "sshd")
+                tum.init_system_handling("systemd", "reload", "ssh")
+                tum.init_system_handling("systemd", "start", "ssh")
             else:
-                usr.init_system_handling(init_system, "reload", "ssh")
-                usr.init_system_handling(init_system, "start", "ssh")
+                tum.init_system_handling(init_system, "reload", "ssh")
+                tum.init_system_handling(init_system, "start", "ssh")
             reload_fail2ban()
             
             print(f"{GREEN}[*] Success!{RESET}")
@@ -81,11 +80,11 @@ def ssh_bruteforce() -> None:
 
 
 def ftp_bruteforce() -> None:
-    system("clear")
+    tum.clear_screen()
 
-    init_system: str = usr.get_init_system
+    init_system: str = tum.get_init_system()
     print("We are going to configure fail2ban to prevent FTP bruteforce.")
-    if usr.prompt_user("[?] Proceed?"):
+    if tum.prompt_user("[?] Proceed?"):
         try:
             with open("config_files/fail2ban_ftp_bruteforce.txt") as config_file:
                 config_file_text: str = config_file.read()
@@ -105,7 +104,7 @@ def ftp_bruteforce() -> None:
 
 
 def fail2ban_setup() -> None:
-    system("clear")
+    tum.clear_screen()
 
     profiles: dict = {
             "create_jail_copy": create_jail_copy,

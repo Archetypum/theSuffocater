@@ -1,17 +1,17 @@
 #!/usr/bin/python3
 #
-# This thing is called the "Carcass" - the heart of theSuffocater.
-# Carcass destiny is to load modules located in the thesuffocater/modules
+# This thing is called the "theCarcass" - the heart of theSuffocater.
+# theCarcass destiny is to load modules located in the thesuffocater/modules
 # for further using.
 # 
-# Usually carcass don't receive many updates because it's already serving
+# Usually theCarcass don't receive many updates because it's already serving
 # its functionality very good.
 #
 # This is a graphical frontend, normal cli version is 'the_suffocater_cli.py'.
 
 try:
     # Here we are importing are python modules, and the most importantly,
-    # we are importing "usr.py" - module with all possible functions,
+    # we are importing "the_unix_manager.py" - module with all possible functions,
     # widely used by theSuffocater modules.
     # Also, here are additional tkinter functions for the graphical interface.
     import os
@@ -265,5 +265,5 @@ if __name__ == "__main__":
         print(f"{RED}[!] Error: Carcass requires root privileges to run certain modules.{RESET}")
         sys.exit(1)
 
-    suffocater_version: str = "8.2.3-unstable"
+    suffocater_version: str = "1.0.0-stable"
     main_gui(suffocater_version)

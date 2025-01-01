@@ -12,11 +12,11 @@ Date: 28.07.2024
 
 try:
     import os
-    import usr
     import random
     import subprocess
     from sys import exit
-    from usr import GREEN, RED, RESET
+    import the_unix_manager as tum
+    from the_unix_manager import GREEN, RED, RESET
 except ModuleNotFoundError as import_error:
     print(f"{RED}[!] Error: modules not found:\n{import_error}{RESET}")
     exit(1)
@@ -38,10 +38,10 @@ def get_valid_interfaces() -> list:
 
 
 def change_mac() -> None:
-    os.system("clear")
+    tum.clear_screen()
 
     print("We are going to change the system's MAC address.")
-    if not usr.prompt_user("[?] Proceed?"):
+    if not tum.prompt_user("[?] Proceed?"):
         print(f"{RED}[!] Operation canceled.{RESET}")
         return
 
@@ -74,10 +74,10 @@ def change_mac() -> None:
 
 
 def change_lan_ip() -> None:
-    os.system("clear")
+    tum.clear_screen()
     
     print("We are going to change the local IP address.")
-    if not usr.prompt_user("[?] Proceed?"):
+    if not tum.prompt_user("[?] Proceed?"):
         print(f"{RED}[!] Operation canceled.{RESET}")
         return
 
@@ -97,14 +97,14 @@ def change_lan_ip() -> None:
     if new_ip == "":
         new_ip: str = f"192.168.{random.randint(1, 254)}.{random.randint(1, 254)}"
         print(f"[*] Your new IP address: {new_ip}")
-    if not usr.is_valid_ip(new_ip):
+    if not tum.is_valid_ip(new_ip):
         print(f"{RED}[!] Error: Invalid IP address: {new_ip}. Exiting.{RESET}")
         return
 
     subnet_mask: str = input("[==>] Enter subnet mask (e.g., 255.255.255.0): ").strip()
     if subnet_mask == "":
         subnet_mask: str = "255.255.255.0"
-    if not usr.is_valid_ip(subnet_mask):
+    if not tum.is_valid_ip(subnet_mask):
         print(f"{RED}[!] Error: Invalid subnet mask: {subnet_mask}{RESET}")
         return
 
@@ -124,7 +124,7 @@ def change_lan_ip() -> None:
             
 
 def address_management() -> None:
-    os.system("clear")
+    tum.clear_screen()
 
     functions: dict = {
         "change_mac": change_mac,
@@ -136,6 +136,6 @@ def address_management() -> None:
     for function in functions.keys():
         print(f" - {function}")
 
-    your_function: str = input("[==>] Enter function name: ").lower()
+    your_function: str = input("[==>] Enter function: ").lower()
     if your_function in functions:
         functions[your_function]()

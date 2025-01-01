@@ -15,7 +15,7 @@ After vulnerability got fixed we will:
 - Say very big thank with all our heart.
 
 After vulnerability got fixed we will not:
-- Not send you in jail (maybe)
+- Not send you in jail
 - Not force you to eat hot potatoes with extra ketchup 
 - Not sue you
 

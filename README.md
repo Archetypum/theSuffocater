@@ -8,14 +8,14 @@ to use it, making it friendly for new users.
 theSuffocater uses sysvinit and init as primary init systems,
 but supports ugly fucking systemd, s6, openrc, and launchd as well. 
 
-## Installation (as root):
+## Installation of theSuffocater-unstable (as root):
 
 ```bash
-git clone https://github.com/Archetypum/thesuffocater
+git clone https://github.com/Archetypum/theSuffocater
 ```
 
 ```bash
-cd thesuffocater
+cd theSuffocater
 ```
 
 ```bash
@@ -41,7 +41,7 @@ to be on the latest version.
 
 ## Usage
 
-Currently, theSuffocater has a small GUI, 11 working modules and 5 working scripts:
+Currently, theSuffocater has a small GUI, 13 working modules and 6 working scripts:
 
 Modules:
 

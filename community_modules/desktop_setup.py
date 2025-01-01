@@ -20,12 +20,13 @@ try:
     from sys import exit
     from os import system
     from time import sleep
-    from usr import GREEN, RED, RESET
+    import the_unix_manager as tum
+    from the_unix_manager import GREEN, RED, RESET
 except ModuleNotFoundError as import_error:
     print(f"{RED}[!] Error: modules not found:\n{import_error}{RESET}")
 
 
-def desktop_setup() -> None
+def desktop_setup() -> None:
     print("null")
 
 
