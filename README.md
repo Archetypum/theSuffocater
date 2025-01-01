@@ -100,6 +100,8 @@ NOT FINISHED YET.
  - wireguard_setup.sh
 
 NOT FINISHED YET.
+ - check_ips.sh
+NOT FINISHED YET. 
 
 ## Credits
 
@@ -108,7 +110,7 @@ theSuffocater is a project by Archetypum with:
 (https://github.com/Kinderfeld)
  - wazups as the junior developer, illustrator and GUI maintainer.
 (https://github.com/wazups)
- - Mxkxdxnski as the GUI maintainer and tester.
+ - Mxkxdxnski as the GUI helper and tester.
 (https://github.com/Mxkxdxnski)
  - WretchOfLights as the junior developer and documentation writer.
 (https://github.com/WretchOfLights)
