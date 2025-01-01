@@ -27,13 +27,13 @@ except ModuleNotFoundError as import_error:
     sys.exit(1)
 
 
-suffocater_version: str = "v1.0.1-unstable"
-folder_path = 'modules'
-modules_count = len([f for f in os.listdir(folder_path) if f.endswith('.py')])
+suffocater_version: str = "v1.0.8-unstable       "
+folder_path: str = "modules"
+modules_count: int = len([f for f in os.listdir(folder_path) if f.endswith(".py")])
 neofetch: str = f"""    
-                   /000000000000.         theSuffocater version - {suffocater_version}               
-                 /00           000.       available modules - {modules_count}                  
-                /00          0000000.                                            
+                   /000000000000.           theSuffocater version - {suffocater_version}               
+                 /00           000.         Available modules - {modules_count}                  
+                /00          0000000.                                           
                  /0000                   
                    /000000000000.                         
                               0000.                  

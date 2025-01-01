@@ -1,4 +1,11 @@
 #!/bin/bash
+# ---------------------------------------
+# Simple password generator that uses random symbols + random word from the dictionary.
+# GNU/Linux, BSD, Windows, OS X supported.
+# 
+# Author: iva
+# Date: 28.07.2024
+# ---------------------------------------
 
 # Fancy color codes ;3
 RED="\033[0;31m"

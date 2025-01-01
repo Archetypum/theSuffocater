@@ -3,7 +3,7 @@
 """
 ---------------------------------------
 Simple password generator that uses random symbols + random word from the dictionary.
-Linux, BSD, Windows, OS X supported.
+GNU/Linux, BSD, Windows, OS X supported.
 
 Author: iva
 Date: 28.07.2024
