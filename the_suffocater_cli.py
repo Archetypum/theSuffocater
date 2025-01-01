@@ -9,27 +9,6 @@
 # 
 # Graphical frontend - the_suffocater_gui.py
 
-suffocater_version: str = "v1.0.1-unstable"
-neofetch: str = f"""    
-                   /000000000000.         theSuffocater version - {suffocater_version}               
-                 /00           000.                  
-                /00          0000000.                                            
-                 /0000                   
-                   /000000000000.                         
-                              0000.                  
-               /0000000          00.                  
-                 /000           00.                  
-                   /000000000000.                 
-        /0000000000000000000000000000000000.        
-        /00                       0000   00.        
-        /00000000000000000        0000   00.        
-        /0000000000000000000000000000000000.        
-        /00000000000000000        0000   00.        
-        /00                       0000   00.
-        /0000000000000000000000000000000000.
-"""
-# TODO: full neofetch coming soon
-
 try:
     # Here we are importing are python modules, and the most importantly,
     # we are importing "usr.py" - module with all possible functions,
@@ -46,6 +25,30 @@ try:
 except ModuleNotFoundError as import_error:
     print(f"{RED}[!] Error: modules not found:\n{import_error}{RESET}")
     sys.exit(1)
+
+
+suffocater_version: str = "v1.0.1-unstable"
+folder_path = 'modules'
+modules_count = len([f for f in os.listdir(folder_path) if f.endswith('.py')])
+neofetch: str = f"""    
+                   /000000000000.         theSuffocater version - {suffocater_version}               
+                 /00           000.       available modules - {modules_count}                  
+                /00          0000000.                                            
+                 /0000                   
+                   /000000000000.                         
+                              0000.                  
+               /0000000          00.                  
+                 /000           00.                  
+                   /000000000000.                 
+        /0000000000000000000000000000000000.        
+        /00                       0000   00.        
+        /00000000000000000        0000   00.        
+        /0000000000000000000000000000000000.        
+        /00000000000000000        0000   00.        
+        /00                       0000   00.
+        /0000000000000000000000000000000000.
+"""
+# TODO: full neofetch coming soon
 
 
 def final_exit() -> None:
