@@ -12,10 +12,10 @@ Date: 16.08.2024
 
 try:
     import os
-    import usr
     import json
+    import the_unix_manager as tum
     import urllib.request as urllib2
-    from usr import GREEN, RED, RESET
+    from the_unix_manager import GREEN, RED, RESET
 except ModuleNotFoundError as import_error:
     print(f"{RED}[!] Error: modules not found:\n{import_error}{RESET}")
 
@@ -34,7 +34,7 @@ def get_ip_details(ip_address: str) -> None:
 
 def ip_resolver() -> None:
     ip_address: str = input("[==>] Enter IP address: ")
-    if usr.is_valid_ip(ip_address):
+    if tum.is_valid_ip(ip_address):
         get_ip_details(ip_address)
     else:
         print(f"{RED}[!] Error: IP is not valid.{RESET}")

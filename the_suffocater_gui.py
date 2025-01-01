@@ -18,12 +18,12 @@ try:
     import sys
     modules_dir = os.path.join(os.path.dirname(__file__), "modules")
     sys.path.append(modules_dir)
-    import usr
     import glob
     import subprocess
     import tkinter as tk
     import importlib.util
-    from usr import RED, RESET
+    import the_unix_manager as tum
+    from the_unix_manager import RED, RESET
     from tkinter import messagebox, PhotoImage
 except ModuleNotFoundError as import_error:
     print(f"{RED}[!] Error: modules not found:\n{import_error}{RESET}")
