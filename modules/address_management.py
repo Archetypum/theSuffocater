@@ -30,7 +30,7 @@ def get_valid_interfaces() -> list:
     except FileNotFoundError:
         print(f"{RED}[!] Error: /sys/class/net directory not found.{RESET}")
         
-        input_interface: str = ("[==>] Enter your interface manually: ")
+        input_interface: str = input("[==>] Enter your interface manually: ")
         interfaces.clear()
         input_interface.append(interfaces)
         

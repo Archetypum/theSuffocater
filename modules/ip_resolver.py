@@ -23,7 +23,7 @@ except ModuleNotFoundError as import_error:
 def get_ip_details(ip_address: str) -> None:
     url: str = "http://ip-api.com/json/"
     response = urllib2.urlopen(url + ip_address)
-    data = response.read()
+    data: str = response.read()
     values = json.loads(data)
     if values.get("status") == "fail":
         print(f"{RED}[!] Error: Could not resolve IP address {ip_address}{RESET}")

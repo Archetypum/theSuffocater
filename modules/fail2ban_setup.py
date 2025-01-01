@@ -16,7 +16,7 @@ try:
     import subprocess
     from sys import exit
     from time import sleep
-    import unix_manager as tum
+    import the_unix_manager as tum
     from the_unix_manager import GREEN, RED, RESET
 except ModuleNotFoundError as import_error:
     print(f"{RED}[!] Error: modules not found:\n{import_error}{RESET}")
@@ -27,6 +27,8 @@ def reload_fail2ban() -> bool:
 
     tum.init_system_handling(init_system, "reload", "fail2ban")
     tum.init_system_handling(init_system, "start", "fail2ban")	
+
+    return True
 
 	
 def create_jail_copy() -> None:
@@ -82,7 +84,6 @@ def ssh_bruteforce() -> None:
 def ftp_bruteforce() -> None:
     tum.clear_screen()
 
-    init_system: str = tum.get_init_system()
     print("We are going to configure fail2ban to prevent FTP bruteforce.")
     if tum.prompt_user("[?] Proceed?"):
         try:

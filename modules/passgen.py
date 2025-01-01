@@ -11,11 +11,11 @@ Date: 28.07.2024
 """
 
 try:
-    import usr
     import string
     import secrets
     from sys import exit
-    from usr import GREEN, RED, RESET
+    import the_unix_manager as tum
+    from the_unix_manager import GREEN, RED, RESET
 except ModuleNotFoundError as import_error:
     print(f"{RED}[!] Error: modules not found:\n{import_error}{RESET}")
     exit(1)
@@ -23,7 +23,7 @@ except ModuleNotFoundError as import_error:
 
 def passgen() -> None:
     print("\nWe are going to create a strong password.")
-    if usr.prompt_user("[?] Proceed?"):
+    if tum.prompt_user("[?] Proceed?"):
         try:
             name: str = input("\n[==>] Enter password name: ")
             password_length: int = int(input("[==>] Enter password length: ")) 

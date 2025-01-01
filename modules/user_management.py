@@ -11,13 +11,13 @@ Date: 05.12.2024
 """
 
 try:
-    import usr
     import pwd
     import grp
     import subprocess
     from sys import exit
     from getpass import getpass
-    from usr import GREEN, RED, RESET
+    import the_unix_manager as tum
+    from the_unix_manager import GREEN, RED, RESET
 except ModuleNotFoundError as import_error:
     print(f"[!] Error: modules not found:\n{import_error}")
     exit(1)

@@ -9,14 +9,14 @@ Author: iva
 Date: 16.12.2024
 ---------------------------------------
 """
+from subprocess import CompletedProcess
 
 try:
-    import usr
     import subprocess
     from sys import exit
-    from os import system
     from time import sleep
-    from usr import GREEN, RED, RESET
+    import the_unix_manager as tum
+    from the_unix_manager import GREEN, RED, RESET
 except ModuleNotFoundError as import_error:
     print(f"{RED}[!] Error: modules not found:\n{import_error}{RESET}")
 
@@ -41,7 +41,7 @@ def get_disk_info() -> tuple | str | None:
 
 def get_memory_info() -> tuple | str | None:
     try:
-        result: str = subprocess.run(["cat", "/proc/meminfo"], capture_output=True, text=True, check=True)
+        result: CompletedProcess = subprocess.run(["cat", "/proc/meminfo"], capture_output=True, text=True, check=True)
         lines: str = result.stdout.splitlines()
         for line in lines:
             if line.startswith("MemTotal:"):
@@ -74,7 +74,7 @@ def process_analysis() -> str:
 def system_monitor() -> None:
     while True:
         try:
-            system("clear")
+            tum.clear_screen()
 
             uptime: str = get_uptime_info()
             if uptime is not None:

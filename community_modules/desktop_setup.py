@@ -5,7 +5,7 @@
 Installs and configures:
  - X11.
  - Wayland.
- - Any graphical enviroment.
+ - Any graphical environment.
  - Free/proprietary NVIDIA drivers.
 
 Author: iva
@@ -27,6 +27,8 @@ except ModuleNotFoundError as import_error:
 
 
 def desktop_setup() -> None:
+    tum.clear_screen()
+
     print("null")
 
 

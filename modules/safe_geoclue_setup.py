@@ -11,20 +11,19 @@ Date: 02.12.2024
 
 try:
     import os
-    import usr
-    from os import system
-    from usr import GREEN, RED, RESET
+    import the_unix_manager as tum
+    from the_unix_manager import GREEN, RED, RESET
 except ModuleNotFoundError as import_error:
     print(f"{RED}[!] Error: modules not found:\n{import_error}{RESET}")
 
 
 def safe_geoclue_setup() -> None:
-    system("clear")
+    tum.clear_screen()
 
     print("This script is going to set all geoclue config variables to 'false'.")
     print("Your system will stop using your geolocation.")
 
-    if usr.prompt_user("[?] Proceed?"):
+    if tum.prompt_user("[?] Proceed?"):
         try:
             with open("config_files/safe_geoclue_config.txt", "r") as config_file:
                 geoclue_config_text: str = config_file.read()
@@ -33,7 +32,7 @@ def safe_geoclue_setup() -> None:
                 true_config_file.write(geoclue_config_text)
 
             print(f"{GREEN}[*] Geoclue is successfully disabled.{RESET}")
-        except (FileNotFoundError, IOError):
+        except (FileNotFoundError, IOError) as file_error:
             if not os.path.exists("/etc/geoclue/geoclue.conf"):
                 print(f"{GREEN}[*] '/etc/geoclue/geoclue.conf' not found. What a relief!")
                 print(f"[*] Success!{RESET}")

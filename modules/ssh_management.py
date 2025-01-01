@@ -3,8 +3,8 @@
 """
 ---------------------------------------
 Manages your OpenSSH. It can:
-- Hardens your SSH by configuring the sshd_config file. Essential to your server!
-- Logs SSH connections to your server
+ - Hardens your SSH by configuring the sshd_config file. Essential to your server!
+ - Logs SSH connections to your server
 GNU/Linux and BSD supported.
 
 Authors: iva,
@@ -16,18 +16,17 @@ Date: 03.07.2024
 try:
     import os
     import re
-    import usr
     import subprocess
-    from os import system
     from time import sleep
-    from usr import RED, GREEN, RESET
+    import the_unix_manager as tum
+    from the_unix_manager import RED, GREEN, RESET
 except ModuleNotFoundError as import_error:
     print(f"{RED}[!] Error: modules not found:\n{import_error}{RESET}")
     exit(1)
 
 
-def ssh_key_gen() -> None:
-    system("clear")
+def ssh_keygen() -> None:
+    tum.clear_screen()
         
     key_type: str = input("[==>] Select key type (rsa, dsa, ecdsa, ed25519) [default]: ")
     key_size: str = input("[==>] Select key size (1024, 2048, 3072 for rsa/dsa) enter for default - 2048): ")
@@ -68,16 +67,16 @@ def ssh_key_gen() -> None:
         subprocess.run(command, check=True)
         print(f"Your SSH-keys: {key_file} и {key_file}.pub")
         print(f"{GREEN}[*] Success!{RESET}")
-    except subprocess.CalledProcessError:
-        print(f"{RED}[!] Error: failed to create SSH-keys: {error}{RESET}")
+    except subprocess.CalledProcessError as ssh_keygen_error:
+        print(f"{RED}[!] Error: failed to create SSH-keys: {ssh_keygen_error}{RESET}")
         return
 
 
 def ssh_logging() -> None:
-    system("clear")
+    tum.clear_screen()
 
     print("We are going to log SSH connections to your device.")
-    if usr.prompt_user("[?] Proceed?"):
+    if tum.prompt_user("[?] Proceed?"):
         log_file_path: str = input("[==>] Enter log file path [default]: ")
         
         if log_file_path == "":
@@ -121,10 +120,10 @@ def ssh_logging() -> None:
 
 
 def safe_ssh_setup() -> None:
-    system("clear")
+    tum.clear_screen()
 
-    distro: str = usr.get_user_distro()
-    init_system: str = usr.get_init_system()
+    distro: str = tum.get_user_distro()
+    init_system: str = tum.get_init_system()
 
     print("After running this module, the following changes will be made:")
     print("0. Install openssh-client and openssh-server.")
@@ -135,13 +134,13 @@ def safe_ssh_setup() -> None:
     print("5. Change port value from 22 to 1984.")
     print("*. Many more.")
 
-    if usr.prompt_user("[?] Proceed?"):
-        if usr.is_debian_based(distro):
-            usr.package_handling(distro, package_list=["openssh-client", "openssh-server"], command="install")
-        elif distro in usr.FREEBSD_BASED_DISTROS or distro in usr.OPENBSD_BASED_DISTROS or distro in usr.NETBSD_BASED_DISTROS:
+    if tum.prompt_user("[?] Proceed?"):
+        if tum.is_debian_based(distro):
+            tum.package_handling(distro, package_list=["openssh-client", "openssh-server"], command="install")
+        elif distro in tum.FREEBSD_BASED or distro in tum.OPENBSD_BASED or distro in tum.NETBSD_BASED:
             print("[*] Assuming you already have openssh (BSD).")
         else:
-            usr.package_handling(distro, package_list=["openssh"], command="install")
+            tum.package_handling(distro, package_list=["openssh"], command="install")
     
         try:
             with open("config_files/secure_ssh_config.txt", "r") as config_file:
@@ -151,9 +150,9 @@ def safe_ssh_setup() -> None:
                 true_config_file.write(secure_ssh_config_text)
         
             if init_system == "systemd":
-                usr.init_system_handling("systemd", "start", "sshd")
+                tum.init_system_handling("systemd", "start", "sshd")
             else:
-                usr.init_system_handling(init_system, "start", "ssh")
+                tum.init_system_handling(init_system, "start", "ssh")
 
             print(f"{GREEN}[*] Success! {RESET}")
         except (FileNotFoundError, IOError):
@@ -161,12 +160,12 @@ def safe_ssh_setup() -> None:
 
 
 def ssh_management() -> None:
-    system("clear")
+    tum.clear_screen()
 
     functions: dict = {
         "safe_ssh_setup": safe_ssh_setup,
         "ssh_logging": ssh_logging,
-        "ssh_key_gen": ssh_key_gen     
+        "ssh_keygen": ssh_keygen
     }
 
     print("+---- SSH Management ----+")

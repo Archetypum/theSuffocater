@@ -12,35 +12,34 @@ Date: 18.10.2024
 """
 
 try:
-    import usr
     import subprocess
     from sys import exit
-    from os import system
     from time import sleep
-    from usr import GREEN, RED, RESET
+    import the_unix_manager as tum
+    from the_unix_manager import GREEN, RED, RESET
 except ModuleNotFoundError as import_error:
     print(f"{RED}[!] Error: modules not found:\n{import_error}{RESET}")
     exit(1)
 
 
 def openvpn_server_setup() -> None:
-    system("clear")
+    tum.clear_screen()
 
-    distro: str = usr.get_user_distro()
-    init_system: str = usr.get_init_system()
+    distro: str = tum.get_user_distro()
+    init_system: str = tum.get_init_system()
 
     print("We are going to setup your server for OpenVPN.")
     answer: str = input("\n[?] Proceed? (y/N): ").lower()
     if answer in ["y", "yes"]:
         try:
             print("[<==] Updating the system...")
-            usr.package_handling(distro, package_list=[], command="update")
+            tum.package_handling(distro, package_list=[], command="update")
             
             print("[<==] Installing OpenVPN...")
-            usr.package_handling(distro, package_list=["openvpn"], command="install")
+            tum.package_handling(distro, package_list=["openvpn"], command="install")
             
             print("[<==] Installing Curl...")
-            usr.package_handling(distro, package_list=["curl"], command="install")
+            tum.package_handling(distro, package_list=["curl"], command="install")
 
             print("[<==] Installing OpenVPN-Installer script...")
             subprocess.run(["curl", "-LJO", "https://raw.githubusercontent.com/angristan/openvpn-install/master/openvpn-install.sh"], check=True)
@@ -49,7 +48,7 @@ def openvpn_server_setup() -> None:
             sleep(1)
 
             print("[<==] Restarting OpenVPN service && Finishing installation...")
-            usr.init_system_handling(init_system, "start", "openvpn")
+            tum.init_system_handling(init_system, "start", "openvpn")
             
             print("[*] Looks like you are locked and loaded.\nNow, move your *.ovpn configuration file to your client and enjoy the freedom.")
         except subprocess.CalledProcessError as error:
@@ -57,23 +56,23 @@ def openvpn_server_setup() -> None:
 
 
 def wireguard_server_setup() -> None:
-    system("clear")
+    tum.clear_screen()
     
-    distro: str = usr.get_user_distro()
-    init_system: str = usr.get_init_system()
+    distro: str = tum.get_user_distro()
+    init_system: str = tum.get_init_system()
 
     print("We are going to setup your server for Wireguard.")
     answer: str = input("\n[?] Proceed? (y/N): ").lower()
     if answer in ["y", "yes"]:
         try:
             print("[<==] Updating the system...")
-            usr.package_handling(distro, package_list=[], command="update")
+            tum.package_handling(distro, package_list=[], command="update")
 
             print("[<==] Installing Wireguard...")
-            usr.package_handling(distro, package_list=["wireguard", "wireguard-tools"], command="install")
+            tum.package_handling(distro, package_list=["wireguard", "wireguard-tools"], command="install")
 
             print("[<==] Installing Curl...")
-            usr.package_handling(distro, package_list=["curl"], command="install")
+            tum.package_handling(distro, package_list=["curl"], command="install")
 
             print("[<==] Installing Wireguard-Installer script...")
             subprocess.run(["curl", "-LJO", "https://raw.githubusercontent.com/angristan/wireguard-install/master/wireguard-install.sh"], check=True)
@@ -82,7 +81,7 @@ def wireguard_server_setup() -> None:
             sleep(1)
 
             print("[<==] Restarting Wireguard service && Finishing installation...")
-            usr.init_system_handling(init_system, "start", "wireguard")
+            tum.init_system_handling(init_system, "start", "wireguard")
 
             print("[*] Looks like you are locked and loaded.\n (...)")
         except subprocess.CalledProcessError as error:
@@ -90,24 +89,24 @@ def wireguard_server_setup() -> None:
 
 
 def outlinevpn_server_setup() -> None:
-    system("clear")
+    tum.clear_screen()
     
-    distro: str = usr.get_user_distro()
-    init_system: str = usr.get_init_system()
+    distro: str = tum.get_user_distro()
+    init_system: str = tum.get_init_system()
 
     print("We are going to setup your server for OutlineVPN.") 
     answer: str = input("\n[?] Proceed? (y/N): ")
     if answer in ["y", "yes"]:
         try:
             print("[<==] Updating the system...")
-            usr.package_handling(distro, package_list=[], command="update")
+            tum.package_handling(distro, package_list=[], command="update")
 
             print("[<==] Installing Docker...")
             subprocess.run(["wget", "https://get.docker.com", "-O", "get-docker.sh"], check=True)
             subprocess.run(["bash", "get-docker.sh"], check=True)
             
             print("[<==] Starting Docker...")
-            usr.init_system_handling(init_system, "start", "docker")
+            tum.init_system_handling(init_system, "start", "docker")
 
             print("[*] Looks like you are locked and loaded.\nNow, check the instructions in Outline Manager.")
         except subprocess.CalledProcessError as error:
@@ -115,7 +114,7 @@ def outlinevpn_server_setup() -> None:
 
 
 def vpn_server_setup() -> None:
-    system("clear")
+    tum.clear_screen()
 
     functions: dict = {
             "openvpn_server_setup": openvpn_server_setup,

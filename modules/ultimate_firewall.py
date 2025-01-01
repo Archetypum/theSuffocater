@@ -12,12 +12,12 @@ Date: 09.11.2024
 
 try:
     import os
-    import usr
     import subprocess
     from sys import exit
+    from os import listdir
     from typing import List
-    from os import system, listdir
-    from usr import GREEN, RED, RESET
+    import the_unix_manager as tum
+    from the_unix_manager import GREEN, RED, RESET
 except ModuleNotFoundError as import_error:
     print(f"{RED}[!] Error: modules not found:\n{import_error}{RESET}")
     exit(1)
@@ -43,7 +43,7 @@ def toggle_gnulinux_firewall(enable: bool) -> None:
 
 
 def drop_firewall() -> None:
-    system("clear")
+    tum.clear_screen()
     
     interfaces: list = ["wlan0", "eth0"]
 
@@ -61,9 +61,7 @@ def drop_firewall() -> None:
 
 
 def accept_firewall() -> None:
-    system("clear")
-    
-    interfaces: list = ["wlan0", "eth0"]
+    tum.clear_screen()
 
     try:
         print("[<==] Enabling radio...")
@@ -78,12 +76,12 @@ def accept_firewall() -> None:
 
 
 def iptables_setup() -> None:
-    system("clear")
+    tum.clear_screen()
 
     print("We are going to set up basic iptables rules to secure your machine.")
     answer: str = input("[?] Proceed? (y/N): ").lower()
     if answer in ["y", "yes"]:
-        interfaces: str = listdir("/sys/class/net")
+        interfaces: list = listdir("/sys/class/net")
         print(f"Interfaces:\n{[interface for interface in interfaces if os.path.islink(f'/sys/class/net/{interface}')]}")
         interface: str = input("\n[==>] Enter your interface: ")
 
@@ -123,7 +121,7 @@ def handle_ufw(ip_addresses: list, action: str, init_system: str) -> None:
             subprocess.run(["ufw", action, "out", "to", ip], check=True)
         
         subprocess.run(["ufw", "enable"], check=True)
-        usr.init_system_handling(init_system, "start", "ufw")
+        tum.init_system_handling(init_system, "start", "ufw")
         subprocess.run(["ufw", "reload"], check=True)
         print(f"{GREEN}[*] Success!{RESET}")
     except subprocess.CalledProcessError as error:
@@ -131,10 +129,9 @@ def handle_ufw(ip_addresses: list, action: str, init_system: str) -> None:
 
 
 def no_spying() -> None:
-    system("clear")
-    
-    distro: str = usr.get_user_distro()
-    init_system: str = usr.get_init_system()
+    tum.clear_screen()
+
+    init_system: str = tum.get_init_system()
     ip_addresses: list = [
         "91.207.136.55",    # starvapol_datacenter_ip
         "20.54.36.64",      # dublin_microsoft_ip
@@ -165,7 +162,7 @@ def no_spying() -> None:
     ]
 
     print(f"We are going to block {len(ip_addresses)} of big companies/datacenters/ISPs.")
-    if usr.prompt_user("[?] Proceed?"):
+    if tum.prompt_user("[?] Proceed?"):
         answer: str = input("[?] Reject or Deny? (r/D): ").lower()
         
         if answer in ["d", "deny", "r", "reject"]: 
@@ -176,9 +173,8 @@ def no_spying() -> None:
 
 
 def porter() -> None:
-    system("clear")
+    tum.clear_screen()
 
-    distro: str = usr.get_user_distro()
     active_ports: bytes = subprocess.check_output(["lsof", "-i", "-P", "-n", "|", "grep", "LISTEN"], shell=True)
 
     print(f"\nActive listening ports:\n{active_ports.strip().decode()}")
@@ -206,7 +202,7 @@ def porter() -> None:
 
 
 def ultimate_firewall() -> None:
-    system("clear")
+    tum.clear_screen()
 
     profiles: dict = {
             "drop_all": drop_firewall,

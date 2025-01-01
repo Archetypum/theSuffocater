@@ -67,7 +67,7 @@ FREEBSD_BASED: list = ["freebsd", "midnightbsd", "ghostbsd", "bastillebsd", "che
                        "xigmanas", "opnsense", "pfsense", "cellos", "orbisos", "zrouter", "ulbsd", "ravynos"]
 OPENBSD_BASED: list = ["openbsd", "adj", "libertybsd", "bitrig", "bowlfish", "ekkobsd", "embsd", "fabbsd",
                        "fuguita", "marbsd", "microbsd", "miros", "olivebsd", "psygnat", "quetzal",
-                       "sonafr"]
+                       "sonafr", "hyperbolabsd"]
 NETBSD_BASED: list = ["netbsd", "blackbsd", "edgebsd", "seos", "os108", "jibbed"]
 
 try:
