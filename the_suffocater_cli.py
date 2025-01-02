@@ -29,27 +29,37 @@ except ModuleNotFoundError as import_error:
 
 
 suffocater_version: str = "v1.0.8-unstable       "
-folder_path: str = "modules"
-modules_count: int = len([f for f in os.listdir(folder_path) if f.endswith(".py")])
+distros_count: int = 52
+suffocater_contributors: float = 3.5
+folder_path_modules: str = "modules"
+modules_count: int = len([f for f in os.listdir(folder_path_modules) if f.endswith(".py")])
+folder_path_scripts: str = "scripts"
+scripts_count: int = len([f for f in os.listdir(folder_path_scripts) if f.endswith(".sh")])
 neofetch: str = f"""    
-                   /000000000000.           theSuffocater version - {suffocater_version}
-                 /00           000.         Available modules - {modules_count}                  
-                /00          0000000.                                           
-                 /0000                   
-                   /000000000000.                         
-                              0000.                  
-               /0000000          00.                  
-                 /000           00.                  
-                   /000000000000.                 
-        /0000000000000000000000000000000000.        
-        /00                       0000   00.        
-        /00000000000000000        0000   00.        
-        /0000000000000000000000000000000000.        
-        /00000000000000000        0000   00.        
-        /00                       0000   00.
-        /0000000000000000000000000000000000.
+               
+                 __________           theSuffocater version - {suffocater_version}      
+                [0000000000]          Available modules - {modules_count}
+            [0000000000000000.        Available scripts - {scripts_count}   
+          [000000]         .  .       Adapted distributions count - {distros_count}
+         [00000]           [000]      Current contributors - {suffocater_contributors}
+       [00000]             [000]   
+       [00000]          [0000000000]                        
+       [0000]            ⎺⎺⎺⎺⎺⎺⎺⎺⎺⎺ 
+        [00000]   ____  
+         [0000.  .0000]          
+            [0.  .000000.   __
+             ⎺   .000000.  .00]        
+                     [00.  .0000]    
+      __________      ⎺⎺   [00000]    
+     [0000000000]          [00000]       
+        [000]              [00000]  
+        [000]             [00000] 
+         .  .           [000000] 
+          .0000000000000000]  
+              [0000000]                              
+               ⎺⎺⎺⎺⎺⎺⎺                      
 """
-# TODO: full neofetch coming soon
+# TODO: (for sigma wazups) add color palette. 
 
 
 def final_exit() -> None:
