@@ -1,4 +1,4 @@
-# theSuffocater v1.1.8-unstable
+# theSuffocater v1.1.9-unstable
 
 This is going to be the second stable release of theSuffocater.
 Features CLI and GUI stable versions of the carcass, (more?..) 

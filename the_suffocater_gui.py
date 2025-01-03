@@ -16,7 +16,7 @@ try:
     # Also, here are additional tkinter functions for the graphical interface.
     import os
     import sys
-    modules_dir = os.path.join(os.path.dirname(__file__), "modules")
+    modules_dir: str = os.path.join(os.path.dirname(__file__), "modules")
     sys.path.append(modules_dir)
     import glob
     import subprocess
@@ -265,5 +265,5 @@ if __name__ == "__main__":
         print(f"{RED}[!] Error: Carcass requires root privileges to run certain modules.{RESET}")
         sys.exit(1)
 
-    suffocater_version: str = "1.0.0-stable"
+    suffocater_version: str = "1.0.1-stable"
     main_gui(suffocater_version)

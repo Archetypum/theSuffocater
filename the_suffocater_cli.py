@@ -8,7 +8,6 @@
 # its functionality very good.
 # 
 # Graphical frontend - the_suffocater_gui.py
-from typing import Any
 
 try:
     # Here we are importing are python modules, and the most importantly,
@@ -28,7 +27,7 @@ except ModuleNotFoundError as import_error:
     sys.exit(1)
 
 
-suffocater_version: str = "v1.0.8-unstable       "
+suffocater_version: str = "v1.1.9-unstable       "
 distros_count: int = 52
 suffocater_contributors: float = 3.5
 folder_path_modules: str = "modules"
