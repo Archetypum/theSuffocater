@@ -41,8 +41,8 @@ neofetch: str = f"""
             [0000000000000000.        {RESET}Available scripts - {GREEN}{scripts_count}{BLUE}   
           [000000]         .  .       {RESET}Adapted distributions count - {GREEN}{distros_count}{BLUE}
          [00000]           [000]      {RESET}Current contributors - {GREEN}{suffocater_contributors}{BLUE}
-       [00000]             [000]      {RESET}{BLACK}███{WHITE}███{YELLOW}███{ORANGE}███{RESET}{BLUE} 
-       [00000]          [0000000000]  {RESET}{GREEN}███{RED}███{BLUE}███{PURPLE}███{RESET}{BLUE}                      
+       [00000]             [000]      {BLACK}███{WHITE}███{YELLOW}███{ORANGE}███{BLUE} 
+       [00000]          [0000000000]  {GREEN}███{RED}███{BLUE}███{PURPLE}███{BLUE}                      
        [0000]            ⎺⎺⎺⎺⎺⎺⎺⎺⎺⎺ 
         [00000.   ____  
          [0000.  .0000]          
