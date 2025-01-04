@@ -21,7 +21,7 @@ try:
     import subprocess
     import importlib.util
     import the_unix_manager as tum
-    from the_unix_manager import GREEN, RED, PURPLE, RESET
+    from the_unix_manager import GREEN, RED, PURPLE, BLACK, WHITE, YELLOW, ORANGE, BLUE, RESET
 except ModuleNotFoundError as import_error:
     print(f"{RED}[!] Error: modules not found:\n{import_error}{RESET}")
     sys.exit(1)
@@ -35,16 +35,16 @@ modules_count: int = len([f for f in os.listdir(folder_path_modules) if f.endswi
 folder_path_scripts: str = "scripts"
 scripts_count: int = len([f for f in os.listdir(folder_path_scripts) if f.endswith(".sh")])
 neofetch: str = f"""    
-               
-                 __________           theSuffocater version - {suffocater_version}      
-                [0000000000]          Available modules - {modules_count}
-            [0000000000000000.        Available scripts - {scripts_count}   
-          [000000]         .  .       Adapted distributions count - {distros_count}
-         [00000]           [000]      Current contributors - {suffocater_contributors}
-       [00000]             [000]   
-       [00000]          [0000000000]                        
+{BLUE}               
+                 __________           {RESET}theSuffocater version - {GREEN}{suffocater_version}{BLUE}      
+                [0000000000]          {RESET}Available modules - {GREEN}{modules_count}{BLUE}
+            [0000000000000000.        {RESET}Available scripts - {GREEN}{scripts_count}{BLUE}   
+          [000000]         .  .       {RESET}Adapted distributions count - {GREEN}{distros_count}{BLUE}
+         [00000]           [000]      {RESET}Current contributors - {GREEN}{suffocater_contributors}{BLUE}
+       [00000]             [000]      {RESET}{BLACK}███{WHITE}███{YELLOW}███{ORANGE}███{RESET}{BLUE} 
+       [00000]          [0000000000]  {RESET}{GREEN}███{RED}███{BLUE}███{PURPLE}███{RESET}{BLUE}                      
        [0000]            ⎺⎺⎺⎺⎺⎺⎺⎺⎺⎺ 
-        [00000]   ____  
+        [00000.   ____  
          [0000.  .0000]          
             [0.  .000000.   __
              ⎺   .000000.  .00]        
@@ -56,9 +56,8 @@ neofetch: str = f"""
          .  .           [000000] 
           .0000000000000000]  
               [0000000]                              
-               ⎺⎺⎺⎺⎺⎺⎺                      
+               ⎺⎺⎺⎺⎺⎺⎺ {RESET}                     
 """
-# TODO: (for sigma wazups) add color palette. 
 
 
 def final_exit() -> None:
