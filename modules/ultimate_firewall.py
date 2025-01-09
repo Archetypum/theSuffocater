@@ -85,6 +85,10 @@ def iptables_setup() -> None:
         print(f"Interfaces:\n{[interface for interface in interfaces if os.path.islink(f'/sys/class/net/{interface}')]}")
         interface: str = input("\n[==>] Enter your interface: ")
 
+        if interface not in interfaces:
+           print(f"{RED}[!] Error: {interface} is not defined.{RESET}")
+           return
+
         rules: list = [
             ("Web", ["80", "443"], ["80", "443"]),
             ("DNS", ["53"], ["53"]),
