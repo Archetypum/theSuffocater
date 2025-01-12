@@ -44,6 +44,8 @@ def create_jail_copy() -> None:
             else:
                 print(f"{GREEN}[*] 'jail.local' is already exists.")
             print(f"[*] Success!{RESET}")
+            sleep(3)
+            fail2ban_setup()
         except (IOError, FileNotFoundError) as error:
             print(f"{RED}[!] Error: {error}{RESET}")
 
