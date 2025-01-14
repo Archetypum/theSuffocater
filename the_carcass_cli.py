@@ -9,6 +9,8 @@
 #
 # Graphical frontend - the_carcass_gui.py
 # Bash version - the_carcass_cli.sh
+server_imported_modules: list = []
+community_imported_modules: list = []
 
 
 def final_exit() -> None:
@@ -87,8 +89,6 @@ def the_carcass_version() -> None:
 
 
 def import_modules() -> None:
-    current_directory: str = os.path.dirname(__file__)
-
     print("\nDefault module directories:")
     print(f" {BLUE}server_modules{RESET} ({GREEN}already imported{RESET}) - essential server modules.")
     print(f" {PURPLE}community_modules{RESET} - quality of life modules.")
@@ -105,22 +105,30 @@ def import_modules() -> None:
             module = importlib.util.module_from_spec(spec)
             spec.loader.exec_module(module)
             globals()[module_name] = module
+            community_imported_modules.append(module)
 
-            print(f"[<==] Importing {module_name}...")
-    
+            print(f"{GREEN}[<==] Importing {module_name}...{RESET}")
 
 def list_imported_modules(show_docs: bool = True) -> None:
-    print(f"+{'-' * 20} Imported modules {'-' * 20}+")
-    for python_file in python_files:
-        module_name: str = os.path.splitext(os.path.basename(python_file))[0]
-        module = globals().get(module_name)
+    print(f"+{'-' * 20} Imported server modules {'-' * 20}+")
+    for module in server_imported_modules:
+        module_name = module.__name__
+        print(f"-> {module_name}")
 
-        if module:
-            print(f"-> {module_name}")
+        if show_docs and module.__doc__:
+            print(module.__doc__.strip())
+    
+    print(f"\n+{'-' * 20} Imported community modules {'-' * 20}+")
+    for module in community_imported_modules:
+        module_name = module.__name__
+        print(f"-> {module_name}")
 
-            if show_docs and module.__doc__:
-                print(module.__doc__.strip())
+        if show_docs and module.__doc__:
+            print(module.__doc__.strip())
  
+    if not community_imported_modules:
+        print("Not imported.")
+
 
 def the_carcass(tsf_version_string: str, tc_version_string: str) -> None:
     print(f"+{'-' * 16} Welcome to theSuffocater {'-' * 16}+\n")
@@ -205,10 +213,10 @@ for python_file in python_files:
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
     globals()[module_name] = module
+    server_imported_modules.append(module)
     print(f"[<==] Importing {module_name}...")
 
 print(f"{GREEN}[*] Successfully imported modules. Loading main function...{RESET}")
-
 if __name__ == "__main__":
     tum.clear_screen()
     the_carcass(tsf_version_string=the_suffocater_version_string, tc_version_string=the_carcass_version_string)

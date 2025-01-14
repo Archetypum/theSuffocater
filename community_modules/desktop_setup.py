@@ -15,7 +15,6 @@ Date: null
 
 try:
     import os
-    import usr
     import subprocess
     from sys import exit
     from os import system
