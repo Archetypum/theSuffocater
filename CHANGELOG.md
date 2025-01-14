@@ -20,27 +20,30 @@ Main changes:
         * Added 'import_sh.conf'.       
 
     5) Impoved README.md:
+    
+    6) Improved 'requirements.sh':
 
     *) Minor fixes:
+        * Bug files.
         * Removed useless/redundant imports.
         * Typos, spelling mistakes, markdown syntax errors, etc.
 
 "cloc ." statistics:
 
 ```text
-      49 text files.
-      48 unique files.                              
+      34 text files.
+      33 unique files.                              
        3 files ignored.
 
-github.com/AlDanial/cloc v 1.96  T=0.04 s (1269.9 files/s, 198159.0 lines/s)
+github.com/AlDanial/cloc v 1.96  T=0.03 s (1109.2 files/s, 158276.3 lines/s)
 -------------------------------------------------------------------------------
 Language                     files          blank        comment           code
 -------------------------------------------------------------------------------
-Python                          16            900            528           2943
-Bourne Shell                     8            201             34           1207
-Markdown                         9            299              0            904
-Text                            15             89              0            385
+Python                          14            450            162           1432
+Bourne Shell                     8            208             26           1243
+Markdown                         9            295              0            891
+Text                             2              0              0              2
 -------------------------------------------------------------------------------
-SUM:                            48           1489            562           5439
+SUM:                            33            953            188           3568
 -------------------------------------------------------------------------------
 ```
