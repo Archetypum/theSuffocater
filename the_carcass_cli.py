@@ -62,77 +62,13 @@ def the_carcass_version() -> None:
     print(f"Current theCarcass version - {the_carcass_version_string}")
 
 
-imported_modules = {}  # Global dictionary to store imported modules
-
 def import_modules() -> None:
-    """Dynamically imports Python modules from a user-specified directory."""
+    ...
     
-    global imported_modules  # Reference the global variable
-    
-    # Ask the user for custom directories
-    print(f"{PURPLE}[?] Enter the directory where you want to import modules from (leave blank to skip):{RESET}")
-    user_dir = input(f"{PURPLE}Directory: {RESET}").strip()
-
-    # Ensure the user provides a valid directory or use default ones
-    directories_to_import = []
-    
-    # Check if the user provided a directory
-    if user_dir:
-        if os.path.isdir(user_dir):
-            directories_to_import.append(user_dir)
-            print(f"{GREEN}[+] Importing from user-specified directory: {user_dir}{RESET}")
-        else:
-            print(f"{RED}[!] Error: '{user_dir}' is not a valid directory.{RESET}")
-    
-    # Ask the user if they want to import default directories (server_modules and community_modules)
-    print(f"{PURPLE}[?] Would you like to import from default directories (server_modules/ and community_modules/) [y/n]?{RESET}")
-    use_defaults = input(f"{PURPLE}Use default modules? [y/n]: {RESET}").lower().strip()
-    
-    if use_defaults == 'y':
-        # Add the default directories if confirmed
-        current_directory: str = os.path.dirname(__file__)
-        directories_to_import.append(os.path.join(current_directory, "server_modules"))
-        directories_to_import.append(os.path.join(current_directory, "community_modules"))
-        print(f"{GREEN}[+] Importing from default directories: server_modules/, community_modules/{RESET}")
-    
-    # Import modules from all selected directories
-    for directory in directories_to_import:
-        try:
-            print(f"{GREEN}[+] Importing from {directory}...{RESET}")
-            py_files = glob(os.path.join(directory, "*.py"))  # List Python files
-            if py_files:
-                print(f"{GREEN}[+] Found {len(py_files)} Python files in {directory}.{RESET}")
-            for py_file in py_files:
-                module_name = os.path.splitext(os.path.basename(py_file))[0]  # Get module name
-                print(f"{BLUE}[+] Trying to import module: {module_name}{RESET}")  # Debugging print
-                spec = importlib.util.spec_from_file_location(module_name, py_file)
-                module = importlib.util.module_from_spec(spec)
-                spec.loader.exec_module(module)
-                imported_modules[module_name] = module  # Store the module in the dictionary
-                print(f"{GREEN}[+] Successfully imported module: {module_name}{RESET}")
-            if not py_files:
-                print(f"{YELLOW}[-] No Python files found in {directory}.{RESET}")
-        except Exception as e:
-            print(f"{RED}[!] Error importing from directory '{directory}': {e}{RESET}")
-
 
 def list_imported_modules(show_docs: bool = True) -> None:
-    """Lists modules imported from user-specified directories and default directories."""
-    
-    # Start with a list of the dynamically imported modules
-    modules_text = "Imported Modules\n"
-    
-    if not imported_modules:
-        modules_text = "No modules imported yet."
-    else:
-        for module_name, module in imported_modules.items():
-            modules_text += f"\n-> {module_name}:"
-            
-            if show_docs and module.__doc__:
-                modules_text += f"\n{module.__doc__.strip()}"
-    
-    print(modules_text)  # Use print to show the modules in the console
-
+    ...
+ 
 
 def the_carcass(tsf_version_string: str, tc_version_string: str) -> None:
     print(f"+{'-' * 16} Welcome to theSuffocater {'-' * 16}+\n")
@@ -194,7 +130,6 @@ if __name__ == "__main__":
     finally:
         print(f"{GREEN}[*] Modules are successfully imported. Loading theSuffocater global variables...{RESET}")
         
-        imported_modules = {}  # Global dictionary to store imported modules
         distros: int = 52
         the_suffocater_contributors: float = 3.5
         with open("tsf_version.txt", "r") as tsf_version_file:
