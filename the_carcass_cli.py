@@ -208,5 +208,7 @@ for python_file in python_files:
     print(f"[<==] Importing {module_name}...")
 
 print(f"{GREEN}[*] Successfully imported modules. Loading main function...{RESET}")
-tum.clear_screen()
-the_carcass(tsf_version_string=the_suffocater_version_string, tc_version_string=the_carcass_version_string)
+
+if __name__ == "__main__":
+    tum.clear_screen()
+    the_carcass(tsf_version_string=the_suffocater_version_string, tc_version_string=the_carcass_version_string)

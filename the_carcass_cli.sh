@@ -20,7 +20,7 @@ function the_suffocater_help() {
 	echo " clear - clear the screen."
 	echo " help - display this message."
 	echo " neofetch - brief theSuffocater statistics."
-	echo " modules [-d] - list imported modules (use -d to include documentation)."
+	echo " scripts - list imported scripts."
 	echo " tsf_version - get current version of theSuffocater."
 	echo " tc_version - get current version of theCarcass."
 	echo " license - check license.md"
@@ -58,7 +58,28 @@ function the_suffocater_documentation {
 }
 
 function the_suffocater_neofetch() {
-	echo "..."
+	echo "${BLUE}               
+	         __________           ${RESET}theSuffocater version - ${GREEN}$THE_SUFFOCATER_VERSION_STRING${BLUE}      
+                [0000000000]          
+            [0000000000000000.        
+          [000000]         .  .       ${RESET}Adapted distributions count - ${GREEN}$DISTROS_COUNT${BLUE}
+	  [00000]          [000]      ${RESET}Current contributors - ${GREEN}$THE_SUFFOCATER_VERSION_STRING${BLUE}
+       [00000]             [000]      ${BLACK}███${WHITE}███${YELLOW}███${ORANGE}███${BLUE} 
+       [00000]          [0000000000]  ${GREEN}███${RED}███${BLUE}███${PURPLE}███${BLUE}                      
+       [0000]            ⎺⎺⎺⎺⎺⎺⎺⎺⎺⎺ 
+        [00000.   ____  
+         [0000.  .0000]          
+            [0.  .000000.   __
+             ⎺   .000000.  .00]        
+                     [00.  .0000]    
+      __________      ⎺⎺   [00000]    
+     [0000000000]          [00000]       
+        [000]              [00000]  
+        [000]             [00000] 
+         .  .           [000000] 
+          .0000000000000000]  
+              [0000000]                              
+               ⎺⎺⎺⎺⎺⎺⎺ ${RESET}"
 }
 
 function the_carcass_version() {
@@ -83,7 +104,7 @@ if [[ -f "$TUM_PATH" ]]; then
 	if source "$TUM_PATH"; then
 		echo -e "${GREEN}[*] Successfully imported modules. Loading global variables...${RESET}"
 
-		declare DISTROS="52"
+		declare DISTROS_COUNT="52"
 		declare THE_SUFFOCATER_CONTRIBUTORS="3.5"
 		declare THE_SUFFOCATER_VERSION_STRING=$(cat tsf_version.txt)
 		declare THE_CARCASS_VERSION_STRING=$(cat tc_version.txt)
