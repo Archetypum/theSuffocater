@@ -101,6 +101,7 @@ function the_carcass() {
 # If you have the_unix_manager.sh located somewhere else - change this variable to the actual path:
 declare TUM_PATH="/usr/bin/the_unix_manager.sh"
 if [[ -f "$TUM_PATH" ]]; then
+	# shellcheck source=/usr/bin/the_unix_manager.sh
 	if source "$TUM_PATH"; then
 		echo -e "${GREEN}[*] Successfully imported modules. Loading global variables...${RESET}"
 

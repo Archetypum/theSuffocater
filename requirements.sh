@@ -1,6 +1,8 @@
 #!/bin/bash
 #
 # If you have the_unix_manager.sh located somewhere else - change this variable to the actual path:
+#
+# shellcheck source=/usr/bin/the_unix_manager.sh
 declare TUM_PATH="/usr/bin/the_unix_manager.sh"
 source "$TUM_PATH"
 
@@ -149,7 +151,7 @@ function install_freebsd_based() {
 	echo "    To achieve similar functionality, use tools designed for BSD systems,"
 	echo -e "    like PF (Packet Filter), IPFilter (ipf), or build these packages yourself.${RESET}"
 	echo -n "[==>] Hit enter to proceed: "
-	read PROCEED
+	read -r PROCEED
 }
 
 function install_netbsd_based() {
@@ -165,7 +167,7 @@ function install_netbsd_based() {
 	echo "    To achieve similar functionality, use tools designed for BSD systems,"
 	echo -e "    like PF (Packet Filter), IPFilter (ipf), or build these packages yourself.${RESET}"
 	echo -n "[==>] Hit enter to proceed: "
-	read PROCEED
+	read -r PROCEED
 }
 
 function install_openbsd_based() {
@@ -181,7 +183,7 @@ function install_openbsd_based() {
 	echo "    To achieve similar functionality, use tools designed for BSD systems,"
 	echo -e "    like PF (Packet Filter), IPFilter (ipf), or build these packages yourself.${RESET}"
 	echo -n "[==>] Hit enter to proceed: "
-	read PROCEED
+	read -r PROCEED
 }
 
 function install_dragora_based() {
@@ -202,7 +204,7 @@ function install_guix_based() {
 
 function main() {
 	read -rp "[==>] Enter your OS (GNU/Linux, BSD distro): " DISTRO
-	local DISTRO=$(to_lowercase "$DISTRO")
+	DISTRO=$(to_lowercase "$DISTRO")
 	if [[ "$DISTRO" == "packages" ]]; then
 		list_of_packages
 		main
@@ -355,7 +357,7 @@ function parse_args() {
 				check_privileges
 				;;
 			*)
-				echo -e "${RED}[!] Error: Unknown argument: "$1"${RESET}"
+				echo -e "${RED}[!] Error: Unknown argument: $1${RESET}"
 				exit 1
 				;;
 		esac
