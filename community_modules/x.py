@@ -1,9 +1,8 @@
 #!/usr/bin/python3
 
-
-def f():
-    print("hell yeah")
+def x() -> None:
+    print("hell eyaha")
 
 
 if __name__ == "__main__":
-    test()
+    x()

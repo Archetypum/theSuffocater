@@ -1,4 +1,4 @@
-# theSuffocater v2.0.0-nstable
+# theSuffocater v2.0.0-stable
 
 This is going to be the REAL second stable release of theSuffocater.
 Features CLI and GUI stable versions of theCarcass, (more?..) 
@@ -11,9 +11,15 @@ Main changes:
         * Optimised the imports.
         * Many more.
     
-    2) Added bash/python theUnixManager libraries as dependencies:
+    2) Added bash version of theCarcass:
 
-    3) Impoved README.md:
+    3) Added bash/python theUnixManager libraries as dependencies:
+    
+    4) Added 'config_files/' directory:
+        * Added 'import_py.conf'.
+        * Added 'import_sh.conf'.       
+
+    5) Impoved README.md:
 
     *) Minor fixes:
         * Removed useless/redundant imports.
