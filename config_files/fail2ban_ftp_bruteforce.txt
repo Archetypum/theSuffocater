@@ -1,9 +1,0 @@
-
-[vsftpd]
-enabled = true
-port = 21
-filter = vsftpd
-logpath = /var/log/secure
-maxretry = 3
-findtime = 5m
-bantime = 24h

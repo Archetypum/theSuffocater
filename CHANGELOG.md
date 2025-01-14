@@ -1,34 +1,19 @@
-# theSuffocater v1.1.9-unstable
+# theSuffocater v2.0.0-nstable
 
-This is going to be the second stable release of theSuffocater.
-Features CLI and GUI stable versions of the carcass, (more?..) 
+This is going to be the REAL second stable release of theSuffocater.
+Features CLI and GUI stable versions of theCarcass, (more?..) 
 
 Main changes:
     
-    1) Improved 'requirements.sh':
-        * Added '-h' and '-s' arguments to the parser.
-        * Added normal screen cleaning.
-        * General polishing and refactoring.
+    1) Recoded GUI/CLI versions of theCarcass:
+        * Added 'import' function.
+        * Fixed old functions.
+        * Optimised the imports.
+        * Many more.
+    
+    2) Added bash/python theUnixManager libraries as dependencies:
 
-    2) Improved theCarcass:
-        * Added 'neofetch' function.
-        * Made a better neofetch logo.
-        * General polishing and refactoring.
-
-    3) Improved 'usr.py':
-        * Just removed it.
-    
-    4) Added 'community_modules/' directory:
-        * Added 'desktop.py' module. Not finished yet.
-    
-    5) Added latest theUnixManager version to the repo:
-        * Removed every 'usr' mentions.
-    
-    6) Fixed 'tor_management.py':
-        * Fixed FreeBSD snowlake-proxy setup process name.
-    
-    7) Improved 'ssh_management':
-        * Renamed 'ssh_key_gen()' to 'ssh_keygen()'.
+    3) Impoved README.md:
 
     *) Minor fixes:
         * Removed useless/redundant imports.

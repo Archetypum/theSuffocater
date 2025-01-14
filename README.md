@@ -3,10 +3,10 @@
 
 theSuffocater - free open-source extensible module management tool made by
 Archetypum that allows you to quickly harden your server and solve your problems
-in a few clicks. theSuffocater doesn't require any unix and programming skills
+in a few clicks. theSuffocater doesn't require any Unix and programming skills
 to use it, making it friendly for new users. 
 theSuffocater uses sysvinit and init as primary init systems,
-but supports ugly fucking systemd, s6, openrc, and launchd as well. 
+but supports systemd, s6, openrc, and launchd as well. 
 
 ## Installation of theSuffocater-unstable (as root):
 
@@ -22,16 +22,19 @@ cd theSuffocater
 bash requirements.sh
 ```
 
-```bash
-source pkgenv/bin/activate
-```
+CLI launch:
 
 ```bash
-python3 the_suffocater_cli.py
+sudo bash -c "source pkgenv/bin/activate && python3 the_carcass_cli.py"
 ```
 
-theSuffocater is constantly being updated.
-Don't forget to
+GUI launch:
+
+```bash
+sudo bash -c "source pkgenv/bin/activate && python3 the_carcass_gui.py"
+```
+
+theSuffocater is constantly being updated. Don't forget to
 
 ```bash
 git pull origin main
