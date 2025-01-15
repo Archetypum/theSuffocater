@@ -134,10 +134,11 @@ More information in:
 - https://www.fsf.org
 - https://www.gnu.org
 
-... uses MIT Licsense.
+'scripts/openvpn-install.sh' and 'wireguard-install.sh' using MIT Licenses.
 
 More information in:
 
 - LICENSE-MIT.md
+- https://mit-license.org/
 
 ![gnu](https://github.com/user-attachments/assets/66935a97-374f-4dbc-9f1c-428070fda139)
