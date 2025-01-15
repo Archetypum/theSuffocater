@@ -9,6 +9,7 @@
 #
 # Graphical frontend - the_carcass_gui.py
 # Bash version - the_carcass_cli.sh
+
 server_imported_modules: list = []
 community_imported_modules: list = []
 
@@ -109,6 +110,7 @@ def import_modules() -> None:
 
             print(f"{GREEN}[<==] Importing {module_name}...{RESET}")
 
+
 def list_imported_modules(show_docs: bool = True) -> None:
     print(f"+{'-' * 20} Imported server modules {'-' * 20}+")
     for module in server_imported_modules:
@@ -195,9 +197,9 @@ try:
     distros_count: int = 52
     the_suffocater_contributors: float = 3.5
     current_directory: str = os.path.dirname(__file__)
-    with open("tsf_version.txt", "r") as tsf_version_file:
+    with open("versions/tsf_version.txt", "r") as tsf_version_file:
         the_suffocater_version_string: str = tsf_version_file.read().strip()
-    with open("tc_version.txt", "r") as tc_version_file:
+    with open("versions/tc_version.txt", "r") as tc_version_file:
         the_carcass_version_string: str = tc_version_file.read().strip()
 except FileNotFoundError as variable_error:
     print(f"{RED}[!] Error: Failed to create global variables:\n\n{variable_error}{RESET}")

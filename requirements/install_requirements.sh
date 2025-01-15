@@ -52,18 +52,18 @@ function list_of_packages() {
 function install_python_requirements() {
 	python3 -m venv pkgenv
 	source pkgenv/bin/activate
-	pip install -r python_requirements.txt
+	pip install -r requirements/python_requirements.txt
 
-	echo -e "\n${GREEN} Looks like you are good to go."
+	echo -e "\n${GREEN}Looks like you are good to go."
 	echo -e "[*] Success!${RESET}"
 }
 
 function install_python_requirements_netbsd() {
 	python3.12 -m venv pkgenv
 	. pkgenv/bin/activate
-	pip install -r python_requirements.txt
+	pip install -r requirements/python_requirements.txt
 
-	echo -e "\n${GREEN} Looks like you are good to go."
+	echo -e "\n${GREEN}Looks like you are good to go."
 	echo -e "[*] Success!${RESET}"
 }
 
@@ -321,7 +321,7 @@ function main() {
 		fi
 	done
 
-	echo "Now we need to create a virtual environment for python3 in $(pwd)."
+	echo -e "\nNow we need to create a virtual environment for python3 in $(pwd)."
 	if prompt_user "[?] Proceed"; then
 		install_python_requirements
 	else

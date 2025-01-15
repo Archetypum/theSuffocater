@@ -18,10 +18,20 @@ Main changes:
     4) Added 'config_files/' directory:
         * Added 'import_py.conf'.
         * Added 'import_sh.conf'.       
+        * Moved old config files.
 
     5) Impoved README.md:
     
     6) Improved 'requirements.sh':
+    
+    7) Added 'versions/' directory:
+        * Moved theCarcass and theSuffocater versions.
+    
+    8) Added 'requirements/' directory:
+        * Renamed 'requirements.sh' to 'install_requirements.sh' and moved it here.
+        * Moved 'python_requirements.txt'.
+
+    9) Added 'LICENSE-MIT.md' for VPN install scripts:
 
     *) Minor fixes:
         * Bug files.
@@ -31,19 +41,19 @@ Main changes:
 "cloc ." statistics:
 
 ```text
-      34 text files.
-      33 unique files.                              
+      35 text files.
+      34 unique files.                              
        3 files ignored.
 
-github.com/AlDanial/cloc v 1.96  T=0.03 s (1109.2 files/s, 158276.3 lines/s)
+github.com/AlDanial/cloc v 1.96  T=0.03 s (1042.2 files/s, 184680.0 lines/s)
 -------------------------------------------------------------------------------
 Language                     files          blank        comment           code
 -------------------------------------------------------------------------------
-Python                          14            450            162           1432
-Bourne Shell                     8            208             26           1243
-Markdown                         9            295              0            891
+Bourne Shell                     8            303            154           2297
+Python                          14            452            162           1428
+Markdown                        10            307              0            920
 Text                             2              0              0              2
 -------------------------------------------------------------------------------
-SUM:                            33            953            188           3568
+SUM:                            34           1062            316           4647
 -------------------------------------------------------------------------------
 ```

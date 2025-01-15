@@ -41,10 +41,8 @@ def openvpn_server_setup() -> None:
             print("[<==] Installing Curl...")
             tum.package_handling(distro, package_list=["curl"], command="install")
 
-            print("[<==] Installing OpenVPN-Installer script...")
-            subprocess.run(["curl", "-LJO", "https://raw.githubusercontent.com/angristan/openvpn-install/master/openvpn-install.sh"], check=True)
-            subprocess.run(["chmod", "+x", "openvpn-install.sh"], check=True)
-            subprocess.run(["bash", "openvpn-install.sh"], check=True)
+            print("[<==] Launching OpenVPN-Installer script...")
+            subprocess.run(["bash", "scripts/openvpn-install.sh"], check=True)
             sleep(1)
 
             print("[<==] Restarting OpenVPN service && Finishing installation...")
@@ -74,10 +72,8 @@ def wireguard_server_setup() -> None:
             print("[<==] Installing Curl...")
             tum.package_handling(distro, package_list=["curl"], command="install")
 
-            print("[<==] Installing Wireguard-Installer script...")
-            subprocess.run(["curl", "-LJO", "https://raw.githubusercontent.com/angristan/wireguard-install/master/wireguard-install.sh"], check=True)
-            subprocess.run(["chmod", "+x", "wireguard-install.sh"], check=True)
-            subprocess.run(["bash", "wireguard-install.sh"], check=True)
+            print("[<==] Launching Wireguard-Installer script...")
+            subprocess.run(["bash", "scripts/wireguard-install.sh"], check=True)
             sleep(1)
 
             print("[<==] Restarting Wireguard service && Finishing installation...")

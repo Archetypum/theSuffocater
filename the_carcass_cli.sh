@@ -107,8 +107,8 @@ if [[ -f "$TUM_PATH" ]]; then
 
 		declare DISTROS_COUNT="52"
 		declare THE_SUFFOCATER_CONTRIBUTORS="3.5"
-		declare THE_SUFFOCATER_VERSION_STRING=$(cat tsf_version.txt)
-		declare THE_CARCASS_VERSION_STRING=$(cat tc_version.txt)
+		declare THE_SUFFOCATER_VERSION_STRING=$(cat versions/tsf_version.txt)
+		declare THE_CARCASS_VERSION_STRING=$(cat versions/tc_version.txt)
 
 		echo -e "${GREEN}[*] Variables are successfully initialized. Loading main function...${RESET}"
 		clear_screen

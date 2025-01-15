@@ -19,7 +19,7 @@ cd theSuffocater
 ```
 
 ```bash
-bash requirements.sh
+bash requirements/install_requirements.sh
 ```
 
 CLI launch:
@@ -124,14 +124,20 @@ Current goals of theSuffocater:
 - Reach 5.0.0-stable version until May.
 - Work hard, own nothing, be happy.
 
-## License
+## Licenses
 
-theSuffocater uses GNU General Public License V3. 
+theSuffocater uses GNU General Public License v3. 
 
 More information in:
 
 - LICENSE.md
 - https://www.fsf.org
 - https://www.gnu.org
+
+... uses MIT Licsense.
+
+More information in:
+
+- LICENSE-MIT.md
 
 ![gnu](https://github.com/user-attachments/assets/66935a97-374f-4dbc-9f1c-428070fda139)
