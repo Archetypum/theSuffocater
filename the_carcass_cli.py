@@ -1,4 +1,4 @@
-#!/usr/bin/python3    
+#!/usr/bin/python3  
 #
 # This thing is called "theCarcass" - heart of theSuffocater.
 # theCarcass destiny is to load modules and scripts from directories provided by the user.
@@ -10,8 +10,35 @@
 # Graphical frontend - the_carcass_gui.py
 # Bash version - the_carcass_cli.sh
 
-server_imported_modules: list = []
-community_imported_modules: list = []
+try:
+    print(f"[==>] Importing python modules...")
+    import os
+    import sys
+    import inspect
+    import importlib.util
+    import the_unix_manager as tum
+    from subprocess import run, CalledProcessError
+    from the_unix_manager import GREEN, RED, PURPLE, BLACK, WHITE, YELLOW, ORANGE, BLUE, RESET
+except ModuleNotFoundError as import_error:
+    print(f"[!] Error: Modules not found. Broken installation?\n\n{import_error}")
+    sys.exit(1)
+finally:
+    print(f"{GREEN}[*] Python modules are successfully imported. Loading theSuffocater global variables...{RESET}")
+
+try:
+    distros_count: int = 52
+    the_suffocater_contributors: float = 3.5
+    current_directory: str = os.path.dirname(__file__)
+    loaded_modules: dict = {}
+    with open("versions/tsf_version.txt", "r") as tsf_version_file:
+        the_suffocater_version_string: str = tsf_version_file.read().strip()
+    with open("versions/tc_version.txt", "r") as tc_version_file:
+        the_carcass_version_string: str = tc_version_file.read().strip()
+except FileNotFoundError as variable_error:
+    print(f"{RED}[!] Error: Failed to create global variables:\n\n{variable_error}{RESET}")
+    sys.exit(1)
+finally:
+    print(f"{GREEN}[*] Variables are successfully initialized. Loading main function...{RESET}")
 
 
 def final_exit() -> None:
@@ -24,7 +51,8 @@ def the_suffocater_help() -> None:
     print(" clear - clear the screen.")
     print(" help - display this message.")
     print(" neofetch - brief theSuffocater statistics.")
-    print(" modules [-d] - list imported modules (use -d to include documentation).")
+    print(" import - for importing modules from directories.")
+    print(" modules - list imported modules.")
     print(" tsf_version - get current version of theSuffocater.")
     print(" tc_version - get current version of theCarcass.")
     print(" license - check license.")
@@ -39,7 +67,7 @@ def the_suffocater_version() -> None:
 
 def the_suffocater_license() -> None:
     try:
-        run(["less", "LICENSE.md"], check=True)
+        run(["less", "LICENSE-GPL.md"], check=True)
     except (FileNotFoundError, CalledProcessError):
         print(f"{RED}[!] Error: 'LICENSE.md' file not found. Broken installation?")
 
@@ -59,29 +87,29 @@ def the_suffocater_documentation() -> None:
 
 
 def the_suffocater_neofetch() -> None:
-    print(f"""    
-{BLUE}               
-                 __________           {RESET}theSuffocater version - {GREEN}{the_suffocater_version_string}{BLUE}      
-                [0000000000]          
-            [0000000000000000.        
+    print(f"""
+{BLUE}
+                 __________           {RESET}theSuffocater version - {GREEN}{the_suffocater_version_string}{BLUE}
+                [0000000000]
+            [0000000000000000.
           [000000]         .  .       {RESET}Adapted distributions count - {GREEN}{distros_count}{BLUE}
          [00000]           [000]      {RESET}Current contributors - {GREEN}{the_suffocater_contributors}{BLUE}
-       [00000]             [000]      {BLACK}███{WHITE}███{YELLOW}███{ORANGE}███{BLUE} 
-       [00000]          [0000000000]  {GREEN}███{RED}███{BLUE}███{PURPLE}███{BLUE}                      
-       [0000]            ⎺⎺⎺⎺⎺⎺⎺⎺⎺⎺ 
-        [00000.   ____  
-         [0000.  .0000]          
+       [00000]             [000]      {BLACK}███{WHITE}███{YELLOW}███{ORANGE}███{BLUE}
+       [00000]          [0000000000]  {GREEN}███{RED}███{BLUE}███{PURPLE}███{BLUE}
+       [0000]            ⎺⎺⎺⎺⎺⎺⎺⎺⎺⎺
+        [00000.   ____
+         [0000.  .0000]
             [0.  .000000.   __
-             ⎺   .000000.  .00]        
-                     [00.  .0000]    
-      __________      ⎺⎺   [00000]    
-     [0000000000]          [00000]       
-        [000]              [00000]  
-        [000]             [00000] 
-         .  .           [000000] 
-          .0000000000000000]  
-              [0000000]                              
-               ⎺⎺⎺⎺⎺⎺⎺ {RESET}                     
+             ⎺   .000000.  .00]
+                     [00.  .0000]
+      __________      ⎺⎺   [00000]
+     [0000000000]          [00000]
+        [000]              [00000]
+        [000]             [00000]
+         .  .           [000000]
+          .0000000000000000]
+              [0000000]
+               ⎺⎺⎺⎺⎺⎺⎺ {RESET}
 """)
 
 
@@ -89,47 +117,51 @@ def the_carcass_version() -> None:
     print(f"Current theCarcass version - {the_carcass_version_string}")
 
 
+def list_imported_modules() -> None:
+    print("Imported modules:")
+    for module_path, module_info in loaded_modules.items():
+        print(f"\n  Path: {module_path}")
+        print(f"  Docstring: {module_info['docstring'] or 'None'}")
+        print("  function:")
+        for func_name, func_docstring in module_info['functions'].items():
+            print(f"    - {func_name}: {func_docstring or 'None'}")
+
+
 def import_modules() -> None:
-    print("\nDefault module directories:")
-    print(f" {BLUE}server_modules{RESET} ({GREEN}already imported{RESET}) - essential server modules.")
-    print(f" {PURPLE}community_modules{RESET} - quality of life modules.")
+    directory_path: str = input("[==>] Enter modules directory path (e.g /home/$USER/Desktop/my_python_modules: ")
+    if not os.path.isdir(directory_path):
+        print(f"{RED}[!] Error: Not a directory.{RESET}")
+        return
 
-    import_directory_path: str = input("\n[==>] Enter directory path: ").lower()
-    if import_directory_path == "server_modules":
-        print(f"{GREEN}[*] Already imported.{RESET}")
-    elif import_directory_path == "community_modules":
-        server_modules_directory: str = os.path.join(current_directory, "community_modules")
-        python_files: list = glob(os.path.join(server_modules_directory, "*.py"))
-        for python_file in python_files:
-            module_name: str = os.path.splitext(os.path.basename(python_file))[0]
-            spec = importlib.util.spec_from_file_location(module_name, python_file)
-            module = importlib.util.module_from_spec(spec)
-            spec.loader.exec_module(module)
-            globals()[module_name] = module
-            community_imported_modules.append(module)
-
-            print(f"{GREEN}[<==] Importing {module_name}...{RESET}")
+    import_functions_from_directory(directory_path)
 
 
-def list_imported_modules(show_docs: bool = True) -> None:
-    print(f"+{'-' * 20} Imported server modules {'-' * 20}+")
-    for module in server_imported_modules:
-        module_name = module.__name__
-        print(f"-> {module_name}")
+def import_functions_from_directory(directory_path: str) -> None:
+    for filename in os.listdir(directory_path):
+        if filename.endswith(".py"):
+            file_path: str = os.path.join(directory_path, filename)
+            try:
+                module_name = filename[:-3]
+                spec = importlib.util.spec_from_file_location(module_name, file_path)
+                module = importlib.util.module_from_spec(spec)
+                spec.loader.exec_module(module)
+                
+                if file_path in loaded_modules:
+                    del loaded_modules[file_path]
+                    
+                loaded_modules[file_path] = {
+                    "docstring": module.__doc__,
+                    "functions": {}
+                }
+                
+                for name, obj in inspect.getmembers(module):
+                    if inspect.isfunction(obj):
+                       loaded_modules[file_path]["functions"][name] = obj.__doc__
+                       default_modules[name] = obj
 
-        if show_docs and module.__doc__:
-            print(module.__doc__.strip())
-    
-    print(f"\n+{'-' * 20} Imported community modules {'-' * 20}+")
-    for module in community_imported_modules:
-        module_name = module.__name__
-        print(f"-> {module_name}")
-
-        if show_docs and module.__doc__:
-            print(module.__doc__.strip())
- 
-    if not community_imported_modules:
-        print("Not imported.")
+                print(f"{BLUE}[<==] Imported module from: {file_path}{RESET}") 
+            except FileNotFoundError as module_import_error:
+                print(f"{RED}[!] Error: Can't import module from {file_path}:\n{module_import_error}")
 
 
 def the_carcass(tsf_version_string: str, tc_version_string: str) -> None:
@@ -138,6 +170,24 @@ def the_carcass(tsf_version_string: str, tc_version_string: str) -> None:
     print(f" Current tC version - {tc_version_string}\n")
     print(f"+{'-' * 58}+")
 
+    while True:
+        try:
+            command: str = input(f"{PURPLE}\n(root){RESET} -> # ").lower().strip()
+            if not command:
+                continue
+        
+            if command in default_modules:
+                default_modules[command]()
+        
+            else:
+                print(f"{RED}[!] Error: Module not found.")
+                print(f"Please check the name or ensure it is imported and try 'help'.{RESET}")
+        except KeyboardInterrupt:
+            print("\n")
+            final_exit()
+
+
+if __name__ == "__main__":
     default_modules: dict = {
             "exit": final_exit,
             "clear": tum.clear_screen,
@@ -151,74 +201,5 @@ def the_carcass(tsf_version_string: str, tc_version_string: str) -> None:
             "tsf_version": the_suffocater_version,
             "tc_version": the_carcass_version
     }
-
-    while True:
-        try:
-            input_module: str = input(f"{PURPLE}\n(root){RESET} -> # ").lower().strip()
-            if input_module.startswith("modules -d"):
-                list_imported_modules(show_docs=True)
-            elif input_module == "modules":
-                list_imported_modules(show_docs=False)
-            elif input_module in default_modules:
-                default_modules[input_module]()
-            elif input_module in globals():
-                program = globals()[input_module]
-                function_name = input_module
-                if hasattr(program, function_name):
-                    function = getattr(program, function_name)
-                    function()
-                else:
-                    print(f"{RED}[!] Error: Module '{module}' does not have a function '{function_name}'.{RESET}")
-            else:
-                print(f"{RED}[!] Error: Module not found.")
-                print(f"Please check the name or ensure it is imported and try 'help'.{RESET}")
-
-        except KeyboardInterrupt:
-            print("\n")
-            final_exit()
-
-
-try:
-    print(f"[==>] Importing python modules...")
-    import os
-    import sys
-    from glob import glob
-    import importlib.util
-    import the_unix_manager as tum
-    from subprocess import run, CalledProcessError
-    from the_unix_manager import GREEN, RED, PURPLE, BLACK, WHITE, YELLOW, ORANGE, BLUE, RESET
-except ModuleNotFoundError as import_error:
-    print(f"[!] Error: Modules not found. Broken installation?\n\n{import_error}")
-    sys.exit(1)
-finally:
-    print(f"{GREEN}[*] Python modules are successfully imported. Loading theSuffocater global variables...{RESET}")
-    
-try:
-    distros_count: int = 52
-    the_suffocater_contributors: float = 3.5
-    current_directory: str = os.path.dirname(__file__)
-    with open("versions/tsf_version.txt", "r") as tsf_version_file:
-        the_suffocater_version_string: str = tsf_version_file.read().strip()
-    with open("versions/tc_version.txt", "r") as tc_version_file:
-        the_carcass_version_string: str = tc_version_file.read().strip()
-except FileNotFoundError as variable_error:
-    print(f"{RED}[!] Error: Failed to create global variables:\n\n{variable_error}{RESET}")
-    sys.exit(1)
-finally:
-    print(f"{GREEN}[*] Variables are successfully initialized. Loading modules from 'server_modules/'...{RESET}")
-
-server_modules_directory: str = os.path.join(current_directory, "server_modules")
-python_files: list = glob(os.path.join(server_modules_directory, "*.py"))
-for python_file in python_files:
-    module_name: str = os.path.splitext(os.path.basename(python_file))[0]
-    spec = importlib.util.spec_from_file_location(module_name, python_file)
-    module = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(module)
-    globals()[module_name] = module
-    server_imported_modules.append(module)
-    print(f"[<==] Importing {module_name}...")
-
-print(f"{GREEN}[*] Successfully imported modules. Loading main function...{RESET}")
-if __name__ == "__main__":
     tum.clear_screen()
     the_carcass(tsf_version_string=the_suffocater_version_string, tc_version_string=the_carcass_version_string)
