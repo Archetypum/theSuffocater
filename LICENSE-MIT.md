@@ -1,4 +1,4 @@
-# openvpn-install.sh, wireguard-install.sh
+openvpn-install.sh, wireguard-install.sh
 
 MIT License
 

@@ -76,10 +76,7 @@ Setups firewalls for you using pre-build profiles.
  - user_management.py
 
 Unix user management for new users.
- - usr.py
-
-Most important module to make all others to work properly: simply usr.py is a big list of functions that theSuffocater modules rely on.
- - fail2ban_setup
+- fail2ban_setup
 
 Setups fail2ban for you by changing his configurations 
  - vpn_server_setup.py
@@ -134,7 +131,7 @@ More information in:
 - https://www.fsf.org
 - https://www.gnu.org
 
-'scripts/openvpn-install.sh' and 'wireguard-install.sh' using MIT Licenses.
+_scripts/openvpn-install.sh_ and _wireguard-install.sh_ by angristan are using MIT Licenses.
 
 More information in:
 
