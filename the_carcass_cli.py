@@ -118,11 +118,11 @@ def the_carcass_version() -> None:
 
 
 def list_imported_modules() -> None:
-    print("Imported modules:")
+    print(f"+{'-' * 15} Imported modules {'-' * 15}+")
     for module_path, module_info in loaded_modules.items():
-        print(f"\n  Path: {module_path}")
-        print(f"  Docstring: {module_info['docstring'] or 'None'}")
-        print("  function:")
+        print(f"\n  -> Path: {module_path}")
+        print(f"  -> Docstring: {module_info['docstring'] or 'None'}")
+        print("  -> function:")
         for func_name, func_docstring in module_info['functions'].items():
             print(f"    - {func_name}: {func_docstring or 'None'}")
 
