@@ -1,12 +1,13 @@
 # theSuffocater v2.0.0-stable
 
 This is going to be the REAL second stable release of theSuffocater.
-Features CLI and GUI stable versions of theCarcass, (more?..) 
+Features CLI and GUI stable versions of theCarcass, new functions, quality of life changes,
+and more!
 
 Main changes:
     
     1) Recoded GUI/CLI versions of theCarcass:
-        * Added 'import' function.
+        * Added _import_ function.
         * Fixed old functions.
         * Optimised the imports.
         * Many more.
@@ -15,23 +16,27 @@ Main changes:
 
     3) Added bash/python theUnixManager libraries as dependencies:
     
-    4) Added 'config_files/' directory:
-        * Added 'import_py.conf'.
-        * Added 'import_sh.conf'.       
+    4) Added _config_files/_ directory:
+        * Added _import_py.conf_.
+        * Added _import_sh.conf_.       
         * Moved old config files.
 
-    5) Impoved README.md:
+    5) Refactored _README.md_ and _CHANGELOG.md_.
     
-    6) Improved 'requirements.sh':
+    6) Improved _requirements.sh_.
     
-    7) Added 'versions/' directory:
+    7) Added _versions/_ directory:
         * Moved theCarcass and theSuffocater versions.
     
-    8) Added 'requirements/' directory:
-        * Renamed 'requirements.sh' to 'install_requirements.sh' and moved it here.
-        * Moved 'python_requirements.txt'.
+    8) Added _requirements/_ directory:
+        * Renamed _requirements.sh_ to _install_requirements.sh_ and moved it here.
+        * Moved _python_requirements.txt_.
 
-    9) Added 'LICENSE-MIT.md' for VPN install scripts:
+    9) Added _LICENSE-MIT.md_ for VPN install scripts.
+    
+    11) Refactored and debloated VPN install scripts.
+
+    12) Addded _compile.py_.
 
     *) Minor fixes:
         * Bug files.

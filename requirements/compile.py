@@ -12,7 +12,7 @@ except ModuleNotFoundError as import_error:
 
 def compile_tsf(output_dir: str = "dist", onefile=True) -> None:
     """
-    docstring
+    Compiles theCarcass_cli/gui 
 
     Args:
         output_dir (str):
@@ -36,7 +36,7 @@ def compile_tsf(output_dir: str = "dist", onefile=True) -> None:
 
     try:
         print("[<==] Launching PyInstaller...")
-        print("[<==] Compiling CLI...")
+        print("[<==] Compiling CLI...\n")
         subprocess.run(cli_compile_command, check=True)
         if tum.prompt_user("[?] Compile GUI?"):
             subprocess.run(gui_compile_command, check=True)

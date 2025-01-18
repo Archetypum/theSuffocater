@@ -25,22 +25,14 @@ bash requirements/install_requirements.sh
 CLI launch:
 
 ```bash
-sudo bash -c "source pkgenv/bin/activate && python3 the_carcass_cli.py"
+thesuffocater_cli
 ```
 
 GUI launch:
 
 ```bash
-sudo bash -c "source pkgenv/bin/activate && python3 the_carcass_gui.py"
+the_suffocater_gui
 ```
-
-theSuffocater is constantly being updated. Don't forget to
-
-```bash
-git pull origin main
-```
-
-to be on the latest version. 
 
 ## Usage
 

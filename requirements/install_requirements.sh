@@ -50,18 +50,24 @@ function list_of_packages() {
 }
 
 function install_python_requirements() {
-	python3 -m venv pkgenv
-	source pkgenv/bin/activate
-	pip install -r requirements/python_requirements.txt
+	read -rp "[==>] Your current user: " HOME_USER
+	python3 -m venv .pkgenv
+	source .pkgenv/bin/activate
+	pip install -r python_requirements.txt
+	cp -r .pkgenv ~
+	mv .pkgenv /home/$HOME_USER
 
 	echo -e "\n${GREEN}Looks like you are good to go."
 	echo -e "[*] Success!${RESET}"
 }
 
 function install_python_requirements_netbsd() {
-	python3.12 -m venv pkgenv
-	. pkgenv/bin/activate
-	pip install -r requirements/python_requirements.txt
+	read -rp "[==>] Your current user: " HOME_USER
+	python3.12 -m venv .pkgenv
+	. .pkgenv/bin/activate
+	pip install -r python_requirements.txt
+	cp -r .pkgenv ~
+	mv .pkgenv /home/$HOME_USER
 
 	echo -e "\n${GREEN}Looks like you are good to go."
 	echo -e "[*] Success!${RESET}"
@@ -202,6 +208,10 @@ function install_guix_based() {
 	guix install lsof git wget curl unbound
 }
 
+function compiling() {
+	bash -c "source .pkgenv/bin/activate && python3 compile.py"
+}
+
 function main() {
 	read -rp "[==>] Enter your OS (GNU/Linux, BSD distro): " DISTRO
 	DISTRO=$(to_lowercase "$DISTRO")
@@ -310,6 +320,7 @@ function main() {
 		if [[ "$DISTRO" == "$ITEM" ]]; then
 			install_netbsd_based
 			install_python_requirements_netbsd
+			compiling
 			exit 0
 		fi
 	done
@@ -328,6 +339,8 @@ function main() {
 		echo -e "${GREEN}[*] Success!${RESET}"
 		exit 0
 	fi
+
+	compiling
 }
 
 
