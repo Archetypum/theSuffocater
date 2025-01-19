@@ -10,6 +10,7 @@ Main changes:
         * Added _import_ function.
         * Fixed old functions.
         * Optimised the imports.
+        * Added compile functionality.
         * Many more.
     
     2) Added bash version of theCarcass:
@@ -22,9 +23,11 @@ Main changes:
         * Moved old config files.
 
     5) Refactored _README.md_ and _CHANGELOG.md_.
+        * Now we write markdown much better
     
     6) Improved _requirements.sh_.
-    
+        * Removed python requirements installation and added manual instructions.
+ 
     7) Added _versions/_ directory:
         * Moved theCarcass and theSuffocater versions.
     
@@ -37,7 +40,9 @@ Main changes:
     11) Refactored and debloated VPN install scripts.
 
     12) Addded _compile.py_.
-    
+
+    13) Added _.gitignore_.
+ 
     *) Minor fixes:
         * Bug files.
         * Removed useless/redundant imports.
@@ -46,19 +51,19 @@ Main changes:
 "cloc ." statistics:
 
 ```text
-      50 text files.
-      48 unique files.                              
-       4 files ignored.
+      54 text files.
+      51 unique files.                              
+       5 files ignored.
 
-github.com/AlDanial/cloc v 1.96  T=0.03 s (1409.9 files/s, 190811.7 lines/s)
+github.com/AlDanial/cloc v 1.96  T=0.03 s (1460.1 files/s, 192098.5 lines/s)
 -------------------------------------------------------------------------------
 Language                     files          blank        comment           code
 -------------------------------------------------------------------------------
-Bourne Shell                     8            303            154           2297
-Python                          14            452            162           1428
-Markdown                        10            306              0            919
-Text                            16             89              0            386
+Bourne Shell                     9            301            158           2303
+Python                          16            497            180           1546
+Markdown                        10            312              0            937
+Text                            16             89              0            387
 -------------------------------------------------------------------------------
-SUM:                            48           1150            316           5030
--------------------------------------------------------------------------------	
+SUM:                            51           1199            338           5173
+-------------------------------------------------------------------------------
 ```

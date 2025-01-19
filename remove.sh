@@ -12,7 +12,7 @@ function remove_thesuffocater() {
 		rm -rf /etc/tsf && echo -e "${GREEN}[<==] Purging configuration files...${RESET}"
 		rm -f /usr/bin/the_carcass_cli && echo -e "${GREEN}[<==] Removing theCarcass CLI executable...${RESET}"
 		rm -f /usr/bin/the_carcass_gui && echo -e "${GREEN}[<==] Removing theCarcass GUI executable...${RESET}"
-		rm -rf /usr/bin/_internal && echo -e "${GREEN}[<==] Removing dependencies for executables...\n"
+		rm -rf /usr/bin/_internal && echo -e "${GREEN}[<==] Removing dependencies for executables...${RESET}\n"
 	else
 		exit 0
 	fi

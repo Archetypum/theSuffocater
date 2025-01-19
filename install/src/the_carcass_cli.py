@@ -121,11 +121,11 @@ def list_imported_modules(show_docs: bool = False) -> None:
     print(f"+{'-' * 15} Imported modules {'-' * 15}+")
     for module_path, module_info in loaded_modules.items():
         print(f"\n  -> Path: {module_path}")
-        if show_docstrings:
+        if show_docs:
             print(f"  -> Docstring: {module_info['docstring'] or 'None'}")
         print("  -> Functions:")
         for func_name, func_docstring in module_info["functions"].items():
-            if show_docstrings:
+            if show_docs:
                 print(f"    - {func_name}: {func_docstring or 'None'}")
             else:
                 print(f"    - {func_name}")
@@ -197,8 +197,8 @@ if __name__ == "__main__":
             "clear": tum.clear_screen,
             "help": the_suffocater_help,
             "import": import_modules,
-            "modules": list_imported_modules(show_docs=False),
-            "modules -d": list_imported_modules(show_docs=True),
+            "modules": list_imported_modules,
+            "modules -d": lambda: list_imported_modules(show_docs=True),
             "neofetch": the_suffocater_neofetch,
             "license": the_suffocater_license,
             "changelog": the_suffocater_changelog,

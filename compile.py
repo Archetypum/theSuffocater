@@ -17,7 +17,7 @@ def move2etc() -> None:
 
     if os.path.exists("install/tsf"):
         subprocess.run(["sudo", "cp", "-r", "install/tsf", "/etc/tsf"], check=True)
-        print(f"{GREEN}[*] Copying 'install/tsf' to '/etc/tsf'...")
+        print(f"{GREEN}[*] Copying 'install/tsf' to '/etc/tsf'...{RESET}")
 
 
 def move2bin() -> None:
@@ -38,8 +38,8 @@ def move2bin() -> None:
         print(f"{GREEN}[*] Removing 'build'...{RESET}")
 
     if os.path.exists("dist"):
-        subprocess.run(["sudo", "mv", "dist/the_carcass_cli/the_carcass_cli", "dist/the_carcass_cli/_internal", "/usr/bin/"], check=True)
-        print(f"{GREEN}[*] Moving 'the_carcass_cli', '_internal/' to '/usr/bin'...") 
+        subprocess.run(["sudo", "mv", "dist/the_carcass_cli", "/usr/bin/"], check=True)
+        print(f"{GREEN}[*] Moving 'the_carcass_cli', '_internal/' to '/usr/bin'...{RESET}") 
         # if os.path.exists(f"{current_directory}/dist/the_carcass_gui"):
         #    subprocess.run(["mv", f"{current_directory}/dist/the_carcass_gui", "/usr/bin/thesuffocater_gui"], check=True)
     
@@ -56,12 +56,22 @@ def compile_tsf() -> None:
         print(f"{RED}[!] Error: Can't find source in install/src/.{RESET}")
         return
 
-    cli_compile_command: list = ["pyinstaller",
-                     "--noconfirm",
-                     "install/src/the_carcass_cli.py"]
-    gui_compile_command: list = ["pyinstaller",
-                     "--noconfirm",
-                     "install/src/the_carcass_gui.py"]
+    cli_compile_command: list = ["pyinstaller", "--onefile",
+                                 "--hidden-import=the_unix_manager",
+                                 "--hidden-import=sqlite3",
+                                 "--hidden-import=getpass",
+                                 "--hidden-import=json",
+                                 "--hidden-import=urllib.request",
+                                 "--hidden-import=secrets",
+                                 "install/src/the_carcass_cli.py"]
+    gui_compile_command: list = ["pyinstaller", "--onefile",
+                                 "--hidden-import=the_unix_manager",
+                                 "--hidden-import=sqlite3",
+                                 "--hidden-import=getpass",
+                                 "--hidden-import=json",
+                                 "--hidden-import=urllib.request",
+                                 "--hidden-import=secrets",
+                                 "install/src/the_carcass_gui.py"]
 
     try:
         print(f"{GREEN}[<==] Launching PyInstaller...{RESET}")

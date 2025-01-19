@@ -2,7 +2,7 @@
 ![Suffocater logo beta 2](https://github.com/user-attachments/assets/51422160-c33c-4515-b628-dbabb2c877ce)
 
 theSuffocater - free open-source extensible module management tool made by
-Archetypum that allows you to quickly harden your server and solve your problems
+Archetypum that allows you to quickly harden your server, launch services and solve your problems
 in a few clicks. theSuffocater doesn't require any Unix and programming skills
 to use it, making it friendly for new users. 
 theSuffocater uses sysvinit and init as primary init systems,
@@ -19,7 +19,7 @@ cd theSuffocater
 ```
 
 ```bash
-bash install_requirements.sh
+bash install.sh
 ```
 
 ```bash
@@ -41,13 +41,13 @@ python3 compile.py
 CLI launch:
 
 ```bash
-thesuffocater_cli
+the_carcass_cli
 ```
 
 GUI launch:
 
 ```bash
-the_suffocater_gui
+the_carcass_gui
 ```
 
 ## Removing theSuffocater (as root):

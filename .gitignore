@@ -1,0 +1,17 @@
+# Ignore python bytecode:
+*.pyc
+*.pyo
+__pycache__/
+
+# Ignore virtual environments:
+venv/
+env/
+*.env/
+.pkgenv/
+
+# Ignore vip swap files:
+*.swp
+
+# Ignore pyinstaller .spec files:
+*.spec
+
