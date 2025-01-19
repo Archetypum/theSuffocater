@@ -19,7 +19,23 @@ cd theSuffocater
 ```
 
 ```bash
-bash requirements/install_requirements.sh
+bash install_requirements.sh
+```
+
+```bash
+python3 -m venv ~/.pkgenv
+```
+
+```bash
+source ~/.pkgenv/bin/activate
+```
+
+```bash
+pip install -r install/python_requirements.txt
+```
+
+```bash
+python3 compile.py
 ```
 
 CLI launch:
@@ -32,6 +48,12 @@ GUI launch:
 
 ```bash
 the_suffocater_gui
+```
+
+## Removing theSuffocater (as root):
+
+```bash
+bash remove.sh
 ```
 
 ## Usage

@@ -30,9 +30,9 @@ try:
     the_suffocater_contributors: float = 3.5
     current_directory: str = os.path.dirname(__file__)
     loaded_modules: dict = {}
-    with open("versions/tsf_version.txt", "r") as tsf_version_file:
+    with open("/etc/tsf/versions/tsf_version.txt", "r") as tsf_version_file:
         the_suffocater_version_string: str = tsf_version_file.read().strip()
-    with open("versions/tc_version.txt", "r") as tc_version_file:
+    with open("/etc/tsf/versions/tc_version.txt", "r") as tc_version_file:
         the_carcass_version_string: str = tc_version_file.read().strip()
 except FileNotFoundError as variable_error:
     print(f"{RED}[!] Error: Failed to create global variables:\n\n{variable_error}{RESET}")

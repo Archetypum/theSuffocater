@@ -49,30 +49,6 @@ function list_of_packages() {
 	done
 }
 
-function install_python_requirements() {
-	read -rp "[==>] Your current user: " HOME_USER
-	python3 -m venv .pkgenv
-	source .pkgenv/bin/activate
-	pip install -r python_requirements.txt
-	cp -r .pkgenv ~
-	mv .pkgenv /home/$HOME_USER
-
-	echo -e "\n${GREEN}Looks like you are good to go."
-	echo -e "[*] Success!${RESET}"
-}
-
-function install_python_requirements_netbsd() {
-	read -rp "[==>] Your current user: " HOME_USER
-	python3.12 -m venv .pkgenv
-	. .pkgenv/bin/activate
-	pip install -r python_requirements.txt
-	cp -r .pkgenv ~
-	mv .pkgenv /home/$HOME_USER
-
-	echo -e "\n${GREEN}Looks like you are good to go."
-	echo -e "[*] Success!${RESET}"
-}
-
 function install_debian_based() {
 	apt update && apt full-upgrade -y
 	apt install python3 python3-pip python3.11-venv -y
@@ -209,7 +185,7 @@ function install_guix_based() {
 }
 
 function compiling() {
-	bash -c "source .pkgenv/bin/activate && python3 compile.py"
+	bash -c "source ~/.pkgenv/bin/activate && python3 compile.py"
 }
 
 function main() {
@@ -332,17 +308,14 @@ function main() {
 		fi
 	done
 
-	echo -e "\nNow we need to create a virtual environment for python3 in $(pwd)."
-	if prompt_user "[?] Proceed"; then
-		install_python_requirements
-	else
-		echo -e "${GREEN}[*] Success!${RESET}"
-		exit 0
-	fi
-
-	compiling
+	echo -e "\nNow we need to create a virtual environment for python3 in your home directory."
+	echo -e "\nType in your terminal:"
+	echo "    python3 -m venv ~/.pkgenv"
+	echo "    source ~/.pkgenv/bin/activate"
+	echo "    pip install -r install/python_requirements.txt"
+	echo -e "\nAfter that, launch:"
+	echo "    python3 compile.py"
 }
-
 
 function parse_args() {
 	if [[ $# -eq 0 ]]; then
