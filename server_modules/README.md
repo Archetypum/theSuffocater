@@ -1,6 +1,6 @@
 # Server modules
 
-This is __server_modules/__,
+These are __server_modules/__,
 essential part of theSuffocater with most useful modules.
 
 ## List of Server Modules 
@@ -40,3 +40,7 @@ Installs OpenVPN, Wireguard, OutlineVPN and automatically set them up for proper
 - __backup_management.py__
 
 Backs up files and databases.
+
+## Licensing
+
+Everything in this directory is licensed under __GNU GPL v3__ license.

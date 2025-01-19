@@ -1,6 +1,6 @@
 # Community Modules
 
-This are the __community_modules/__, 
+These are the __community_modules/__, 
 
 it contains modules which are useful for all users, but useless on real servers. 
 
@@ -21,3 +21,7 @@ Disables Geoclue geolocation gathering by changing the config file, improving yo
 - __desktop_setup.py__
 
 Installs and configures X11, Wayland, any graphical environment, free/proprietary NVIDIA drivers.
+
+## Licensing
+
+Everything in this directory is licensed under __GNU GPL v3__ license.
