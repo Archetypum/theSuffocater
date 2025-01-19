@@ -25,7 +25,7 @@ def safe_geoclue_setup() -> None:
 
     if tum.prompt_user("[?] Proceed?"):
         try:
-            with open("config_files/safe_geoclue_config.txt", "r") as config_file:
+            with open("/etc/tsf/module_configs/safe_geoclue_config.txt", "r") as config_file:
                 geoclue_config_text: str = config_file.read()
 
             with open("/etc/geoclue/geoclue.conf", "w") as true_config_file:

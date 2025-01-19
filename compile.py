@@ -80,7 +80,7 @@ def compile_tsf() -> None:
         if tum.prompt_user("[?] Compile GUI?"):
             subprocess.run(gui_compile_command, check=True)
 
-        print(f"{GREEN}[*] Succesfully compiled!{RESET}")
+        print(f"{GREEN}[*] Successfully compiled!{RESET}")
 
         move2bin()
     except subprocess.CalledProcessError as compile_error:
