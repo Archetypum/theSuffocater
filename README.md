@@ -38,6 +38,8 @@ pip install -r install/python_requirements.txt
 python3 compile.py
 ```
 
+## Usage:
+
 CLI launch:
 
 ```bash
@@ -55,67 +57,6 @@ the_carcass_gui
 ```bash
 bash remove.sh
 ```
-
-## Usage
-
-Currently, theSuffocater has a small GUI, 13 working modules and 6 working scripts:
-
-Modules:
-
- - passgen.py
-
-Password generator with customizable key length which uses random symbols and random words from user-specified dictionary.
- - address_management.py
-
-Provides MAC address/local IP changing functionality on a unix-like operating systems. 
- - apt_management.py
-
-Provides you all tweaks of the Apt Package Manager on Debian-based
-distributions.
- - ip_resolver.py
-
-Resolves Country, city and company of provided IP address.
- - safe_geoclue_setup.py
-
-Disables Geoclue geolocation gathering by changing the config file, improving your OPSEC.
- - ssh_management.py
-
-Hardens your SSH by changing the config file, manages SSH keys and logs connections. Essential to your server.
- - tor_management.py
-
-Installs tor, adds tor devuan repositories, setups tor nodes. You know what you're doing.
- - ultimate_firewall.py
-
-Setups firewalls for you using pre-build profiles.
- - user_management.py
-
-Unix user management for new users.
-- fail2ban_setup
-
-Setups fail2ban for you by changing his configurations 
- - vpn_server_setup.py
-
-Installs OpenVPN, Wireguard, OutlineVPN and automatically set them up for proper VPN server work.
-
-Scripts:
-
- - install_latest_version.sh
-
-Installs the latest version of theSuffocater to your machine. 
- - remove_firmware.sh
-
-Removes binary firmware from your system, making it free.
- - passgen.sh
-
-Password generator with customizable key length which uses random symbols.
- - openvpn_setup.sh
-
-NOT FINISHED YET.
- - wireguard_setup.sh
-
-NOT FINISHED YET.
- - check_ips.sh
-NOT FINISHED YET. 
 
 ## Credits
 
