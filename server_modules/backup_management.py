@@ -28,33 +28,42 @@ def backup_files() -> None:
     source_directory: str = input('[==>] Enter the source directory: ')
     backup_directory: str = input('[==>] Enter the backup directory: ')
 
+    if not os.path.exists(source_directory):
+        print(f"{RED}[!] Could not find source directory: {source_directory}{RESET}")
+        return
+
     if not os.path.exists(backup_directory):
         print("[!] Unable to find backup directory")
         dir_create_answer: str = input("[?] Create a new directory(y/n)?: ")        
         
         if dir_create_answer.lower() in ['y', 'yes']:
             os.makedirs(backup_directory)
-        
-            if not os.path.exists(backup_directory):
-                print(f"{RED}[!] Error: Failed to create directory: {error}{RESET}")
-                return
-            else:
-                print(f"{GREEN}[*] Directory created successfully.{RESET}")
+            print(f"{GREEN}[*] Directory created successfully.{RESET}")
         else:
             print("[!] Exiting without creating backup directory.")
             return
-                    
+
+    
+    timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+    timestamped_backup_directory = os.path.join(backup_directory, f"backup_files_{timestamp}")
+    os.makedirs(timestamped_backup_directory)
+                
     for item in os.listdir(source_directory):
         source_item = os.path.join(source_directory, item)
-        backup_item = os.path.join(backup_directory, item)
+        backup_item = os.path.join(timestamped_backup_directory, item)
+
+        if not os.path.exists(source_item):
+            print(f"{RED}[!] Could not find the file: {source_item}{RESET}")
+            return
 
         if os.path.isdir(source_item):
             shutil.copytree(source_item, backup_item)
-            print(f"{GREEN}[*]File backup completed: {backup_directory}{RESET}")
+            print(f"{GREEN}[*] Directory backup completed: {backup_item}{RESET}")
         else:
             shutil.copy2(source_item, backup_item)
             print(f"{GREEN}[*] File backup completed: {backup_item}{RESET}")
 
+            
 def backup_database() -> None:
     tum.clear_screen()
    
@@ -62,20 +71,36 @@ def backup_database() -> None:
     database_path: str = input('[==>]Enter the path to the source database file: ')
     database_backup_directory: str = input('[==>]Enter the path to the directory for the database backup: ')
   
+    if not os.path.exists(database_path):
+        print(f"{RED}[!] Unable to find database: {database_path}{RESET}")
+        return
+
     if not os.path.exists(database_backup_directory):
+        print("[!] Unable to find backup directory")
+        dir_create_answer: str = input("[?] Create a new directory (y/n)?: ")
         os.makedirs(database_backup_directory)
 
-        if not os.path.exists(database_backup_directory):
-            print(f"{RED}[!] Error: Failed to create directory: {error}{RESET}")
+        if dir_create_answer.lower() in ['y', 'yes']:
+            os.makedirs(database_backup_directory)
+            print(f"{GREEN}[*] Directory created successfully.{RESET}")
+        else:
+            print("[!] Exiting without creating backup directory.")
             return
+    
+    if not os.path.exists(database_path):
+        print(f"{RED}[!] Unable to find database file: {database_path}{RESET}")
+        return
+    
+    timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+    timestamped_backup_directory = os.path.join(database_backup_directory, f"backup_db_{timestamp}")
+    os.makedirs(timestamped_backup_directory)
 
     database_name = os.path.basename(database_path)
-    backup_database_name = f"{database_name}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.bak"
-    backup_database_path = os.path.join(database_backup_directory, backup_database_name)
+    backup_database_name = f"{database_name}_{timestamp}.bak"
+    backup_database_path = os.path.join(timestamped_backup_directory, backup_database_name)
 
     shutil.copy2(database_path, backup_database_path)
-    print(f"{GREEN}[*]Database backup completed: {backup_database_path}{RESET}")
-
+    print(f"{GREEN}[*] Database backup completed: {backup_database_path}{RESET}")
 
 def backup_management() -> None:
     tum.clear_screen()
