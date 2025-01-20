@@ -184,10 +184,6 @@ function install_guix_based() {
 	guix install lsof git wget curl unbound
 }
 
-function compiling() {
-	bash -c "source ~/.pkgenv/bin/activate && python3 compile.py"
-}
-
 function main() {
 	read -rp "[==>] Enter your OS (GNU/Linux, BSD distro): " DISTRO
 	DISTRO=$(to_lowercase "$DISTRO")
@@ -295,8 +291,6 @@ function main() {
 	for ITEM in "${NETBSD_BASED[@]}"; do
 		if [[ "$DISTRO" == "$ITEM" ]]; then
 			install_netbsd_based
-			install_python_requirements_netbsd
-			compiling
 			exit 0
 		fi
 	done
@@ -314,7 +308,7 @@ function main() {
 	echo "    source ~/.pkgenv/bin/activate"
 	echo "    pip install -r install/python_requirements.txt"
 	echo -e "\nAfter that, launch:"
-	echo "    python3 compile.py"
+	echo "    bash tsf_installer.sh"
 }
 
 function parse_args() {

@@ -10,7 +10,6 @@ Main changes:
         * Added _import_ function.
         * Fixed old functions.
         * Optimised the imports.
-        * Added compile functionality.
         * Many more.
     
     2) Added bash version of theCarcass:
@@ -39,10 +38,8 @@ Main changes:
     
     11) Refactored and debloated VPN install scripts.
 
-    12) Addded _compile.py_.
-
-    13) Added _.gitignore_.
- 
+    12) Added _.gitignore_.
+    
     *) Minor fixes:
         * Bug files.
         * Removed useless/redundant imports.
