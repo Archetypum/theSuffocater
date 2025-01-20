@@ -35,7 +35,7 @@ pip install -r install/python_requirements.txt
 ```
 
 ```bash
-python3 compile.py
+bash tsf_installer.sh
 ```
 
 ## Usage:
@@ -43,19 +43,13 @@ python3 compile.py
 CLI launch:
 
 ```bash
-the_carcass_cli
+sudo bash -c "source ~/.pkgenv/bin/activate && python3 /usr/bin/the_carcass_cli.py"
 ```
 
 GUI launch:
 
 ```bash
-the_carcass_gui
-```
-
-## Removing theSuffocater (as root):
-
-```bash
-bash remove.sh
+sudo bash -c "source ~/.pkgenv/bin/activate && python3 /usr/bin/the_carcass_gui.py"
 ```
 
 ## Credits
