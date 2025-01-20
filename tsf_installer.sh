@@ -12,6 +12,8 @@ fi
 source "$TUM_PATH"
 
 function main() {
+	clear
+
 	local OPTION
 
 	echo "+------ Welcome to theSuffocater installer ------+"
@@ -65,4 +67,19 @@ function remove_thesuffocater() {
 	fi
 }
 
-main
+function debug() {
+	# Debugging function for checking where theSuffocater main components are located.
+	# Sometimes can be very helpful, especially when you trying to port tSF on new distros
+	
+	echo -e "${PURPLE}CLI theCarcass:${RESET}"
+	whereis the_carcass_cli.py  # Should be /usr/bin/the_carcass_cli.py
+	echo -e "${PURPLE}GUI theCarcass:${RESET}"
+	whereis the_carcass_gui.py  # Should be /usr/bin/the_carcass_gui.py
+	echo -e "${PURPLE}tSF configs:${RESET}"
+	whereis tsf  # Should be /etc/tsf
+	echo -e "${PURPLE}TheUnixManager-bash:${RESET}"
+	whereis the_unix_manager.sh
+}
+
+debug
+# main
