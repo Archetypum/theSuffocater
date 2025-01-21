@@ -143,7 +143,7 @@ def safe_ssh_setup() -> None:
             tum.package_handling(distro, package_list=["openssh"], command="install")
     
         try:
-            with open("config_files/secure_ssh_config.txt", "r") as config_file:
+            with open("/etc/tsf/module_configs/secure_ssh_config.txt", "r") as config_file:
                 secure_ssh_config_text: str = config_file.read()
 
             with open("/etc/ssh/sshd_config", "w") as true_config_file:
