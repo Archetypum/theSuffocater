@@ -90,7 +90,7 @@ def the_suffocater_neofetch() -> None:
     print(f"""
 {BLUE}
                  __________           {RESET}theSuffocater version - {GREEN}{the_suffocater_version_string}{BLUE}
-                [0000000000]
+                [0000000000]          {RESET}Loaded modules - ...{BLUE}
             [0000000000000000.
           [000000]         .  .       {RESET}Adapted distributions count - {GREEN}{distros_count}{BLUE}
          [00000]           [000]      {RESET}Current contributors - {GREEN}{the_suffocater_contributors}{BLUE}
@@ -123,7 +123,7 @@ def list_imported_modules(show_docs: bool = False) -> None:
         print(f"\n  -> Path: {module_path}")
         if show_docs:
             print(f"  -> Docstring: {module_info['docstring'] or 'None'}")
-        print("  -> Functions:")
+        print("  --> Functions:")
         for func_name, func_docstring in module_info["functions"].items():
             if show_docs:
                 print(f"    - {func_name}: {func_docstring or 'None'}")

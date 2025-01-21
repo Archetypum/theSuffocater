@@ -4,6 +4,11 @@
 #
 # shellcheck source=/usr/bin/the_unix_manager.sh
 declare TUM_PATH="/usr/bin/the_unix_manager.sh"
+if [[ ! -f "$TUM_PATH" ]]; then
+	echo "[!] Error: the_unix_manager.sh not found at $TUM_PATH. Please provide the correct path."
+	exit 1
+fi
+
 source "$TUM_PATH"
 
 function to_lowercase() {
@@ -185,6 +190,8 @@ function install_guix_based() {
 }
 
 function main() {
+	local DISTRO
+
 	read -rp "[==>] Enter your OS (GNU/Linux, BSD distro): " DISTRO
 	DISTRO=$(to_lowercase "$DISTRO")
 	if [[ "$DISTRO" == "packages" ]]; then

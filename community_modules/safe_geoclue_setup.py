@@ -3,6 +3,7 @@
 """
 ---------------------------------------
 Disables Geoclue geolocation gathering, improving your OPSEC.
+GNU/Linux supported.
 
 Author: iva
 Date: 02.12.2024
@@ -10,7 +11,7 @@ Date: 02.12.2024
 """
 
 try:
-    import os
+    from os import path
     import the_unix_manager as tum
     from the_unix_manager import GREEN, RED, RESET
 except ModuleNotFoundError as import_error:
@@ -18,11 +19,14 @@ except ModuleNotFoundError as import_error:
 
 
 def safe_geoclue_setup() -> None:
+    """
+    Main function.
+    """
+
     tum.clear_screen()
 
     print("This script is going to set all geoclue config variables to 'false'.")
     print("Your system will stop using your geolocation.")
-
     if tum.prompt_user("[?] Proceed?"):
         try:
             with open("/etc/tsf/module_configs/safe_geoclue_config.txt", "r") as config_file:
@@ -33,7 +37,7 @@ def safe_geoclue_setup() -> None:
 
             print(f"{GREEN}[*] Geoclue is successfully disabled.{RESET}")
         except (FileNotFoundError, IOError) as file_error:
-            if not os.path.exists("/etc/geoclue/geoclue.conf"):
+            if not path.exists("/etc/geoclue/geoclue.conf"):
                 print(f"{GREEN}[*] '/etc/geoclue/geoclue.conf' not found. What a relief!")
                 print(f"[*] Success!{RESET}")
             else:

@@ -35,7 +35,7 @@ def enable_auto_updates() -> None:
         subprocess.run(["dpkg-reconfigure", "-plow", "unattended-upgrades"], check=True)
        
         try:
-            with open("install/tsf/module_configs/auto_update_config.txt", "r") as config_file:
+            with open("/etc/tsf/module_configs/auto_update_config.txt", "r") as config_file:
                 config_file_text: str = config_file.read()
 
             with open("/etc/apt/apt.conf.d/20auto-upgrades", "w") as true_config_file:
@@ -55,7 +55,7 @@ def disable_auto_updates() -> None:
     if tum.prompt_user("[?] Proceed?"):
         print("[<==] Disabling automatic updates...")
         try:
-            with open("install/tsf/module_configs/disable_auto_update_config.txt", "r") as config_file:
+            with open("/etc/tsf/module_configs/disable_auto_update_config.txt", "r") as config_file:
                 config_file_text: str = config_file.read()
 
             with open("/etc/apt/apt.conf.d/20auto-upgrades", "w") as true_config_file:
@@ -75,7 +75,7 @@ def enable_debian_backports() -> None:
     if tum.prompt_user("[?] Enable Backports?"):
         print("[<==] Enabling Backports...")
         try:
-            with open("install/tsf/module_configs/apt_debian_backports.txt", "r") as config_file:
+            with open("/etc/tsf/module_configs/apt_debian_backports.txt", "r") as config_file:
                 config_file_text: str = config_file.read()
 
             with open("/etc/apt/sources.list", "a") as true_config_file:

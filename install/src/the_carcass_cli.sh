@@ -9,6 +9,25 @@
 #
 # Graphical frontend - the_carcass_gui.py
 # Python version - the_carcass_cli.py
+#
+# If you have the_unix_manager.sh located somewhere else - change this variable to the actual path:
+# shellcheck source=/usr/bin/the_unix_manager.sh
+declare TUM_PATH="/usr/bin/the_unix_manager.sh"
+if [[ -f "$TUM_PATH" ]]; then
+	if source "$TUM_PATH"; then
+		echo -e "${GREEN}[*] Successfully imported theUnixManager. Loading global variables...${RESET}"
+
+		declare DISTROS_COUNT="52"
+		declare THE_SUFFOCATER_CONTRIBUTORS="3.5"
+		declare THE_SUFFOCATER_VERSION_STRING=$(cat /etc/tsf/versions/tsf_version.txt)
+		declare THE_CARCASS_VERSION_STRING=$(cat /etc/tsf/versions/tc_version.txt)
+
+		echo -e "${GREEN}[*] Variables are successfully initialized. Loading main function...${RESET}"	
+	else
+		echo -e "${RED}[!] Error: the_unix_manager.sh not imported. Exiting... ${RESET}"
+		exit 1
+	fi
+fi
 
 function final_exit() {
 	exit 0
@@ -20,6 +39,7 @@ function the_suffocater_help() {
 	echo " clear - clear the screen."
 	echo " help - display this message."
 	echo " neofetch - brief theSuffocater statistics."
+	echo " import - for importing modules from directories."
 	echo " scripts - list imported scripts."
 	echo " tsf_version - get current version of theSuffocater."
 	echo " tc_version - get current version of theCarcass."
@@ -34,24 +54,24 @@ function the_suffocater_version() {
 }
 
 function the_suffocater_license() {
-	if [[ -f "LICENSE.md" ]]; then
-		less LICENSE.md
+	if [[ -f "/etc/tsf/markdown/LICENSE.md" ]]; then
+		less /etc/tsf/markdown/LICENSE.md
 	else
 		echo -e "${RED}[!] Error: 'LICENSE.md' file not found. Broken installation?"
 	fi
 }
 
 function the_suffocater_changelog() {
-	if [[ -f "CHANGELOG.md" ]]; then
-		less CHANGELOG.md
+	if [[ -f "/etc/tsf/markdown/CHANGELOG.md" ]]; then
+		less /etc/tsf/markdown/CHANGELOG.md
 	else
 		echo -e "${RED}[!] Error: 'CHANGELOG.md' file not found. Broken installation?"
 	fi	
 }
 
 function the_suffocater_documentation {
-	if [[ -f "README.md" ]]; then
-		less README.md
+	if [[ -f "/etc/tsf/markdown/README.md" ]]; then
+		less /etc/tsf/markdown/README.md
 	else
 		echo -e "${RED}[!] Error: 'README.md' file not found. Broken installation?"
 	fi
@@ -76,7 +96,7 @@ function the_suffocater_neofetch() {
      [0000000000]          [00000]       
         [000]              [00000]  
         [000]             [00000] 
-         .  .           [000000] 
+         .  .           [000000]
           .0000000000000000]  
               [0000000]                              
                ⎺⎺⎺⎺⎺⎺⎺ ${RESET}"
@@ -86,35 +106,21 @@ function the_carcass_version() {
 	echo "Current theCarcass version - $THE_CARCASS_VERSION_STRING"
 }
 
-function import_modules() {
+function import_scripts() {
 	echo "..."
 }
 
-function list_imported_modules() {
+function list_imported_scripts() {
 	echo "..."
 }
 
 function the_carcass() {
-	echo "..."
+        echo "+---------------- Welcome to theSuffocater ----------------+"
+	echo " Current tSF version - $THE_SUFFOCATER_VERSION_STRING"
+	echo " Current tC version - $THE_CARCASS_VERSION_STRING"
+	echo "+----------------------------------------------------------+"
+    
 }
 
-# If you have the_unix_manager.sh located somewhere else - change this variable to the actual path:
-declare TUM_PATH="/usr/bin/the_unix_manager.sh"
-if [[ -f "$TUM_PATH" ]]; then
-	# shellcheck source=/usr/bin/the_unix_manager.sh
-	if source "$TUM_PATH"; then
-		echo -e "${GREEN}[*] Successfully imported modules. Loading global variables...${RESET}"
-
-		declare DISTROS_COUNT="52"
-		declare THE_SUFFOCATER_CONTRIBUTORS="3.5"
-		declare THE_SUFFOCATER_VERSION_STRING=$(cat versions/tsf_version.txt)
-		declare THE_CARCASS_VERSION_STRING=$(cat versions/tc_version.txt)
-
-		echo -e "${GREEN}[*] Variables are successfully initialized. Loading main function...${RESET}"
-		clear_screen
-		the_carcass THE_SUFFOCATER_VERSION_STRING, THE_CARCASS_VERSION_STRING
-	else
-		echo -e "${RED}[!] Error: the_unix_manager.sh not imported. Exiting... ${RESET}"
-		exit 1
-	fi
-fi
+clear_screen
+the_carcass
