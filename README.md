@@ -19,6 +19,10 @@ cd theSuffocater
 ```
 
 ```bash
+bash requirements_installer.sh
+```
+
+```bash
 python3 -m venv ~/.pkgenv
 ```
 
