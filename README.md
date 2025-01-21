@@ -43,13 +43,13 @@ bash tsf_installer.sh
 CLI launch:
 
 ```bash
-sudo bash -c "source ~/.pkgenv/bin/activate && python3 /usr/bin/the_carcass_cli.py"
+sudo -E bash -c "source ~/.pkgenv/bin/activate && python3 /usr/bin/the_carcass_cli.py"
 ```
 
 GUI launch:
 
 ```bash
-sudo bash -c "source ~/.pkgenv/bin/activate && python3 /usr/bin/the_carcass_gui.py"
+sudo -E bash -c "source ~/.pkgenv/bin/activate && python3 /usr/bin/the_carcass_gui.py"
 ```
 
 ## Credits
