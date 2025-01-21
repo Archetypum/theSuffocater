@@ -81,5 +81,5 @@ function debug() {
 	whereis the_unix_manager.sh
 }
 
-debug
-# main
+# debug
+main
