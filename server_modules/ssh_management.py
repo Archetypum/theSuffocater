@@ -156,7 +156,7 @@ def safe_ssh_setup() -> None:
 
             print(f"{GREEN}[*] Success! {RESET}")
         except (FileNotFoundError, IOError):
-            print(f"{RED}[!] Configuration file 'config_files/secure_ssh_config.txt' not found.\nBroken installation?{RESET}")
+            print(f"{RED}[!] Configuration file '/etc/tsf/module_configs/secure_ssh_config.txt' not found.\nBroken installation?{RESET}")
 
 
 def ssh_management() -> None:
