@@ -1,49 +1,49 @@
-# theSuffocater v2.0.0-stable
+# theSuffocater v2.0.0-testing
 
-This is going to be the REAL second stable release of theSuffocater.
+This is going to be the REAL second stable release of theSuffocater, but before that - we need to do some tests.
 Features CLI and GUI stable versions of theCarcass, new functions, quality of life changes, and more!
 
 Main changes:
     
-    1) Recoded GUI/CLI versions of theCarcass:
-        * DRY.
-        * Added _import_ function.
-        * Fixed old functions.
-        * Optimised the imports.
-        * Many more.
+1) Recoded GUI/CLI versions of theCarcass:
+    * DRY.
+    * Added _import_ function.
+    * Fixed old functions.
+    * Optimised the imports.
+    * Many more.
     
-    2) Added bash version of theCarcass.
+2) Added bash version of theCarcass.
 
-    3) Added bash/python theUnixManager libraries as dependencies.
+3) Added bash/python theUnixManager libraries as dependencies.
     
-    4) Added _module_configs/_ directory:
-        * Added _import_py.conf_.
-        * Added _import_sh.conf_.       
-        * Moved old config files.
+4) Added _module_configs/_ directory:
+    * Added _import_py.conf_.
+    * Added _import_sh.conf_.       
+    * Moved old config files.
 
-    5) Refactored _README.md_ and _CHANGELOG.md_.
-        * Now we write markdown much better.
+5) Refactored _README.md_ and _CHANGELOG.md_.
+    * Now we write markdown much better.
     
-    6) Improved _requirements_installer.sh_:
-        * Removed python requirements installation and added manual instructions.
+6) Improved _requirements_installer.sh_:
+    * Removed python requirements installation and added manual instructions.
  
-    7) Added _versions/_ directory:
-        * Moved theCarcass and theSuffocater versions.
+7) Added _versions/_ directory:
+    * Moved theCarcass and theSuffocater versions.
     
-    8) Added _requirements/_ directory:
-        * Renamed _requirements.sh_ to _install_requirements.sh_ and moved it here.
-        * Moved _python_requirements.txt_.
+8) Added _requirements/_ directory:
+    * Renamed _requirements.sh_ to _install_requirements.sh_ and moved it here.
+    * Moved _python_requirements.txt_.
 
-    9) Added _LICENSE-MIT.md_ for VPN install scripts.
+9) Added _LICENSE-MIT.md_ for VPN install scripts.
     
-    11) Refactored and debloated VPN install scripts.
+11) Refactored and debloated VPN install scripts.
 
-    12) Added _.gitignore_.
+12) Added _.gitignore_.
     
-    *) Minor fixes:
-        * Bug files.
-        * Removed useless/redundant imports.
-        * Typos, spelling mistakes, markdown syntax errors, etc.
+*) Minor fixes:
+    * Bug files.
+    * Removed useless/redundant imports.
+    * Typos, spelling mistakes, markdown syntax errors, etc.
 
 "cloc ." statistics:
 
@@ -63,5 +63,4 @@ Text                            16             89              0            386
 -------------------------------------------------------------------------------
 SUM:                            54           1258            378           5264
 -------------------------------------------------------------------------------
-
 ```
