@@ -35,7 +35,7 @@ def backup_files() -> None:
     if not os.path.exists(backup_directory):
         print(f"{RED}[!] Error: Unable to find backup directory.{RESET}")
 
-        if tum.prompt_user("[?] Create a new directory?")
+        if tum.prompt_user("[?] Create a new directory?"):
             os.makedirs(backup_directory)
             print(f"{GREEN}[*] Directory created successfully.{RESET}")
         else:
