@@ -19,7 +19,7 @@ cd theSuffocater
 ```
 
 ```bash
-bash install.sh
+bash requirements_installer.sh
 ```
 
 ```bash
