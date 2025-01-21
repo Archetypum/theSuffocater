@@ -58,7 +58,7 @@ def ssh_bruteforce() -> None:
     print("We are going to configure fail2ban to prevent SSH bruteforce.")
     if tum.prompt_user("[?] Proceed?"):
         try:
-            with open("config_files/fail2ban_ssh_bruteforce.txt", "r") as config_file:
+            with open("install/tsf/module_configs/fail2ban_ssh_bruteforce.txt", "r") as config_file:
                 config_file_text: str = config_file.read()
 
             with open("/etc/fail2ban/jail.local", "a") as true_config_file:
@@ -89,7 +89,7 @@ def ftp_bruteforce() -> None:
     print("We are going to configure fail2ban to prevent FTP bruteforce.")
     if tum.prompt_user("[?] Proceed?"):
         try:
-            with open("config_files/fail2ban_ftp_bruteforce.txt") as config_file:
+            with open("install/tsf/module_configs/fail2ban_ftp_bruteforce.txt") as config_file:
                 config_file_text: str = config_file.read()
 
             with open("/etc/fail2ban/jail.local", "a") as true_config_file:
