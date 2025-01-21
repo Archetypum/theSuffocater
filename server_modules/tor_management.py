@@ -160,7 +160,7 @@ def torify_apt_devuan() -> None:
             if tum.prompt_user("[?] Start tor service now?"):
                 tum.init_system_handling(init_system, "start", "tor")
             
-            with open("config_files/apt_tor_devuan_repos.txt", "r") as config_file:
+            with open("/etc/tsf/module_configs/apt_tor_devuan_repos.txt", "r") as config_file:
                 apt_tor_repos: str = config_file.read()
 
             with open("/etc/apt/sources.list", "a") as true_config_file:
@@ -216,7 +216,7 @@ def obfs4_bridge_debian() -> None:
             
             print("[<==] Editing torrc...")
             sleep(1)
-            with open("config_files/tor_debian_obfs4.txt", "r") as config_file:
+            with open("/etc/tsf/module_configs/tor_debian_obfs4.txt", "r") as config_file:
                 config_file_text: str = config_file.read()
 
             with open("/etc/tor/torrc", "w") as true_config_file:
@@ -258,7 +258,7 @@ def obfs4_bridge_arch() -> None:
             
             print("[<==] Editing torrc...")
             sleep(1)
-            with open("config_files/tor_arch_obfs4.txt", "r") as config_file:
+            with open("/etc/tsf/module_configs/tor_arch_obfs4.txt", "r") as config_file:
                 config_file_text: str = config_file.read()
 
             with open("/etc/tor/torrc", "w") as true_config_file:
@@ -291,7 +291,7 @@ def obfs4_bridge_void() -> None:
 
             print("[<==] Editing torrc...")
             sleep(1)
-            with open("config_files/tor_void_obfs4.txt", "r") as config_file:
+            with open("/etc/tsf/module_configs/tor_void_obfs4.txt", "r") as config_file:
                 config_file_text: str = config_file.read()
 
             with open("/etc/tor/torrc", "w") as true_config_file:
@@ -326,7 +326,7 @@ def obfs4_bridge_freebsd() -> None:
 
             print("[<==] Editing torrc...")
             sleep(1)
-            with open("config_files/tor_freebsd_obfs4.txt", "r") as config_file:
+            with open("/etc/tsf/module_configs/tor_freebsd_obfs4.txt", "r") as config_file:
                 config_file_text: str = config_file.read()
 
             with open("/etc/tor/torrc", "w") as true_config_file:
@@ -365,7 +365,7 @@ def obfs4_bridge_openbsd() -> None:
 
             print("[<==] Editing torrc...")
             sleep(1)
-            with open("config_files/tor_openbsd_obfs4.txt", "r") as config_file:
+            with open("/etc/tsf/module_configs/tor_openbsd_obfs4.txt", "r") as config_file:
                 config_file_text: str = config_file.read()
 
             with open("/etc/tor/torrc", "w") as true_config_file:
@@ -414,7 +414,7 @@ def obfs4_bridge_netbsd() -> None:
             
             print("[<==] Editing torrc...")
             sleep(1)
-            with open("config_files/tor_netbsd_obfs4.txt", "r") as config_file:
+            with open("/etc/tsf/module_configs/tor_netbsd_obfs4.txt", "r") as config_file:
                 config_file_text: str = config_file.read()
             
             with open("/usr/pkg/etc/tor/torrc", "w") as true_config_file:
