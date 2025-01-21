@@ -1,11 +1,6 @@
 #!/bin/bash
 
-clear
-
-# Fancy color codes ;3
-RED="\033[0;31m"
-GREEN="\033[0;32m"
-RESET="\033[0m"
+source /usr/bin/the_unix_manager.sh
 
 function check_internet_connection() {
 	echo "Checking internet connection..."

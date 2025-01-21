@@ -7,17 +7,11 @@
 # Date: 28.07.2024
 # ---------------------------------------
 
-# Fancy color codes ;3
-RED="\033[0;31m"
-GREEN="\033[0;32m"
-RESET="\033[0m"
+source /usr/bin/the_unix_manager.sh
 
 function passgen() {
-	echo -n "We are going to create a strong password."
-	read -p "[?] Proceed? (y/N): " ANSWER
-	
-	ANSWER=$(echo "$ANSWER" | tr "[:upper:]" "[:lower:]")
-	if [[ "$ANSWER" == "y" || "$ANSWER" == "yes" ]]; then
+	echo -ne "We are going to create a strong password.\n"
+	if prompt_user "[?] Proceed?"; then
 		read -p "[==>] Enter password name: " NAME
 		read -p "[==>] Enter password length: " PASSWORD_LENGTH
 		
@@ -27,13 +21,13 @@ function passgen() {
 		fi
 		
 		
-		CHARACTERS="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*-=_+"
-		RANDOM_CHARS=""
+		local CHARACTERS="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*-=_+"
+		local RANDOM_CHARS=""
 		for I in $(seq 1 $PASSWORD_LENGTH); do
-			RANDOM_CHARS+=$(echo -n "$CHARACTERS" | fold -w1 | shuf | head -n1)
+			local RANDOM_CHARS+=$(echo -n "$CHARACTERS" | fold -w1 | shuf | head -n1)
 		done
 		
-		CREATED_PASSWORD="$RANDOM_CHARS"
+		local CREATED_PASSWORD="$RANDOM_CHARS"
 		
 		echo "$NAME $CREATED_PASSWORD" > "$NAME.txt"
 		echo -e "[*] Your new password for $NAME: $CREATED_PASSWORD"

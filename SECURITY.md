@@ -27,7 +27,7 @@ Solution: remove explicit type conversion in system_monitor.py and others.
 
 ## Recommendations on theSuffocater usage
 
-Be careful while using theSuffocater, theSuffocater and all his modules always work with root privileges
+Be careful while using theSuffocater, theSuffocater and all his modules always work with root privileges,
 and we are not responsible for all your actions.
 
 DO NOT CHANGE anything in the code unless you know what you are doing.

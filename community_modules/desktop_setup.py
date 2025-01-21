@@ -7,6 +7,7 @@ Installs and configures:
  - Wayland.
  - Any graphical environment.
  - Free/proprietary NVIDIA drivers.
+GNU/Linux supported.
 
 Author: iva
 Date: null
@@ -15,18 +16,20 @@ Date: null
 
 try:
     import os
-    import usr
     import subprocess
     from sys import exit
     from os import system
-    from time import sleep
     import the_unix_manager as tum
     from the_unix_manager import GREEN, RED, RESET
 except ModuleNotFoundError as import_error:
-    print(f"{RED}[!] Error: modules not found:\n{import_error}{RESET}")
+    print(f"{RED}[!] Error: Modules not found:\n{import_error}{RESET}")
 
 
 def desktop_setup() -> None:
+    """
+    Main function.
+    """
+
     tum.clear_screen()
 
     print("null")

@@ -1,29 +1,19 @@
 #!/bin/bash
+#
+# If you have the_unix_manager.sh located somewhere else - change this variable to the actual path:
+#
+# shellcheck source=/usr/bin/the_unix_manager.sh
+declare TUM_PATH="/usr/bin/the_unix_manager.sh"
+if [[ ! -f "$TUM_PATH" ]]; then
+	echo "[!] Error: the_unix_manager.sh not found at $TUM_PATH. Please provide the correct path."
+	exit 1
+fi
 
-# Fancy color codes ;3
-RED="\033[0;31m"
-GREEN="\033[0;32m"
-RESET="\033[0m"
+source "$TUM_PATH"
 
-# Supported systems
-GUIX_BASED_DISTROS=("guix")
-REDHAT_BASED_DISTROS=("redhat")
-CENTOS_BASED_DISTROS=("centos" "oracle")
-FEDORA_BASED_DISTROS=("fedora" "rocky" "mos")
-DRAGORA_BASED_DISTROS=("dragora")
-OPENSUSE_BASED_DISTROS=("opensuse")
-SLACKWARE_BASED_DISTROS=("slackware")
-ALPINE_BASED_DISTROS=("alpine" "postmarket")
-VOID_BASED_DISTROS=("void" "argon" "shikake" "pristine")
-GENTOO_BASED_DISTROS=("gentoo" "funtoo" "calculate" "chromeos")
-OPENBSD_BASED_DISTROS=("openbsd" "adj" "libertybsd")
-NETBSD_BASED_DISTROS=("netbsd" "blackbsd" "edgebsd")
-FREEBSD_BASED_DISTROS=("freebsd" "ghostbsd" "midnightbsd" "bastillebsd" "cheribsd" "trueos" "dragonflybsd" "hardenedbsd" "hellosystem" "truenas")
-ARCH_BASED_DISTROS=("arch" "artix" "manjaro" "garuda" "hyperbola" "parabola" "endeavouros" "blackarch" "librewolfos")
-DEBIAN_BASED_DISTROS=("debian" "ubuntu" "xubuntu" "kubuntu" "mint" "lmde" "trisquel" "devuan" "kali" 
-	"parrot" "pop" "elementary" "mx" "antix" "steamos" "tails" "astra" "crunchbag" "ututo"
-	"crunchbag++" "pureos" "deepin" "zorin" "peppermintos" "lubuntu" "wubuntu"
-	)
+function to_lowercase() {
+	echo "$1" | tr "[:upper:]" "[:lower:]"
+}
 
 function list_of_commands() {
 	echo "Help page:"
@@ -34,25 +24,25 @@ function list_of_commands() {
 
 function list_of_platforms() {	
 	echo "Supported Platforms:"
-	for ELEMENT in "${GUIX_BASED_DISTROS[@]}"; do echo " - $ELEMENT"; done 
-	for ELEMENT in "${REDHAT_BASED_DISTROS[@]}"; do echo " - $ELEMENT"; done 
-	for ELEMENT in "${CENTOS_BASED_DISTROS[@]}"; do echo " - $ELEMENT"; done 
-	for ELEMENT in "${FEDORA_BASED_DISTROS[@]}"; do echo " - $ELEMENT"; done 
-	for ELEMENT in "${DRAGORA_BASED_DISTROS[@]}"; do echo " - $ELEMENT"; done 
-	for ELEMENT in "${OPENSUSE_BASED_DISTROS[@]}"; do echo " - $ELEMENT"; done 
-	for ELEMENT in "${SLACKWARE_BASED_DISTROS[@]}"; do echo " - $ELEMENT"; done 
-	for ELEMENT in "${ALPINE_BASED_DISTROS[@]}"; do echo " - $ELEMENT"; done 
-	for ELEMENT in "${VOID_BASED_DISTROS[@]}"; do echo " - $ELEMENT"; done 
-	for ELEMENT in "${GENTOO_BASED_DISTROS[@]}"; do echo " - $ELEMENT"; done 
-	for ELEMENT in "${OPENBSD_BASED_DISTROS[@]}"; do echo " - $ELEMENT"; done 
-	for ELEMENT in "${NETBSD_BASED_DISTROS[@]}"; do echo " - $ELEMENT"; done 
-	for ELEMENT in "${FREEBSD_BASED_DISTROS[@]}"; do echo " - $ELEMENT"; done 
-	for ELEMENT in "${ARCH_BASED_DISTROS[@]}"; do echo " - $ELEMENT"; done 
-	for ELEMENT in "${DEBIAN_BASED_DISTROS[@]}"; do echo " - $ELEMENT"; done
+	for ELEMENT in "${GUIX_BASED[@]}"; do echo " - $ELEMENT"; done 
+	for ELEMENT in "${REDHAT_BASED[@]}"; do echo " - $ELEMENT"; done 
+	for ELEMENT in "${CENTOS_BASED[@]}"; do echo " - $ELEMENT"; done 
+	for ELEMENT in "${FEDORA_BASED[@]}"; do echo " - $ELEMENT"; done 
+	for ELEMENT in "${DRAGORA_BASED[@]}"; do echo " - $ELEMENT"; done 
+	for ELEMENT in "${OPENSUSE_BASED[@]}"; do echo " - $ELEMENT"; done 
+	for ELEMENT in "${SLACKWARE_BASED[@]}"; do echo " - $ELEMENT"; done 
+	for ELEMENT in "${ALPINE_BASED[@]}"; do echo " - $ELEMENT"; done 
+	for ELEMENT in "${VOID_BASED[@]}"; do echo " - $ELEMENT"; done 
+	for ELEMENT in "${GENTOO_BASED[@]}"; do echo " - $ELEMENT"; done 
+	for ELEMENT in "${OPENBSD_BASED[@]}"; do echo " - $ELEMENT"; done 
+	for ELEMENT in "${NETBSD_BASED[@]}"; do echo " - $ELEMENT"; done 
+	for ELEMENT in "${FREEBSD_BASED[@]}"; do echo " - $ELEMENT"; done 
+	for ELEMENT in "${ARCH_BASED[@]}"; do echo " - $ELEMENT"; done 
+	for ELEMENT in "${DEBIAN_BASED[@]}"; do echo " - $ELEMENT"; done
 }
 
 function list_of_packages() {
-	PACKAGES=("python3" "python3-pip"
+	local PACKAGES=("python3" "python3-pip"
 		"net-tools" "ufw" "iptables" "nftables" "fail2ban"
 		"openvpn" "wireguard/wireguard-tools"
 		"git" "wget" "lsof" "bash" "unbound"
@@ -62,24 +52,6 @@ function list_of_packages() {
 	for ELEMENT in "${PACKAGES[@]}"; do 
 		echo " - $ELEMENT" 
 	done
-}
-
-function install_python_requirements() {
-	python3 -m venv pkgenv
-	source pkgenv/bin/activate
-	pip install -r python_requirements.txt
-
-	echo "Don't forget to 'source pkgenv/bin/activate' and you are good to go."
-	echo -e "${GREEN}[*] Success!${RESET}"
-}
-
-function install_python_requirements_netbsd() {
-	python3.12 -m venv pkgenv
-	. pkgenv/bin/activate
-	pip install -r python_requirements.txt
-
-	echo "Don't forget to '. pkgenv/bin/activate' and you are good to go."
-	echo -e "${GREEN}[*] Success!${RESET}"
 }
 
 function install_debian_based() {
@@ -166,7 +138,7 @@ function install_freebsd_based() {
 	echo "    To achieve similar functionality, use tools designed for BSD systems,"
 	echo -e "    like PF (Packet Filter), IPFilter (ipf), or build these packages yourself.${RESET}"
 	echo -n "[==>] Hit enter to proceed: "
-	read PROCEED
+	read -r PROCEED
 }
 
 function install_netbsd_based() {
@@ -182,7 +154,7 @@ function install_netbsd_based() {
 	echo "    To achieve similar functionality, use tools designed for BSD systems,"
 	echo -e "    like PF (Packet Filter), IPFilter (ipf), or build these packages yourself.${RESET}"
 	echo -n "[==>] Hit enter to proceed: "
-	read PROCEED
+	read -r PROCEED
 }
 
 function install_openbsd_based() {
@@ -198,7 +170,7 @@ function install_openbsd_based() {
 	echo "    To achieve similar functionality, use tools designed for BSD systems,"
 	echo -e "    like PF (Packet Filter), IPFilter (ipf), or build these packages yourself.${RESET}"
 	echo -n "[==>] Hit enter to proceed: "
-	read PROCEED
+	read -r PROCEED
 }
 
 function install_dragora_based() {
@@ -217,13 +189,10 @@ function install_guix_based() {
 	guix install lsof git wget curl unbound
 }
 
-function to_lowercase() {
-	echo "$1" | tr "[:upper:]" "[:lower:]"
-}
-
 function main() {
-	echo -n "[==>] Enter your GNU/Linux or BSD distribution ('packages' to view requirements): "
-	read DISTRO
+	local DISTRO
+
+	read -rp "[==>] Enter your OS (GNU/Linux, BSD distro): " DISTRO
 	DISTRO=$(to_lowercase "$DISTRO")
 	if [[ "$DISTRO" == "packages" ]]; then
 		list_of_packages
@@ -242,136 +211,118 @@ function main() {
 	echo "[<==] Installing requirements..."
 	echo "--------------------------------"
 
-	for ITEM in "${DEBIAN_BASED_DISTROS[@]}"; do
+	for ITEM in "${DEBIAN_BASED[@]}"; do
 		if [[ "$DISTRO" == "$ITEM" ]]; then
 			install_debian_based
 			break
 		fi
 	done
-	
-	for ITEM in "${ARCH_BASED_DISTROS[@]}"; do
+
+	for ITEM in "${ARCH_BASED[@]}"; do
 		if [[ "$DISTRO" == "$ITEM" ]]; then
 			install_arch_based
 			break
 		fi
 	done
-	
-	for ITEM in "${GUIX_BASED_DISTROS[@]}"; do
+
+	for ITEM in "${GUIX_BASED[@]}"; do
 		if [[ "$DISTRO" == "$ITEM" ]]; then
 			install_guix_based
 			break
 		fi
 	done
-	
-	for ITEM in "${REDHAT_BASED_DISTROS[@]}"; do
+
+	for ITEM in "${CENTOS_BASED[@]}"; do
 		if [[ "$DISTRO" == "$ITEM" ]]; then
-			install_redhat_based
+			install_centos_based
 			break
 		fi
 	done
 
-	for ITEM in "${CENTOS_BASED_DISTROS[@]}"; do
-		if [[ "$DISTRO" == "$ITEM" ]]; then
-			install_redhat_based
-			break
-		fi
-	done
-
-	for ITEM in "${FEDORA_BASED_DISTROS[@]}"; do
+	for ITEM in "${FEDORA_BASED[@]}"; do
 		if [[ "$DISTRO" == "$ITEM" ]]; then
 			install_fedora_based
 			break
 		fi
 	done
 
-	for ITEM in "${DRAGORA_BASED_DISTROS[@]}"; do
+	for ITEM in "${DRAGORA_BASED[@]}"; do
 		if [[ "$DISTRO" == "$ITEM" ]]; then
 			install_dragora_based
 			break
 		fi
 	done
 
-	for ITEM in "${OPENSUSE_BASED_DISTROS[@]}"; do
+	for ITEM in "${OPENSUSE_BASED[@]}"; do
 		if [[ "$DISTRO" == "$ITEM" ]]; then
 			install_opensuse_based
 			break
 		fi
 	done
 
-	for ITEM in "${SLACKWARE_BASED_DISTROS[@]}"; do
+	for ITEM in "${SLACKWARE_BASED[@]}"; do
 		if [[ "$DISTRO" == "$ITEM" ]]; then
 			install_slackware_based
 			break
 		fi
 	done
 
-	for ITEM in "${ALPINE_BASED_DISTROS[@]}"; do
+	for ITEM in "${ALPINE_BASED[@]}"; do
 		if [[ "$DISTRO" == "$ITEM" ]]; then
 			install_alpine_based
 			break
 		fi
 	done
 
-	for ITEM in "${VOID_BASED_DISTROS[@]}"; do
+	for ITEM in "${VOID_BASED[@]}"; do
 		if [[ "$DISTRO" == "$ITEM" ]]; then
 			install_void_based
 			break
 		fi
 	done
 
-	for ITEM in "${GENTOO_BASED_DISTROS[@]}"; do
+	for ITEM in "${GENTOO_BASED[@]}"; do
 		if [[ "$DISTRO" == "$ITEM" ]]; then
 			install_gentoo_based
 			break
 		fi
 	done
 
-	for ITEM in "${OPENBSD_BASED_DISTROS[@]}"; do
+	for ITEM in "${OPENBSD_BASED[@]}"; do
 		if [[ "$DISTRO" == "$ITEM" ]]; then
 			install_openbsd_based
 			break
 		fi
 	done
 
-	for ITEM in "${NETBSD_BASED_DISTROS[@]}"; do
+	for ITEM in "${NETBSD_BASED[@]}"; do
 		if [[ "$DISTRO" == "$ITEM" ]]; then
 			install_netbsd_based
-			install_python_requirements_netbsd
 			exit 0
 		fi
 	done
 
-	for ITEM in "${FREEBSD_BASED_DISTROS[@]}"; do
+	for ITEM in "${FREEBSD_BASED[@]}"; do
 		if [[ "$DISTRO" == "$ITEM" ]]; then
 			install_freebsd_based
 			break
 		fi
 	done
-	
-	echo -n "[?] Now we need to create a virtual environment for python3 in $(pwd). Do you wish to proceed? (y/N): "
-	read ANSWER
-	ANSWER=$(to_lowercase "$ANSWER")
-	if [[ "$ANSWER" == "y" ]]; then
-		install_python_requirements
-	else
-		echo -e "${GREEN}[*] Success!${RESET}"
-		exit 0
-	fi
-}
 
-function check_privileges() {
-	if [ "$(id -u)" -eq 0 ]; then
-		main
-	else
-		echo -e "${RED}[!] Error: This script requires root privileges to install packages.${RESET}"
-		exit 1
-	fi
+	echo -e "\nNow we need to create a virtual environment for python3 in your home directory."
+	echo -e "\nType in your terminal:"
+	echo "    python3 -m venv ~/.pkgenv"
+	echo "    source ~/.pkgenv/bin/activate"
+	echo "    pip install -r install/python_requirements.txt"
+	echo -e "\nAfter that, launch:"
+	echo "    bash tsf_installer.sh"
 }
 
 function parse_args() {
 	if [[ $# -eq 0 ]]; then
 		clear
 		check_privileges
+		main
 		return
 	fi
 
@@ -393,7 +344,7 @@ function parse_args() {
 				check_privileges
 				;;
 			*)
-				echo -e "${RED}[!] Error: Unknown argument: $1 ${RESET}"
+				echo -e "${RED}[!] Error: Unknown argument: $1${RESET}"
 				exit 1
 				;;
 		esac

@@ -28,8 +28,6 @@ Please consider next rules of writing if you want to help theSuffocater:
 
 - Docstring after shebang in python modules:
 
-Example:
-
 ```python3
 #!/usr/bin/python3
 
@@ -46,8 +44,6 @@ Date: "Type  date here"
 
 - Use Explicit Type Conversion in python scripts:
 
-Examples:
-
 ```python3
 number: int = 1984
 ```
@@ -57,7 +53,7 @@ string: str = "theSuffocater"
 ```
 
 ```python3
-def function(arg: str = "default_value") -> None:
+def main_function(arg: str = "default_value") -> None:
 	"""
     Function documentation.
 
@@ -68,14 +64,22 @@ def function(arg: str = "default_value") -> None:
         None: none.
     """
 
-    ...
+    print(f"{arg}, passed argument")
+```
+
+- Don't use single quotes ('') unless absolutely necessary:
+
+```python3
+bad = ''
+good: str = "..."
+acceptable: str = f"blah '{something}' blah"
 ```
 
 - And don't forget to add at the end of your code:
 
 ```python3
 if __name__ == "__main__":
-	function()
+	main_function()
 ```
 
 ## Pull Requests
@@ -125,8 +129,8 @@ Provide us next information about your issue:
 
 ## License
 
-More information in LICENSE.md
+More information in _LICENSE.md_.
 
 ## Code of Conduct
 
-More information in CODE_OF_CONDUCT.md
+More information in _CODE_OF_CONDUCT.md_.
