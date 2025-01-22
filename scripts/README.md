@@ -1,35 +1,35 @@
 # Scripts
 
-These are __scripts/__, essential part of theSuffocater with most useful scripts.
+These are **scripts/**, essential part of theSuffocater with most useful scripts.
 
 ## List of Scripts
 
-- __check_ips.sh__
+- **check_ips.sh**
 
 NOT FINISHED YET
 
-- __install_latest_version.sh__
+- **install_latest_version.sh**
 
 Installs latest theSuffocater version.
 
-- __openvpn-install.sh__
+- **openvpn-install.sh**
 
 Installs and setups OpenVPN server.
 
-- __wireguard-install.sh__
+- **wireguard-install.sh**
 
-Installs and setups Wireguard server.
+Installs and setups Wireguard VPN server.
 
-- __remove_firmware.sh__
+- **remove_firmware.sh**
 
 Purges binary firmware, making your computing libre.
 
-- __passgen.sh__
+- **passgen.sh**
 
 Password generator with customizable key length which uses random symbols.
 
 ## Licensing
 
-Everything in this directory is licensed under __GNU GPL v3__ license until noted.
+Everything in this directory is licensed under **GNU GPL v3** license until noted.
 
-__openvpn-install.sh__ and __wireguard-install.sh__ is licensed under __MIT__ license.
+**openvpn-install.sh** and **wireguard-install.sh** is licensed under **MIT** license.

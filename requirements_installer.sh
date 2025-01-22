@@ -320,27 +320,27 @@ function main() {
 
 function parse_args() {
 	if [[ $# -eq 0 ]]; then
-		clear
 		check_privileges
+		clear
 		main
 		return
 	fi
 
 	while [[ $# -gt 0 ]]; do
 		case "$1" in
-			-h|--help)
+			"-h"|"--help")
 				list_of_commands
 				exit 0
 				;;
-			-s|--systems)
+			"-s"|"--systems")
 				list_of_platforms
 				exit 0
 				;;
-			-p|--packages)
+			"-p"|"--packages")
 				list_of_packages
 				exit 0
 				;;
-			-i|--install)
+			"-i"|"--install")
 				check_privileges
 				;;
 			*)

@@ -1,5 +1,3 @@
-openvpn-install.sh, wireguard-install.sh
-
 MIT License
 
 Copyright (c) 2019 angristan

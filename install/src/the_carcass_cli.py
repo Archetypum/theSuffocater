@@ -52,7 +52,7 @@ def the_suffocater_help() -> None:
     print(" help - display this message.")
     print(" neofetch - brief theSuffocater statistics.")
     print(" import - for importing modules from directories.")
-    print(" modules - list imported modules.")
+    print(" modules [-d] - list imported modules. '-d' argument for documentation.")
     print(" tsf_version - get current version of theSuffocater.")
     print(" tc_version - get current version of theCarcass.")
     print(" license - check license.")

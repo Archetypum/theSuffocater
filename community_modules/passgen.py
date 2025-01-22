@@ -16,12 +16,14 @@ try:
     import the_unix_manager as tum
     from string import ascii_letters, digits
     from the_unix_manager import GREEN, RED, RESET
+
+    characters: str = ascii_letters + digits
 except ModuleNotFoundError as import_error:
     print(f"{RED}[!] Error: Modules not found. Broken installation?\n\n{import_error}{RESET}")
     exit(1)
 
 
-def generate_password(password_length: int, word_list: list, characters: str) -> str:
+def generate_password(password_length: int = None, word_list: list = None, characters: str = None) -> str:
     """
     Generates random password consisting of random characters and a word from 'word_list'.
 
@@ -33,16 +35,17 @@ def generate_password(password_length: int, word_list: list, characters: str) ->
     Returns:
         str: Generated password.
     """
-    
-    return "".join(choice(characters) for _ in range(password_length)) + choice(word_list)
 
+    if None in (password_length, word_list, characters):
+        print(f"{RED}[!] Error: No arguments specified.\nPlease launch this function from 'passgen' directly.{RESET}")
+    else:
+        return "".join(choice(characters) for _ in range(password_length)) + choice(word_list)
+    
 
 def passgen() -> None:
     """
     Main function.
     """
-
-    tum.clear_screen()
 
     print("\nWe are going to create a strong password.")
     if tum.prompt_user("[?] Proceed?"):
@@ -55,7 +58,6 @@ def passgen() -> None:
             except ValueError:
                 print(f"{RED}[!] Error: Invalid password length. Please enter a number.{RESET}")
 
-        characters: str = ascii_letters + digits
         with open("/etc/tsf/module_configs/passgen_dict.txt", "r") as words_dict:
             word_list: list = [word.strip().strip("'") for word in words_dict.read().split(",")]
 

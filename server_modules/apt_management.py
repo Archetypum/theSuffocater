@@ -22,9 +22,11 @@ except ModuleNotFoundError as import_error:
 
 
 def enable_auto_updates() -> None:
-    tum.clear_screen()
+    """
 
-    print("Automatic updates help ensure your system is always protected with the latest security patches and improvements.")
+    """
+
+    print("\nAutomatic updates help ensure your system is always protected with the latest security patches and improvements.")
     print("By enabling automatic updates, your system will regularly check for updates and install them without manual intervention.")
     print("This reduces the risk of vulnerabilities being exploited and helps keep your system stable and secure.")
 
@@ -47,7 +49,9 @@ def enable_auto_updates() -> None:
 
 
 def disable_auto_updates() -> None:
-    tum.clear_screen()
+    """
+
+    """
 
     print("Disabling automatic updates will stop your system from automatically checking for and installing updates.")
     print("This may leave your system vulnerable to unpatched security issues.")
@@ -67,8 +71,10 @@ def disable_auto_updates() -> None:
 
 
 def enable_debian_backports() -> None:
-    tum.clear_screen()
-    
+    """
+
+    """
+
     print("Backports are packages taken from the next Debian release (called 'testing'), adjusted and recompiled for usage on Debian stable.")
     print("By adding Debian Backports, you can gradually increase the number of fresh/completely new packages on your system.")
 
@@ -90,7 +96,9 @@ def enable_debian_backports() -> None:
 
 
 def add_i386() -> None:
-    tum.clear_screen()
+    """
+
+    """
 
     print("Some specific software requires 32-bit libraries to work.")
     if tum.prompt_user("[?] Add i386 support?"):
@@ -104,7 +112,9 @@ def add_i386() -> None:
 
 
 def apt_management() -> None:
-    tum.clear_screen()
+    """
+    Main function.
+    """
 
     distro: str = tum.get_user_distro()
     debian: bool = tum.is_debian_based(distro)

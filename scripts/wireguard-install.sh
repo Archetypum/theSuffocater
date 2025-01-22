@@ -1,107 +1,59 @@
 #!/bin/bash
+#
+# WireGuard server installer.
+# Originally made by angristan, modified by Archetypum
+#
+# If you have the_unix_manager.sh located somewhere else - change this variable to the actual path:
+#
+# shellcheck source=/usr/bin/the_unix_manager.sh
+declare TUM_PATH="/usr/bin/the_unix_manager.sh"
+if [[ ! -f "$TUM_PATH" ]]; then
+	echo "[!] Error: the_unix_manager.sh not found at $TUM_PATH. Please provide the correct path."
+	exit 1
+fi
 
-# Secure WireGuard server installer
-# https://github.com/angristan/wireguard-install
+source "$TUM_PATH"
 
-RED='\033[0;31m'
-ORANGE='\033[0;33m'
-GREEN='\033[0;32m'
-NC='\033[0m'
-
-function isRoot() {
-	if [ "${EUID}" -ne 0 ]; then
-		echo "You need to run this script as root"
+function check_virt() {
+	if [[ "$(systemd-detect-virt)" == "openvz" ]]; then
+		echo "${RED}[!] OpenVZ is not supported.${RESET}"
 		exit 1
 	fi
-}
 
-function checkVirt() {
-	if [ "$(systemd-detect-virt)" == "openvz" ]; then
-		echo "OpenVZ is not supported"
-		exit 1
-	fi
-
-	if [ "$(systemd-detect-virt)" == "lxc" ]; then
-		echo "LXC is not supported (yet)."
+	if [[ "$(systemd-detect-virt)" == "lxc" ]]; then
+		echo -e "${ORANGE}LXC is not supported (yet)."
 		echo "WireGuard can technically run in an LXC container,"
 		echo "but the kernel module has to be installed on the host,"
 		echo "the container has to be run with some specific parameters"
-		echo "and only the tools need to be installed in the container."
+		echo -e "and only the tools need to be installed in the container.${RESET}"
 		exit 1
 	fi
 }
 
-function checkOS() {
-	source /etc/os-release
-	OS="${ID}"
-	if [[ ${OS} == "debian" || ${OS} == "raspbian" ]]; then
-		if [[ ${VERSION_ID} -lt 10 ]]; then
-			echo "Your version of Debian (${VERSION_ID}) is not supported. Please use Debian 10 Buster or later"
-			exit 1
-		fi
-		OS=debian # overwrite if raspbian
-	elif [[ ${OS} == "ubuntu" ]]; then
-		RELEASE_YEAR=$(echo "${VERSION_ID}" | cut -d'.' -f1)
-		if [[ ${RELEASE_YEAR} -lt 18 ]]; then
-			echo "Your version of Ubuntu (${VERSION_ID}) is not supported. Please use Ubuntu 18.04 or later"
-			exit 1
-		fi
-	elif [[ ${OS} == "fedora" ]]; then
-		if [[ ${VERSION_ID} -lt 32 ]]; then
-			echo "Your version of Fedora (${VERSION_ID}) is not supported. Please use Fedora 32 or later"
-			exit 1
-		fi
-	elif [[ ${OS} == 'centos' ]] || [[ ${OS} == 'almalinux' ]] || [[ ${OS} == 'rocky' ]]; then
-		if [[ ${VERSION_ID} == 7* ]]; then
-			echo "Your version of CentOS (${VERSION_ID}) is not supported. Please use CentOS 8 or later"
-			exit 1
-		fi
-	elif [[ -e /etc/oracle-release ]]; then
-		source /etc/os-release
-		OS=oracle
-	elif [[ -e /etc/arch-release ]]; then
-		OS=arch
-	else
-		echo "Looks like you aren't running this installer on a Debian, Ubuntu, Fedora, CentOS, AlmaLinux, Oracle or Arch Linux system"
-		exit 1
-	fi
-}
-
-function getHomeDirForClient() {
+function get_home_dir_for_client() {
 	local CLIENT_NAME=$1
 
-	if [ -z "${CLIENT_NAME}" ]; then
-		echo "Error: getHomeDirForClient() requires a client name as argument"
+	if [[ -z "${CLIENT_NAME}" ]]; then
+		echo -e "${RED}[!] Error: 'get_home_dir_for_client' requires a client name as argument.${RESET}"
 		exit 1
 	fi
 
-	# Home directory of the user, where the client configuration will be written
-	if [ -e "/home/${CLIENT_NAME}" ]; then
-		# if $1 is a user name
+	if [[ -e "/home/${CLIENT_NAME}" ]]; then
 		HOME_DIR="/home/${CLIENT_NAME}"
-	elif [ "${SUDO_USER}" ]; then
-		# if not, use SUDO_USER
-		if [ "${SUDO_USER}" == "root" ]; then
-			# If running sudo as root
+	elif [[ "${SUDO_USER}" ]]; then
+		if [[ "${SUDO_USER}" == "root" ]]; then
 			HOME_DIR="/root"
 		else
 			HOME_DIR="/home/${SUDO_USER}"
 		fi
 	else
-		# if not SUDO_USER, use /root
 		HOME_DIR="/root"
 	fi
 
 	echo "$HOME_DIR"
 }
 
-function initialCheck() {
-	isRoot
-	checkVirt
-	checkOS
-}
-
-function installQuestions() {
+function install_questions() {
 	echo "Welcome to the WireGuard installer!"
 	echo "The git repository is available at: https://github.com/angristan/wireguard-install"
 	echo ""
@@ -166,11 +118,9 @@ function installQuestions() {
 	read -n1 -r -p "Press any key to continue..."
 }
 
-function installWireGuard() {
-	# Run setup questions first
-	installQuestions
+function install_wireguard() {
+	install_questions
 
-	# Install WireGuard tools and module
 	if [[ ${OS} == 'ubuntu' ]] || [[ ${OS} == 'debian' && ${VERSION_ID} -gt 10 ]]; then
 		apt-get update
 		apt-get install -y wireguard iptables resolvconf qrencode
@@ -281,7 +231,7 @@ net.ipv6.conf.all.forwarding = 1" >/etc/sysctl.d/wg.conf
 	fi
 }
 
-function newClient() {
+function new_client() {
 	# If SERVER_PUB_IP is IPv6, add brackets if missing
 	if [[ ${SERVER_PUB_IP} =~ .*:.* ]]; then
 		if [[ ${SERVER_PUB_IP} != *"["* ]] || [[ ${SERVER_PUB_IP} != *"]"* ]]; then
@@ -383,7 +333,7 @@ AllowedIPs = ${CLIENT_WG_IPV4}/32,${CLIENT_WG_IPV6}/128" >>"/etc/wireguard/${SER
 	echo -e "${GREEN}Your client config file is in ${HOME_DIR}/${SERVER_WG_NIC}-client-${CLIENT_NAME}.conf${NC}"
 }
 
-function listClients() {
+function list_clients() {
 	NUMBER_OF_CLIENTS=$(grep -c -E "^### Client" "/etc/wireguard/${SERVER_WG_NIC}.conf")
 	if [[ ${NUMBER_OF_CLIENTS} -eq 0 ]]; then
 		echo ""
@@ -394,7 +344,7 @@ function listClients() {
 	grep -E "^### Client" "/etc/wireguard/${SERVER_WG_NIC}.conf" | cut -d ' ' -f 3 | nl -s ') '
 }
 
-function revokeClient() {
+function revoke_client() {
 	NUMBER_OF_CLIENTS=$(grep -c -E "^### Client" "/etc/wireguard/${SERVER_WG_NIC}.conf")
 	if [[ ${NUMBER_OF_CLIENTS} == '0' ]]; then
 		echo ""
@@ -413,28 +363,23 @@ function revokeClient() {
 		fi
 	done
 
-	# match the selected number to a client name
 	CLIENT_NAME=$(grep -E "^### Client" "/etc/wireguard/${SERVER_WG_NIC}.conf" | cut -d ' ' -f 3 | sed -n "${CLIENT_NUMBER}"p)
 
-	# remove [Peer] block matching $CLIENT_NAME
 	sed -i "/^### Client ${CLIENT_NAME}\$/,/^$/d" "/etc/wireguard/${SERVER_WG_NIC}.conf"
 
-	# remove generated client file
 	HOME_DIR=$(getHomeDirForClient "${CLIENT_NAME}")
+
 	rm -f "${HOME_DIR}/${SERVER_WG_NIC}-client-${CLIENT_NAME}.conf"
 
-	# restart wireguard to apply changes
 	wg syncconf "${SERVER_WG_NIC}" <(wg-quick strip "${SERVER_WG_NIC}")
 }
 
-function uninstallWg() {
-	echo ""
-	echo -e "\n${RED}WARNING: This will uninstall WireGuard and remove all the configuration files!${NC}"
-	echo -e "${ORANGE}Please backup the /etc/wireguard directory if you want to keep your configuration files.\n${NC}"
-	read -rp "Do you really want to remove WireGuard? [y/n]: " -e REMOVE
-	REMOVE=${REMOVE:-n}
-	if [[ $REMOVE == 'y' ]]; then
-		checkOS
+function uninstall_wireguard() {
+	local DISTRO
+
+	echo -e "\n${RED} [!] WARNING: This will uninstall WireGuard and remove all the configuration files!${RESET}"
+	echo -e "${ORANGE}Please backup the /etc/wireguard directory if you want to keep your configuration files.\n${RESET}"
+	if prompt_user "[?] Do you really want to remove WireGuard? "; then
 
 		systemctl stop "wg-quick@${SERVER_WG_NIC}"
 		systemctl disable "wg-quick@${SERVER_WG_NIC}"
@@ -463,10 +408,8 @@ function uninstallWg() {
 		rm -rf /etc/wireguard
 		rm -f /etc/sysctl.d/wg.conf
 
-		# Reload sysctl
 		sysctl --system
 
-		# Check if WireGuard is running
 		systemctl is-active --quiet "wg-quick@${SERVER_WG_NIC}"
 		WG_RUNNING=$?
 
@@ -483,47 +426,48 @@ function uninstallWg() {
 	fi
 }
 
-function manageMenu() {
-	echo "Welcome to WireGuard-install!"
-	echo "The git repository is available at: https://github.com/angristan/wireguard-install"
-	echo ""
-	echo "It looks like WireGuard is already installed."
-	echo ""
-	echo "What do you want to do?"
-	echo "   1) Add a new user"
-	echo "   2) List all users"
-	echo "   3) Revoke existing user"
-	echo "   4) Uninstall WireGuard"
-	echo "   5) Exit"
-	until [[ ${MENU_OPTION} =~ ^[1-5]$ ]]; do
-		read -rp "Select an option [1-5]: " MENU_OPTION
+function main() {
+	local OPTION
+
+	echo "+---------------- Welcome to WireGuardInstaller ----------------+"
+	echo "Archetypum git repository: https://github.com/Archetypum/WireguardInstaller"
+	echo "Original angristan's git repository: https://github.com/angristan/wireguard-install"
+	echo -e "\nOptions:"
+	echo "   1 - Add a new user."
+	echo "   2 - List all users."
+	echo "   3 - Revoke existing user."
+	echo "   4 - Uninstall WireGuard."
+	echo "   5 - Exit."
+	
+	until [[ "${MENU_OPTION}" =~ ^[1-5]$ ]]; do
+		read -rp "[==>] " OPTION
 	done
+
 	case "${MENU_OPTION}" in
-	1)
-		newClient
-		;;
-	2)
-		listClients
-		;;
-	3)
-		revokeClient
-		;;
-	4)
-		uninstallWg
-		;;
-	5)
-		exit 0
-		;;
+		1)
+			new_client
+			;;
+		2)
+			list_clients
+			;;
+		3)
+			revoke_client
+			;;
+		4)
+			uninstall_wireguard
+			;;
+		5)
+			exit 0
+			;;
 	esac
 }
 
-# Check for root, virt, OS...
-initialCheck
+check_privileges
+check_virt
 
-# Check if WireGuard is already installed and load params
 if [[ -e /etc/wireguard/params ]]; then
 	source /etc/wireguard/params
-	manageMenu
+	manage_menu
 else
-	installWireGuard
+	install_wireGuard
 fi

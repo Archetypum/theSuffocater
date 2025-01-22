@@ -72,19 +72,19 @@ Current goals of theSuffocater:
 
 ## Licenses
 
-theSuffocater uses GNU General Public License v3. 
+theSuffocater uses **GNU General Public License v3**. 
 
 More information in:
 
-- LICENSE.md
-- https://www.fsf.org
-- https://www.gnu.org
+- _LICENSE.md_
+- _https://www.fsf.org_
+- _https://www.gnu.org_
 
 _scripts/openvpn-install.sh_ and _wireguard-install.sh_ by angristan are using MIT Licenses.
 
 More information in:
 
-- LICENSE-MIT.md
-- https://mit-license.org/
+- _LICENSE-MIT.md_
+- _https://mit-license.org/_
 
 ![gnu](https://github.com/user-attachments/assets/66935a97-374f-4dbc-9f1c-428070fda139)

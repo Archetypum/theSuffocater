@@ -2,18 +2,18 @@
 
 Here is stored everything what theSuffocater needs for installation. 
 
-- __src/__
+- **src/**
 
 Source code of theSuffocater main components.
 
-- __tsf/__
+- **tsf/**
 
 Config files for theSuffocater modules, scripts, main components.
 
-- __python_requirements.txt__
+- **python_requirements.txt**
 
 Required python libraries for theSuffocater modules and main components.
 
 ## Licensing
 
-Everything in this directory is licensed under __GNU GPL v3__ license.
+Everything in this directory is licensed under **GNU GPL v3** license.

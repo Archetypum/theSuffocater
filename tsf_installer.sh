@@ -28,15 +28,23 @@ function main() {
 
 	read -p "[==>] " OPTION
 	if [[ "$OPTION" == "1" ]]; then
-		check_privileges
 		install_thesuffocater
 	elif [[ "$OPTION" == "2" ]]; then
-		check_privileges
 		remove_thesuffocater
 	else
 		echo -e "${RED} Invalid option: "$OPTION"${RESET}"
 		return 1
 	fi
+}
+
+function list_of_commands() {
+	# Helping ourselves.
+	
+	echo "Help page:"
+	echo " -h/--help - lists commands."
+	echo " -i/--install - Installs theSuffocater to your system."
+	echo " -r/--remove - Removes theSuffocater from your system."
+	echo " -d/--debug - Debugging mode for developers."
 }
 
 function install_thesuffocater() {
@@ -45,6 +53,8 @@ function install_thesuffocater() {
 	# Creates markdown/ directory at /etc/tsf and moves all .md files to /etc/tsf/markdown
 	# Creates aliases in ~/.bashrc and ~/.zshrc
 	
+	check_privileges
+
 	if [[ -f "install/src/the_carcass_cli.py" ]]; then
 		cp install/src/the_carcass_cli.py /usr/bin/the_carcass_cli.py && echo -e "${GREEN}[==>] Moving theCarcassCLI to /usr/bin...${RESET}"
 	fi
@@ -77,6 +87,9 @@ function install_thesuffocater() {
 
 function remove_thesuffocater() {
 	# Purges all tSF files from the /etc/, ~, and /usr/bin
+	
+	check_privileges
+
 	if prompt_user "[?] Are you sure you want to remove theSuffocater from your system?"; then
 		rm -rf ~/.pkgenv && echo -e "${GREEN}\n[<==] Removing python venv...${RESET}"
 		rm -rf /etc/tsf && echo -e "${GREEN}[<==] Purging configuration files...${RESET}"
@@ -92,6 +105,7 @@ function remove_thesuffocater() {
 function debug() {
 	# Debugging function for checking where theSuffocater main components are located.
 	# Sometimes can be very helpful, especially when you trying to port tSF on new distros
+	#
 	# On Alpine Linux neeeds 'util-linux' package installed.
 	
 	echo -e "${PURPLE}CLI theCarcass:${RESET}"
@@ -104,5 +118,37 @@ function debug() {
 	whereis the_unix_manager.sh
 }
 
-# debug
-main
+function parse_args() {
+	if [[ $# -eq 0 ]]; then
+		main
+		return
+	fi
+
+	while [[ $# -gt 0 ]]; do
+		case "$1" in
+			"-h"|"--help")
+				list_of_commands
+				exit 0
+				;;
+			"-i"|"--install")
+				install_thesuffocater
+				exit 0
+				;;
+			"-r"|"--remove")
+				remove_thesuffocater
+				exit 0
+				;;
+			"-d"|"--debug")
+				debug
+				exit 0
+				;;
+			*)
+				echo -e "${RED}[!] Error: Unknown argument: $1${RESET}"
+				exit 1
+				;;
+		esac
+		shift
+	done
+}
+
+parse_args "$@"

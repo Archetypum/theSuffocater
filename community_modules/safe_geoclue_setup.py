@@ -23,8 +23,6 @@ def safe_geoclue_setup() -> None:
     Main function.
     """
 
-    tum.clear_screen()
-
     print("This script is going to set all geoclue config variables to 'false'.")
     print("Your system will stop using your geolocation.")
     if tum.prompt_user("[?] Proceed?"):

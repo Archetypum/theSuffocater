@@ -70,7 +70,7 @@ def install_x11() -> bool:
 
     print("We are going to install X Window System.")
     if tum.prompt_user("[?] Proceed"):
-        tum.package_handling(distro, ["xorg", "xinit", "xterm"], "install")
+        tum.package_handling(distro, "xorg", "install")
 
 
 def configure_wayland() -> bool:
@@ -81,11 +81,7 @@ def configure_wayland() -> bool:
         bool: Installlation status.
     """
 
-    distro: str = tum.get_user_distro()
-
-    print("We are going to install Wayland FreeDesktop.")
-    if tum.prompt_user("[?] Proceed"):
-        tum.package_handling(distro, [""], "install")
+    ...
 
 
 def install_wayland() -> bool:
@@ -99,17 +95,15 @@ def install_wayland() -> bool:
     ...
 
 
-def install_dm_wm_de() -> bool:
+def install_wm_de() -> bool:
     """
-    Installs popular Display Managers, Window Managers, and Desktop Enviroments.
+    Installs popular Windows Manager and Desktop Enviroments.
 
     Returns:
         bool: Installation status.
     """
 
-    display_managers: list = []
-    window_managers: list = []
-    desktop_enviroments: list = ["GNOME", "KDE Plasma", "XFCE", "LXDE", "LXQt", "MATE", "Cinnamon", "Cosmic", "Budgie", "Patheon"]
+    ...
 
 
 def desktop_setup() -> None:

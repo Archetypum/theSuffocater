@@ -26,7 +26,9 @@ except ModuleNotFoundError as import_error:
 
 
 def ssh_keygen() -> None:
-    tum.clear_screen()
+    """
+
+    """
         
     key_type: str = input("[==>] Select key type (rsa, dsa, ecdsa, ed25519) [default]: ")
     key_size: str = input("[==>] Select key size (1024, 2048, 3072 for rsa/dsa) enter for default - 2048): ")
@@ -73,7 +75,9 @@ def ssh_keygen() -> None:
 
 
 def ssh_logging() -> None:
-    tum.clear_screen()
+    """
+
+    """
 
     print("We are going to log SSH connections to your device.")
     if tum.prompt_user("[?] Proceed?"):
@@ -92,6 +96,8 @@ def ssh_logging() -> None:
                 except subprocess.CalledProcessError as error:
                     print(f"{RED}[!] Error: Failed to create log file: {error}{RESET}")
                     return
+
+        tum.clear_screen()
 
         try:
             with open(log_file_path, "r") as log_file:
@@ -120,7 +126,9 @@ def ssh_logging() -> None:
 
 
 def safe_ssh_setup() -> None:
-    tum.clear_screen()
+    """
+
+    """
 
     distro: str = tum.get_user_distro()
     init_system: str = tum.get_init_system()
@@ -130,7 +138,7 @@ def safe_ssh_setup() -> None:
     print("1. Remove password authentication.")
     print("2. Add Pubkey authentication.")
     print("3. Permit root login.")
-    print("4. Set MaxAuthTries to 3.")
+    print("4. Set MaxAuthTries to 6.")
     print("5. Change port value from 22 to 1984.")
     print("*. Many more.")
 
@@ -160,6 +168,10 @@ def safe_ssh_setup() -> None:
 
 
 def ssh_management() -> None:
+    """
+    Main function.
+    """
+
     tum.clear_screen()
 
     functions: dict = {

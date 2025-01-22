@@ -1,24 +1,24 @@
 ## Contributing to theSuffocater
 
-We appreciate contributing on theSuffocater, please, if you want to contribute read this file to know the main rules in code writing and code style.
+We appreciate contributing on theSuffocater, and if you want to contribute - please read this file and learn the main rules in code writing and code style.
 
 We appreciate contributing in:
 
-- Code
+- Code.
 
-- Testing
+- Testing.
 
-- Giving new ideas
+- Giving new ideas for modules/other functionality.
 
 ## Development environment
 
 Installation:
 
-You can see proper installation of theSuffocater in README.md.
+You can see proper installation of theSuffocater in _README.md_.
 
 OS: 
 
-GNU/Linux, BSD
+GNU/Linux, BSD, macOS.
 
 ## Code writing
 
@@ -53,7 +53,7 @@ string: str = "theSuffocater"
 ```
 
 ```python3
-def main_function(arg: str = "default_value") -> None:
+def module_function(arg: str = "default_value") -> None:
 	"""
     Function documentation.
 
@@ -61,10 +61,18 @@ def main_function(arg: str = "default_value") -> None:
         arg (str): Something. "default_value" if not specified        
 
     Returns:
-        None: none.
+        None: nothing.
     """
 
     print(f"{arg}, passed argument")
+
+
+def main_function() -> None:
+    """
+    Main function.
+    """
+    
+    ...
 ```
 
 - Don't use single quotes ('') unless absolutely necessary:
@@ -75,7 +83,7 @@ good: str = "..."
 acceptable: str = f"blah '{something}' blah"
 ```
 
-- And don't forget to add at the end of your code:
+- And don't forget to add this at the end of your code:
 
 ```python3
 if __name__ == "__main__":
@@ -86,7 +94,7 @@ if __name__ == "__main__":
 
 **To create and send pull request, please, follow next steps**
 
-To create a pull request in GitHub:
+To create a pull request on GitHub:
 
 - Fork the repository you want to contribute to
 - Make your changes in a new branch

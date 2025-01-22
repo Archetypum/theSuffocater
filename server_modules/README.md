@@ -1,46 +1,46 @@
 # Server modules
 
-These are __server_modules/__,
+These are **server_modules/**,
 essential part of theSuffocater with most useful modules.
 
 ## List of Server Modules 
 
-- __address_management.py__
+- **address_management.py**
 
 Provides MAC address/local IP changing functionality on a unix-like operating systems. 
 
-- __apt_management.py__
+- **apt_management.py**
 
 Provides you all tweaks of the Apt Package Manager on Debian-based.
 
-- __ssh_management.py__
+- **ssh_management.py**
 
 Hardens your SSH by changing the config file, manages SSH keys and logs connections. Essential to your server.
 
- - __tor_management.py__
+ - **tor_management.py**
 
 Installs tor, adds tor devuan repositories, setups tor nodes. You know what you're doing.
 
-- __ultimate_firewall.py__
+- **ultimate_firewall.p
 
 Setups firewalls for you using pre-build profiles.
 
-- __user_management.py__
+- **user_management.py**
 
 Unix user management for new users.
 
-- __fail2ban_setup.py__
+- **fail2ban_setup.py**
 
 Setups fail2ban for you by changing his configurations.
 
-- __vpn_server_setup.py__
+- **vpn_server_setup.py**
 
 Installs OpenVPN, Wireguard, OutlineVPN and automatically set them up for proper VPN server work.
 
-- __backup_management.py__
+- **backup_management.py**
 
 Backs up files and databases.
 
 ## Licensing
 
-Everything in this directory is licensed under __GNU GPL v3__ license.
+Everything in this directory is licensed under **GNU GPL v3** license.

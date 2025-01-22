@@ -6,7 +6,6 @@ Features CLI and GUI stable versions of theCarcass, new functions, quality of li
 Main changes:
     
 1) Recoded GUI/CLI versions of theCarcass:
-    * DRY.
     * Added _import_ function.
     * Fixed old functions.
     * Optimised the imports.
@@ -39,9 +38,14 @@ Main changes:
 11) Refactored and debloated VPN install scripts.
 
 12) Added _.gitignore_.
-    
+
+13) Added _tsf_installer.sh_:
+    * Added _debug_ function.
+    * Added parsing functionality.
+
 *) Minor fixes:
-    * Bug files.
+    * DRY.
+    * Bug fixes.
     * Removed useless/redundant imports.
     * Typos, spelling mistakes, markdown syntax errors, etc.
 

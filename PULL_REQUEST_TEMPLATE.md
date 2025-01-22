@@ -2,7 +2,7 @@
 
 **To create and send pull request, please, follow next steps**
 
-To create a pull request in GitHub:
+To create a pull request on GitHub:
 
 - Fork the repository you want to contribute to
 - Make your changes in a new branch

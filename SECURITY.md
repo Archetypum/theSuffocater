@@ -23,7 +23,7 @@ After vulnerability got fixed we will not:
 
 - theSuffocater can't launch on RHEL, OpenSUSE, Dragora and Fedora.
 Reason: old Python version (3.8)
-Solution: remove explicit type conversion in system_monitor.py and others.  
+Solution: remove explicit type conversion in all .py files.  
 
 ## Recommendations on theSuffocater usage
 
@@ -34,8 +34,8 @@ DO NOT CHANGE anything in the code unless you know what you are doing.
 
 ## Related resources
 
-- LICENSE.md
+- _LICENSE.md_.
 
-- CONTRIBUTING.md
+- _CONTRIBUTING.md_.
 
-- CODE_OF_CONDUCT.md
+- _CODE_OF_CONDUCT.md_.
