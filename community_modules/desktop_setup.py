@@ -109,7 +109,7 @@ def install_dm_wm_de() -> bool:
 
     display_managers: list = []
     window_managers: list = []
-    desktop_enviroments: list = ["GNOME", "KDE Plasma", "XFCE", "LXDE", "LXQt", "MATE", "Cinnamon", "Cosmic", "Budgie", "Patheon"]
+    desktop_enviroments: list = ["GNOME", "KDE Plasma", "XFCE", "LXDE", "LXQt", "MATE", "Cinnamon", "Budgie", "Lumina"]
 
 
 def desktop_setup() -> None:
