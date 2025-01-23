@@ -11,6 +11,7 @@ Date: 28.07.2024
 """
 
 try:
+    import math
     from sys import exit
     from secrets import choice
     import the_unix_manager as tum
@@ -40,11 +41,52 @@ def generate_password(password_length: int = None, word_list: list = None, chara
         print(f"{RED}[!] Error: No arguments specified.\nPlease launch this function from 'passgen' directly.{RESET}")
     else:
         return "".join(choice(characters) for _ in range(password_length)) + choice(word_list)
-    
 
-def passgen() -> None:
+
+def calculate_crack_time(password: str = None, characters: str = None) -> str:
     """
-    Main function.
+    Estimates the time it would take to crack a password using a brute-force attack.
+
+    Args:
+        password (str): Password.
+        characters (str): Characters used in password.
+
+    Returns:
+        str: Estimated cracking time.
+    """
+    
+    password_length = len(password)
+    character_set_size = len(characters)
+    
+    attempts_per_second = 10_000_000_000
+    
+    total_combinations = float(math.pow(character_set_size, password_length))
+    
+    seconds = total_combinations / attempts_per_second
+    
+    if seconds < 1:
+      return "Less than a second"
+    elif seconds < 60:
+      return f"{round(seconds, 2)} seconds"
+    elif seconds < 3600:
+        minutes = seconds / 60
+        return f"{round(minutes, 2)} minutes"
+    elif seconds < 86400:
+        hours = seconds / 3600
+        return f"{round(hours, 2)} hours"
+    elif seconds < 31536000:
+        days = seconds / 86400
+        return f"{round(days, 2)} days"
+    elif seconds < 31536000 * 100:
+        years = seconds / 31536000
+        return f"{round(years, 2)} years"
+    else:
+        centuries = seconds / (31536000 * 100)
+        return f"{round(centuries, 2)} centuries"
+
+def password_generator():
+    """
+    Handles password generation.
     """
 
     print("\nWe are going to create a strong password.")
@@ -75,7 +117,7 @@ def passgen() -> None:
                 print("\n[==>] Here are three new generated password options:")
                 for idx, password in enumerate(password_options, 1):
                     print(f"[{idx}] {password}")
-            elif choice in ["1", "2", "3"]: 
+            elif choice in ["1", "2", "3"]:
                 chosen_password: str = password_options[int(choice) - 1]
                 with open(f"{name}.txt", "w") as password_file:
                     password_file.write(f"{name} {chosen_password}")
@@ -85,6 +127,38 @@ def passgen() -> None:
             else:
                 print(f"{RED}[!] Error: Invalid choice.{RESET}")
 
+def crack_time():
+    """
+    Handles password cracking time calculation.
+    """
+
+    print("\nWe are going to estimate time of cracking your password using a brute-force attack.")
+    if tum.prompt_user("[?] Proceed?"):
+        password: str = input("\n[==>] Enter your password: ")
+
+    crack_time = calculate_crack_time(password, characters)
+    print(f"[<==] It would take {crack_time} to crack your password.")
+
+def passgen() -> None:
+    """
+    Main function.
+    """
+       
+    tum.clear_screen()
+
+    functions: dict = {
+        "password_generator": password_generator,
+        "crack_time": crack_time
+    }
+
+    print("+---- Passgen ----+")
+    print("\nAvailable functions:")
+    for function in functions.keys():
+        print(f" - {function}")
+
+    your_function: str = input("[==>] Enter function: ").lower()
+    if your_function in functions:
+        functions[your_function]()
 
 if __name__ == "__main__":
     passgen()
