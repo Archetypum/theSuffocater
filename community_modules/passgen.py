@@ -56,18 +56,15 @@ def calculate_crack_time(password: str = None, characters: str = None) -> str:
     """
     
     password_length = len(password)
-    character_set_size = len(characters)
-    
-    attempts_per_second = 10_000_000_000
-    
-    total_combinations = float(math.pow(character_set_size, password_length))
-    
+    character_set_size = len(characters) 
+    attempts_per_second: int = 10_000_000_000
+    total_combinations: float = float(math.pow(character_set_size, password_length))
     seconds = total_combinations / attempts_per_second
     
     if seconds < 1:
-      return "Less than a second"
+        return "Less than a second"
     elif seconds < 60:
-      return f"{round(seconds, 2)} seconds"
+        return f"{round(seconds, 2)} seconds"
     elif seconds < 3600:
         minutes = seconds / 60
         return f"{round(minutes, 2)} minutes"
@@ -84,7 +81,8 @@ def calculate_crack_time(password: str = None, characters: str = None) -> str:
         centuries = seconds / (31536000 * 100)
         return f"{round(centuries, 2)} centuries"
 
-def password_generator():
+
+def password_generator() -> None:
     """
     Handles password generation.
     """
@@ -127,7 +125,8 @@ def password_generator():
             else:
                 print(f"{RED}[!] Error: Invalid choice.{RESET}")
 
-def crack_time():
+
+def crack_time() -> None:
     """
     Handles password cracking time calculation.
     """
@@ -136,8 +135,9 @@ def crack_time():
     if tum.prompt_user("[?] Proceed?"):
         password: str = input("\n[==>] Enter your password: ")
 
-    crack_time = calculate_crack_time(password, characters)
-    print(f"[<==] It would take {crack_time} to crack your password.")
+        crack_time = calculate_crack_time(password, characters)
+        print(f"[<==] It would take {crack_time} to crack your password.")
+
 
 def passgen() -> None:
     """
@@ -159,6 +159,7 @@ def passgen() -> None:
     your_function: str = input("[==>] Enter function: ").lower()
     if your_function in functions:
         functions[your_function]()
+
 
 if __name__ == "__main__":
     passgen()

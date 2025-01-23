@@ -298,7 +298,7 @@ function main() {
 	for ITEM in "${NETBSD_BASED[@]}"; do
 		if [[ "$DISTRO" == "$ITEM" ]]; then
 			install_netbsd_based
-			exit 0
+			break
 		fi
 	done
 

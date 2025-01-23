@@ -23,7 +23,7 @@ except ModuleNotFoundError as import_error:
 
 def enable_auto_updates() -> None:
     """
-
+    Enables autoupdates on Debian based systems via unattended-upgrades package.
     """
 
     print("\nAutomatic updates help ensure your system is always protected with the latest security patches and improvements.")
@@ -50,7 +50,7 @@ def enable_auto_updates() -> None:
 
 def disable_auto_updates() -> None:
     """
-
+    Disable autoupdates on Debian based systems.
     """
 
     print("Disabling automatic updates will stop your system from automatically checking for and installing updates.")

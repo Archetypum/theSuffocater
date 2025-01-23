@@ -118,6 +118,15 @@ function debug() {
 	whereis the_unix_manager.sh
 }
 
+function clone_unstable_repository() {
+	# Clones theSuffocater-unstable via git.
+	#
+	# Requires git. Huh.
+	
+	echo -e "${GREEN}\n[==>] Cloning repository...\n${RESET}"
+	git clone https://github.com/Archetypum/theSuffocater theSuffocater-unstable && echo -e "${GREEN}\n[*] Success!${RESET}"
+}
+
 function parse_args() {
 	if [[ $# -eq 0 ]]; then
 		main
@@ -140,6 +149,10 @@ function parse_args() {
 				;;
 			"-d"|"--debug")
 				debug
+				exit 0
+				;;
+			"-c"|"--clone")
+				clone_unstable_repository
 				exit 0
 				;;
 			*)
