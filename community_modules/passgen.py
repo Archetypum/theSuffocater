@@ -5,7 +5,8 @@
 Simple password generator that uses random symbols + random word from the dictionary.
 GNU/Linux, BSD, Windows, OS X supported.
 
-Author: iva
+Author: iva,
+        WretchOfLights (calculate_crack_time, crack_time)
 Date: 28.07.2024
 ---------------------------------------
 """
@@ -55,11 +56,11 @@ def calculate_crack_time(password: str = None, characters: str = None) -> str:
         str: Estimated cracking time.
     """
     
-    password_length = len(password)
-    character_set_size = len(characters) 
+    password_length: int = len(password)
+    character_set_size: int = len(characters) 
     attempts_per_second: int = 10_000_000_000
     total_combinations: float = float(math.pow(character_set_size, password_length))
-    seconds = total_combinations / attempts_per_second
+    seconds: float = total_combinations / attempts_per_second
     
     if seconds < 1:
         return "Less than a second"
@@ -108,7 +109,7 @@ def password_generator() -> None:
             print(f"    [{idx}] {password}")
 
         while True:
-            choice: str = input("\n[==>] Password to save (1/2/3) or 'r' to re-roll: ").strip().lower()
+            password_choice: str = input("\n[==>] Password to save (1/2/3) or 'r' to re-roll: ").strip().lower()
             if choice in ["r", "re", "reload"]:
                 print("[<==] Re-rolling the passwords...\n")
                 password_options: list = [generate_password(password_length, word_list, characters) for _ in range(3)]
@@ -116,7 +117,7 @@ def password_generator() -> None:
                 for idx, password in enumerate(password_options, 1):
                     print(f"[{idx}] {password}")
             elif choice in ["1", "2", "3"]:
-                chosen_password: str = password_options[int(choice) - 1]
+                chosen_password: str = password_options[int(password_choice) - 1]
                 with open(f"{name}.txt", "w") as password_file:
                     password_file.write(f"{name} {chosen_password}")
                 print(f"\n[*] Your new password for {name}: {chosen_password}")
@@ -135,7 +136,7 @@ def crack_time() -> None:
     if tum.prompt_user("[?] Proceed?"):
         password: str = input("\n[==>] Enter your password: ")
 
-        crack_time = calculate_crack_time(password, characters)
+        crack_time: str = calculate_crack_time(password, characters)
         print(f"[<==] It would take {crack_time} to crack your password.")
 
 

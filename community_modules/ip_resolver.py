@@ -24,13 +24,13 @@ except ModuleNotFoundError as import_error:
 def is_valid_ip(ip_address: str = None) -> bool:
     """
     Args:
-        ip (str): target IP address.
+        ip_address (str): target IP address.
     
     Returns:
         bool: If provided IP is valid
     """
     
-    if ip_address == None:
+    if ip_address is None:
         ip_address: str = input("\n[==>] Enter target IP address: ")
 
     pattern: str = r"^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$"
@@ -48,7 +48,7 @@ def get_ip_details(ip_address: str = None) -> None:
         None: Nothing.
     """
 
-    if ip_address == None:
+    if ip_address is None:
         ip_address: str = input("\n[==>] Enter target IP address: ")
 
     try:

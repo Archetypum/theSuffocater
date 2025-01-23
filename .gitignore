@@ -1,17 +1,26 @@
-# Ignore python bytecode:
+# Python bytecode:
+__pycache__/
 *.pyc
 *.pyo
-__pycache__/
+*$py.class
 
-# Ignore virtual environments:
-venv/
-env/
-*.env/
-.pkgenv/
-
-# Ignore vip swap files:
-*.swp
-
-# Ignore pyinstaller .spec files:
+# Pyinstaller:
+dist/
 *.spec
 
+# Virtual environments:
+venv/
+env/
+.pkgenv/
+
+# Vim:
+.vim/
+*.swp
+*.swo
+Session.vim
+
+# Temporary files:
+*~
+\#'
+\#'\#
+.#'

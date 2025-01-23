@@ -26,13 +26,13 @@ function main() {
 	echo "    1 - Install theSuffocater."
 	echo -e "    2 - Remove theSuffocater.\n"
 
-	read -p "[==>] " OPTION
+	read -rp "[==>] " OPTION
 	if [[ "$OPTION" == "1" ]]; then
 		install_thesuffocater
 	elif [[ "$OPTION" == "2" ]]; then
 		remove_thesuffocater
 	else
-		echo -e "${RED} Invalid option: "$OPTION"${RESET}"
+		echo -e "${RED} Invalid option: $OPTION${RESET}"
 		return 1
 	fi
 }
@@ -69,13 +69,13 @@ function install_thesuffocater() {
 		cp CHANGELOG.md CODE_OF_CONDUCT.md CONTRIBUTING.md LICENSE-GPL.md LICENSE-MIT.md PULL_REQUEST_TEMPLATE.md README.md SECURITY.md /etc/tsf/markdown
 	fi
 
-	if [[ -f "~/.bashrc" ]]; then
+	if [[ -f "$HOME/.bashrc" ]]; then
 		echo -e "${GREEN}[<==] Creating aliases in ~/.bashrc...${RESET}"
 		echo "alias thesuffocater_cli='bash -c \"source ~/.pkgenv/bin/activate && python3 /usr/bin/the_carcass_cli.py\"'" >> ~/.bashrc
 		echo "alias thesuffocater_gui='bash -c \"source ~/.pkgenv/bin/activate && python3 /usr/bin/the_carcass_gui.py\"'" >> ~/.bashrc
 	fi
 
-	if [[ -f "~/.zshrc" ]]; then
+	if [[ -f "$HOME/.zshrc" ]]; then
 		echo -e "${GREEN}[<==] Creating aliases in ~/.zshrc${RESET}"
 		echo "alias thesuffocater_cli='bash -c \"source ~/.pkgenv/bin/activate && python3 /usr/bin/the_carcass_cli.py\"'" >> ~/.zshrc
 		echo "alias thesuffocater_gui='bash -c \"source ~/.pkgenv/bin/activate && python3 /usr/bin/the_carcass_gui.py\"'" >> ~/.zshrc
@@ -106,7 +106,7 @@ function debug() {
 	# Debugging function for checking where theSuffocater main components are located.
 	# Sometimes can be very helpful, especially when you trying to port tSF on new distros
 	#
-	# On Alpine Linux neeeds 'util-linux' package installed.
+	# On Alpine Linux needs 'util-linux' package installed.
 	
 	echo -e "${PURPLE}CLI theCarcass:${RESET}"
 	whereis the_carcass_cli.py  # Should be /usr/bin/the_carcass_cli.py
@@ -160,7 +160,6 @@ function parse_args() {
 				exit 1
 				;;
 		esac
-		shift
 	done
 }
 

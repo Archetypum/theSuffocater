@@ -35,11 +35,11 @@ Main changes:
 
 9) Added _LICENSE-MIT.md_ for VPN install scripts.
     
-11) Refactored and debloated VPN install scripts.
+10) Refactored and debloated VPN install scripts.
 
-12) Added _.gitignore_.
+11) Added _.gitignore_.
 
-13) Added _tsf_installer.sh_:
+12) Added _tsf_installer.sh_:
     * Added _debug_ function.
     * Added parsing functionality.
 
@@ -47,7 +47,7 @@ Main changes:
     * DRY.
     * Bug fixes.
     * Removed useless/redundant imports.
-    * Typos, spelling mistakes, markdown syntax errors, etc.
+    * Typos, spelling mistakes, Markdown syntax errors, etc.
 
 "cloc ." statistics:
 
