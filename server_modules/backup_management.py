@@ -23,7 +23,9 @@ except ModuleNotFoundError as import_error:
 
 
 def backup_files() -> None:
-    tum.clear_screen()
+    """
+    
+    """
 
     source_directory: str = input('[==>] Enter the source directory: ')
     backup_directory: str = input('[==>] Enter the backup directory: ')
@@ -64,7 +66,9 @@ def backup_files() -> None:
 
             
 def backup_database() -> None:
-    tum.clear_screen()
+    """
+    
+    """
    
     database_path: str = input("[==>] Enter the path to the source database file: ")
     database_backup_directory: str = input("[==>] Enter the path to the directory for the database backup: ")
@@ -100,6 +104,10 @@ def backup_database() -> None:
 
 
 def backup_management() -> None:
+    """
+    Main function.
+    """
+    
     tum.clear_screen()
        
     functions: dict = {
