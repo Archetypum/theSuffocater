@@ -35,13 +35,14 @@ Main changes:
 
 9) Added _LICENSE-MIT.md_ for VPN install scripts.
     
-10) Refactored and debloated VPN install scripts.
+10) Added _.gitignore_.
 
-11) Added _.gitignore_.
-
-12) Added _tsf_installer.sh_:
+11) Added _tsf_installer.sh_:
     * Added _debug_ function.
     * Added parsing functionality.
+
+12) Added automatic imports to theCarcass:
+    * Added _import_py.conf_ and _import_sh.conf_ for it.
 
 *) Minor fixes:
     * DRY.
@@ -52,19 +53,19 @@ Main changes:
 "cloc ." statistics:
 
 ```text
-      57 text files.
+      58 text files.
       54 unique files.                              
-      14 files ignored.
+      10 files ignored.
 
-github.com/AlDanial/cloc v 1.96  T=0.04 s (1505.2 files/s, 192334.1 lines/s)
+github.com/AlDanial/cloc v 1.96  T=0.04 s (1434.4 files/s, 189581.6 lines/s)
 -------------------------------------------------------------------------------
 Language                     files          blank        comment           code
 -------------------------------------------------------------------------------
-Bourne Shell                     9            317            173           2365
-Python                          15            503            205           1550
-Markdown                        14            349              0            963
+Bourne Shell                     9            327            176           2410
+Python                          15            549            258           1620
+Markdown                        14            352              0            970
 Text                            16             89              0            386
 -------------------------------------------------------------------------------
-SUM:                            54           1258            378           5264
+SUM:                            54           1317            434           5386
 -------------------------------------------------------------------------------
 ```

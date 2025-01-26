@@ -1,30 +1,110 @@
 #!/bin/bash
-#
-# OpenVPN server installer.
-# Originally made by angristan, modified by Archetypum
-# 
-# Archetypum repo link https://github.com/Archetypum/OpenVPN-Installer
-# Original repo link: https://github.com/angristan/openvpn-install
-#
-# If you have the_unix_manager.sh located somewhere else - change this variable to the actual path:
-#
 # shellcheck disable=SC1091,SC2164,SC2034,SC1072,SC1073,SC1009
-# shellcheck source=/usr/bin/the_unix_manager.sh
-declare TUM_PATH="/usr/bin/the_unix_manager.sh"
-if [[ ! -f "$TUM_PATH" ]]; then
-	echo "[!] Error: the_unix_manager.sh not found at $TUM_PATH. Please provide the correct path."
-	exit 1
-fi
 
-source "$TUM_PATH"
+# Secure OpenVPN server installer for Debian, Ubuntu, CentOS, Amazon Linux 2, Fedora, Oracle Linux 8, Arch Linux, Rocky Linux and AlmaLinux.
+# https://github.com/angristan/openvpn-install
 
-function is_tun_available() {
-	if [[ ! -e /dev/net/tun ]]; then
+function isRoot() {
+	if [ "$EUID" -ne 0 ]; then
 		return 1
 	fi
 }
 
-function install_unbound() {
+function tunAvailable() {
+	if [ ! -e /dev/net/tun ]; then
+		return 1
+	fi
+}
+
+function checkOS() {
+	if [[ -e /etc/debian_version ]]; then
+		OS="debian"
+		source /etc/os-release
+
+		if [[ $ID == "debian" || $ID == "raspbian" ]]; then
+			if [[ $VERSION_ID -lt 9 ]]; then
+				echo "⚠️ Your version of Debian is not supported."
+				echo ""
+				echo "However, if you're using Debian >= 9 or unstable/testing then you can continue, at your own risk."
+				echo ""
+				until [[ $CONTINUE =~ (y|n) ]]; do
+					read -rp "Continue? [y/n]: " -e CONTINUE
+				done
+				if [[ $CONTINUE == "n" ]]; then
+					exit 1
+				fi
+			fi
+		elif [[ $ID == "ubuntu" ]]; then
+			OS="ubuntu"
+			MAJOR_UBUNTU_VERSION=$(echo "$VERSION_ID" | cut -d '.' -f1)
+			if [[ $MAJOR_UBUNTU_VERSION -lt 16 ]]; then
+				echo "⚠️ Your version of Ubuntu is not supported."
+				echo ""
+				echo "However, if you're using Ubuntu >= 16.04 or beta, then you can continue, at your own risk."
+				echo ""
+				until [[ $CONTINUE =~ (y|n) ]]; do
+					read -rp "Continue? [y/n]: " -e CONTINUE
+				done
+				if [[ $CONTINUE == "n" ]]; then
+					exit 1
+				fi
+			fi
+		fi
+	elif [[ -e /etc/system-release ]]; then
+		source /etc/os-release
+		if [[ $ID == "fedora" || $ID_LIKE == "fedora" ]]; then
+			OS="fedora"
+		fi
+		if [[ $ID == "centos" || $ID == "rocky" || $ID == "almalinux" ]]; then
+			OS="centos"
+			if [[ ${VERSION_ID%.*} -lt 7 ]]; then
+				echo "⚠️ Your version of CentOS is not supported."
+				echo ""
+				echo "The script only support CentOS 7 and CentOS 8."
+				echo ""
+				exit 1
+			fi
+		fi
+		if [[ $ID == "ol" ]]; then
+			OS="oracle"
+			if [[ ! $VERSION_ID =~ (8) ]]; then
+				echo "Your version of Oracle Linux is not supported."
+				echo ""
+				echo "The script only support Oracle Linux 8."
+				exit 1
+			fi
+		fi
+		if [[ $ID == "amzn" ]]; then
+			OS="amzn"
+			if [[ $VERSION_ID != "2" ]]; then
+				echo "⚠️ Your version of Amazon Linux is not supported."
+				echo ""
+				echo "The script only support Amazon Linux 2."
+				echo ""
+				exit 1
+			fi
+		fi
+	elif [[ -e /etc/arch-release ]]; then
+		OS=arch
+	else
+		echo "Looks like you aren't running this installer on a Debian, Ubuntu, Fedora, CentOS, Amazon Linux 2, Oracle Linux 8 or Arch Linux system"
+		exit 1
+	fi
+}
+
+function initialCheck() {
+	if ! isRoot; then
+		echo "Sorry, you need to run this as root"
+		exit 1
+	fi
+	if ! tunAvailable; then
+		echo "TUN is not available"
+		exit 1
+	fi
+	checkOS
+}
+
+function installUnbound() {
 	# If Unbound isn't installed, install it
 	if [[ ! -e /etc/unbound/unbound.conf ]]; then
 
@@ -136,7 +216,7 @@ access-control: fd42:42:42:42::/112 allow' >>/etc/unbound/openvpn.conf
 	systemctl restart unbound
 }
 
-function resolve_public_ip() {
+function resolvePublicIP() {
 	# IP version flags, we'll use as default the IPv4
 	CURL_IP_VERSION_FLAG="-4"
 	DIG_IP_VERSION_FLAG="-4"
@@ -175,7 +255,7 @@ function resolve_public_ip() {
 	echo "$PUBLIC_IP"
 }
 
-function install_questions() {
+function installQuestions() {
 	echo "Welcome to the OpenVPN installer!"
 	echo "The git repository is available at: https://github.com/angristan/openvpn-install"
 	echo ""
@@ -572,7 +652,7 @@ function install_questions() {
 	fi
 }
 
-function install_openvpn() {
+function installOpenVPN() {
 	if [[ $AUTO_INSTALL == "y" ]]; then
 		# Set default choices so that no questions will be asked.
 		APPROVE_INSTALL=${APPROVE_INSTALL:-y}
@@ -1011,7 +1091,7 @@ verb 3" >>/etc/openvpn/client-template.txt
 	echo "If you want to add more clients, you simply need to run this script another time!"
 }
 
-function new_client() {
+function newClient() {
 	echo ""
 	echo "Tell me a name for the client."
 	echo "The name must consist of alphanumeric character. It may also include an underscore or a dash."
@@ -1110,7 +1190,7 @@ function new_client() {
 	exit 0
 }
 
-function revoke_client() {
+function revokeClient() {
 	NUMBEROFCLIENTS=$(tail -n +2 /etc/openvpn/easy-rsa/pki/index.txt | grep -c "^V")
 	if [[ $NUMBEROFCLIENTS == '0' ]]; then
 		echo ""
@@ -1144,7 +1224,8 @@ function revoke_client() {
 	echo "Certificate for client $CLIENT revoked."
 }
 
-function remove_unbound() {
+function removeUnbound() {
+	# Remove OpenVPN-related config
 	sed -i '/include: \/etc\/unbound\/openvpn.conf/d' /etc/unbound/unbound.conf
 	rm /etc/unbound/openvpn.conf
 
@@ -1179,7 +1260,7 @@ function remove_unbound() {
 	fi
 }
 
-function remove_openvpn() {
+function removeOpenVPN() {
 	echo ""
 	read -rp "Do you really want to remove OpenVPN? [y/n]: " -e -i n REMOVE
 	if [[ $REMOVE == 'y' ]]; then
@@ -1255,7 +1336,7 @@ function remove_openvpn() {
 	fi
 }
 
-function menu() {
+function manageMenu() {
 	echo "Welcome to OpenVPN-install!"
 	echo "The git repository is available at: https://github.com/angristan/openvpn-install"
 	echo ""
@@ -1286,8 +1367,12 @@ function menu() {
 	esac
 }
 
+# Check for root, TUN, OS...
+initialCheck
+
+# Check if OpenVPN is already installed
 if [[ -e /etc/openvpn/server.conf && $AUTO_INSTALL != "y" ]]; then
-	menu
+	manageMenu
 else
-	install_openvpn
+	installOpenVPN
 fi

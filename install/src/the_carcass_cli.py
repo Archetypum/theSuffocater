@@ -168,6 +168,31 @@ def import_functions_from_directory(directory_path: str) -> None:
                 print(f"{RED}[!] Error: Can't import module from {file_path}:\n{module_import_error}")
 
 
+def import_modules_from_config() -> None:
+    config_file_path: str = "/etc/tsf/module_configs/import_py.conf"
+    if not os.path.exists(config_file_path):
+        print(f"{RED}[!] Error: Configuration file 'import_py.conf' not found!{RESET}")
+        return
+    
+    try:
+        with open(config_file_path, "r") as config_file:
+            module_paths: str = config_file.readlines()
+        
+        module_paths: list = [path.strip() for path in module_paths if path.strip()] 
+        if not module_paths:
+            print(f"{RED}[!] Error: No module paths found in 'import_py.conf'.{RESET}")
+            return
+
+        for directory_path in module_paths:
+            if not os.path.isdir(directory_path):
+                print(f"{RED}[!] Error: '{directory_path}' is not a valid directory.{RESET}")
+                continue
+            
+            import_functions_from_directory(directory_path)
+    except IOError as processing_error:
+        print(f"{RED}[!] Error while reading or processing the config file: {processing_error}{RESET}")
+
+
 def the_carcass(tsf_version_string: str, tc_version_string: str) -> None:
     print(f"+{'-' * 16} Welcome to theSuffocater {'-' * 16}+\n")
     print(f" Current tSF version - {tsf_version_string}")
@@ -206,5 +231,7 @@ if __name__ == "__main__":
             "tsf_version": the_suffocater_version,
             "tc_version": the_carcass_version
     }
+    
     tum.clear_screen()
+    import_modules_from_config()
     the_carcass(tsf_version_string=the_suffocater_version_string, tc_version_string=the_carcass_version_string)

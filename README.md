@@ -35,7 +35,7 @@ pip install -r install/python_requirements.txt
 ```
 
 ```bash
-bash tsf_installer.sh
+bash tsf_installer.sh --install
 ```
 
 ## Usage:
