@@ -169,7 +169,7 @@ def safe_ssh_setup() -> None:
 
 def ssh_management() -> None:
     """
-    Main function.
+    [*] MAIN FUNCTION [*]
     """
 
     tum.clear_screen()

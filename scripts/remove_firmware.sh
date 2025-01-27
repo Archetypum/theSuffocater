@@ -113,7 +113,7 @@ function to_lowercase() {
 
 function main() {
 	echo -n "[==>] Enter the base of your GNU/Linux distribution ('packages' to view packages to remove): "
-	read DISTRO
+	read -r DISTRO
 	if [[ "$DISTRO" == "packages" ]]; then
 		list_of_packages
 		main
@@ -121,7 +121,7 @@ function main() {
 	fi
 	
 	echo -ne "${RED}[?!] Are you dead seriuos? (do as i do/N): ${RESET}"
-	read ANSWER
+	read -r ANSWER
 	ANSWER=$(to_lowercase "$ANSWER")
 	if [[ "$ANSWER" == "do as i do" ]]; then
 		DISTRO=$(to_lowercase "$DISTRO")

@@ -23,7 +23,9 @@ except ModuleNotFoundError as import_error:
 
 
 def openvpn_server_setup() -> None:
-    tum.clear_screen()
+    """
+
+    """
 
     distro: str = tum.get_user_distro()
     init_system: str = tum.get_init_system()
@@ -54,8 +56,10 @@ def openvpn_server_setup() -> None:
 
 
 def wireguard_server_setup() -> None:
-    tum.clear_screen()
-    
+    """
+
+    """
+
     distro: str = tum.get_user_distro()
     init_system: str = tum.get_init_system()
 
@@ -85,8 +89,10 @@ def wireguard_server_setup() -> None:
 
 
 def outlinevpn_server_setup() -> None:
-    tum.clear_screen()
-    
+    """
+
+    """
+
     distro: str = tum.get_user_distro()
     init_system: str = tum.get_init_system()
 
@@ -110,7 +116,9 @@ def outlinevpn_server_setup() -> None:
 
 
 def vpn_server_setup() -> None:
-    tum.clear_screen()
+    """
+    [*] MAIN FUNCTION [*]
+    """
 
     functions: dict = {
             "openvpn_server_setup": openvpn_server_setup,

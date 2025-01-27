@@ -25,8 +25,10 @@ except ModuleNotFoundError as import_error:
 
 
 def install_tor() -> None:
-    tum.clear_screen()
-    
+    """
+
+    """
+
     distro: str = tum.get_user_distro()
     print("We are going to install Tor on your machine.")
     if tum.prompt_user("[?] Proceed?"):
@@ -48,7 +50,9 @@ def install_tor() -> None:
 
 
 def snowflake_setup_debian() -> None:
-    tum.clear_screen()
+    """
+
+    """
 
     distro: str = tum.get_user_distro()
     init_system: str = tum.get_init_system()
@@ -80,8 +84,10 @@ def snowflake_setup_debian() -> None:
 
 
 def snowflake_setup_freebsd() -> None:
-    tum.clear_screen()
-    
+    """
+
+    """
+
     distro: str = tum.get_user_distro()
     init_system: str = tum.get_init_system()
     if distro not in tum.FREEBSD_BASED:
@@ -106,10 +112,11 @@ def snowflake_setup_freebsd() -> None:
 
 
 def snowflake_setup_docker() -> None:
-    tum.clear_screen()
-    
+    """
+
+    """
+
     distro: str = tum.get_user_distro()
-    
     print("Snowflake is a pluggable transport available in Tor Browser to defeat internet censorship.")
     print("Like a Tor bridge, a user can access the open internet when even regular Tor connections are censored.")
     print("To use Snowflake is as easy as to switch to a new bridge configuration in Tor Browser.")
@@ -141,7 +148,9 @@ def snowflake_setup_docker() -> None:
 
 
 def torify_apt_devuan() -> None:
-    tum.clear_screen()
+    """
+
+    """
 
     distro: str = tum.get_user_distro()
     init_system: str = tum.get_init_system()
@@ -175,7 +184,9 @@ def torify_apt_devuan() -> None:
 
 
 def torify_apt_debian() -> None:
-    tum.clear_screen()
+    """
+
+    """
 
     distro: str = tum.get_user_distro()
     init_system: str = tum.get_init_system()
@@ -200,7 +211,9 @@ def torify_apt_debian() -> None:
 
 
 def obfs4_bridge_debian() -> None:
-    tum.clear_screen()
+    """
+
+    """
 
     print("We are going to setup docker obfs4 bridge to help censored users connect to the Tor network.")
     print("The requirements are:")
@@ -235,7 +248,9 @@ def obfs4_bridge_debian() -> None:
 
 
 def obfs4_bridge_arch() -> None:
-    tum.clear_screen()
+    """
+
+    """
 
     print("We are going to setup docker obfs4 bridge to help censored users connect to the Tor network.")
     print("The requirements are:")
@@ -243,7 +258,6 @@ def obfs4_bridge_arch() -> None:
     print("- The ability to expose TCP ports to the Internet (make sure that NAT doesn't get in the way;")
     
     init_system: str = tum.get_init_system()
-
     if tum.prompt_user("[?] Proceed?"):
         try:
             print("[<==] Installing Tor...")
@@ -276,7 +290,9 @@ def obfs4_bridge_arch() -> None:
 
 
 def obfs4_bridge_void() -> None:
-    tum.clear_screen()
+    """
+
+    """
 
     print("We are going to setup docker obfs4 bridge to help censored users connect to the Tor network.")
     print("The requirements are:")
@@ -311,8 +327,10 @@ def obfs4_bridge_void() -> None:
 
 
 def obfs4_bridge_freebsd() -> None:
-    tum.clear_screen()
-    
+    """
+
+    """
+
     print("We are going to setup docker obfs4 bridge to help censored users connect to the Tor network.")
     print("The requirements are:")
     print("- 24/7 Internet connectivity;")
@@ -350,7 +368,9 @@ def obfs4_bridge_freebsd() -> None:
 
 
 def obfs4_bridge_openbsd() -> None:
-    tum.clear_screen()
+    """
+
+    """
 
     print("We are going to setup docker obfs4 bridge to help censored users connect to the Tor network.")
     print("The requirements are:")
@@ -394,7 +414,9 @@ tor:\
 
 
 def obfs4_bridge_netbsd() -> None:
-    tum.clear_screen()
+    """
+
+    """
 
     print("We are going to setup docker obfs4 bridge to help censored users connect to the Tor network.")
     print("The requirements are:")
@@ -435,10 +457,11 @@ def obfs4_bridge_netbsd() -> None:
 
 
 def obfs4_bridge_docker() -> None:
-    tum.clear_screen()
+    """
+
+    """
 
     distro: str = tum.get_user_distro()
-
     print("We are going to setup docker obfs4 bridge to help censored users connect to the Tor network.")
     print("The requirements are:")
     print("- 24/7 Internet connectivity;")
@@ -487,13 +510,17 @@ EMAIL={email}"""
 
 
 def tor_node_setup() -> None:
-    tum.clear_screen()
-    
+    """
+
+    """
+
     print("Not implemented yet.\nWe will meet again in the next stable release.")
 
 
 def tor_management() -> None:
-    tum.clear_screen()
+    """
+    [*] MAIN FUNCTION [*]
+    """
 
     functions: dict = {
             "install_tor": install_tor,

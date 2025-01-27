@@ -24,14 +24,13 @@ except ModuleNotFoundError as import_error:
     exit(1)
 
 
-def generate_password(password_length: int = None, word_list: list = None, characters: str = None) -> str:
+def generate_password(password_length: int = None, word_list: list = None) -> str:
     """
     Generates random password consisting of random characters and a word from 'word_list'.
 
     Args:
         password_length (int): Password length.
         word_list (list): Word list from /etc/tsf/module_configs/passgen_dict.txt
-        characters (str): Random characters.
 
     Returns:
         str: Generated password.
@@ -62,7 +61,7 @@ def passgen() -> None:
         with open("/etc/tsf/module_configs/passgen_dict.txt", "r") as words_dict:
             word_list: list = [word.strip().strip("'") for word in words_dict.read().split(",")]
 
-        password_options: list = [generate_password(password_length, word_list, characters) for _ in range(3)]
+        password_options: list = [generate_password(password_length, word_list) for _ in range(3)]
 
         print("\n[==>] Password options:")
         for idx, password in enumerate(password_options, 1):
@@ -72,7 +71,7 @@ def passgen() -> None:
             password_choice: str = input("\n[==>] Password to save (1/2/3) or 'r' to re-roll: ").strip().lower()
             if password_choice in ["r", "re", "reload"]:
                 print("[<==] Re-rolling the passwords...\n")
-                password_options: list = [generate_password(password_length, word_list, characters) for _ in range(3)]
+                password_options: list = [generate_password(password_length, word_list) for _ in range(3)]
                 print("\n[==>] Here are three new generated password options:")
                 for idx, password in enumerate(password_options, 1):
                     print(f"[{idx}] {password}")

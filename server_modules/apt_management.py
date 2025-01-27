@@ -113,7 +113,7 @@ def add_i386() -> None:
 
 def apt_management() -> None:
     """
-    Main function.
+    [*] MAIN FUNCTION [*]
     """
 
     distro: str = tum.get_user_distro()

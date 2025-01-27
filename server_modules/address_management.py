@@ -23,22 +23,29 @@ except ModuleNotFoundError as import_error:
 
 
 def get_valid_interfaces() -> list:
+    """
+
+    """
+
+    interfaces: list = []
     try:
         interfaces: list = os.listdir("/sys/class/net")
-        valid_interfaces: list = [interface for interface in interfaces if os.path.islink(f"/sys/class/net/{interface}")]
+        valid_interfaces: list = [interface for interface in interfaces if
+                                  os.path.islink(f"/sys/class/net/{interface}")]
         return valid_interfaces
     except FileNotFoundError:
         print(f"{RED}[!] Error: /sys/class/net directory not found.{RESET}")
         
         input_interface: str = input("[==>] Enter your interface manually: ")
-        interfaces.clear()
-        input_interface.append(interfaces)
+        interfaces.append(input_interface)
         
         return interfaces
 
 
 def change_mac() -> None:
-    tum.clear_screen()
+    """
+
+    """
 
     print("We are going to change the system's MAC address.")
     if not tum.prompt_user("[?] Proceed?"):
@@ -74,8 +81,10 @@ def change_mac() -> None:
 
 
 def change_lan_ip() -> None:
-    tum.clear_screen()
-    
+    """
+
+    """
+
     print("We are going to change the local IP address.")
     if not tum.prompt_user("[?] Proceed?"):
         print(f"{RED}[!] Operation canceled.{RESET}")
@@ -124,7 +133,9 @@ def change_lan_ip() -> None:
             
 
 def address_management() -> None:
-    tum.clear_screen()
+    """
+    [*] MAIN FUNCTION [*]
+    """
 
     functions: dict = {
         "change_mac": change_mac,

@@ -194,7 +194,7 @@ def import_modules() -> None:
 def import_functions_from_directory(directory_path: str) -> None:
     """
     Imports python file functions and docstrings from specified directory
-    for futher usage in theSuffocater.
+    for further usage in theSuffocater.
 
     Args:
         directory_path (str): Path to directory with .py files.

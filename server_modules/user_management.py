@@ -24,6 +24,10 @@ except ModuleNotFoundError as import_error:
 
 
 def add_user(username: str, password: str, group: str = None) -> None:
+    """
+
+    """
+
     try:
         if group:
             subprocess.run(["useradd", "-m", "-g", group, username], check=True)
@@ -48,6 +52,10 @@ def add_user(username: str, password: str, group: str = None) -> None:
 
 
 def remove_user(username: str) -> None:
+    """
+
+    """
+
     try:
         subprocess.run(["userdel", "-r", username], check=True)
         print(f"{GREEN}[*] User '{username}' removed successfully.{RESET}")
@@ -57,6 +65,10 @@ def remove_user(username: str) -> None:
 
 
 def change_group(username: str, group: str) -> None:
+    """
+
+    """
+
     try:
         subprocess.run(["usermod", "-g", group, username], check=True)
         print(f"{GREEN}[*] User '{username}' is now in the group '{group}'.{RESET}")
@@ -66,6 +78,10 @@ def change_group(username: str, group: str) -> None:
 
 
 def list_users() -> None:
+    """
+
+    """
+
     try:
         users: list = [user.pw_name for user in pwd.getpwall()]
         print("Users in the system:")
@@ -77,6 +93,10 @@ def list_users() -> None:
 
 
 def list_groups() -> None:
+    """
+
+    """
+
     try:
         groups: list = [g.gr_name for g in grp.getgrall()]
         print("Groups in the system:")
@@ -88,6 +108,10 @@ def list_groups() -> None:
 
 
 def view_groups(username: str) -> None:
+    """
+
+    """
+
     try:
         user_info: pwd.struct_passwd = pwd.getpwnam(username)
         groups: list = [g.gr_name for g in grp.getgrall() if username in g.gr_mem]
@@ -105,6 +129,10 @@ def view_groups(username: str) -> None:
 
 
 def add_user_to_group(username: str, group: str) -> None:
+    """
+
+    """
+
     try:
         subprocess.run(["usermod", "-aG", group, username], check=True)
         print(f"{GREEN}[*] User '{username}' added to group '{group}'.{RESET}")
@@ -113,6 +141,10 @@ def add_user_to_group(username: str, group: str) -> None:
         print(f"{RED}[!] Error adding '{username}' to group '{group}': {error}{RESET}")
 
 def remove_user_from_group(username: str, group: str) -> None:
+    """
+
+    """
+
     try:
         subprocess.run(["gpasswd", "-d", username, group], check=True)
         print(f"{GREEN}[*] User '{username}' removed from group '{group}'.{RESET}")
@@ -122,6 +154,10 @@ def remove_user_from_group(username: str, group: str) -> None:
 
 
 def user_management() -> None:
+    """
+    [*] MAIN FUNCTION [*]
+    """
+
     functions: dict = {
         "add_user": add_user,
         "remove_user": remove_user,

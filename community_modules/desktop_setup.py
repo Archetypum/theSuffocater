@@ -99,7 +99,7 @@ def install_x11() -> None:
                 try:
                     subprocess.run(["usermod", "-aG", "video", user_to_add], check=True)
                 except subprocess.CalledProcessError as usermod_error:
-                    print(f"{RED}[!] Error: {usremod_error}")
+                    print(f"{RED}[!] Error: {usermod_error}")
 
             print(f"{GREEN}[*] Success! You may reboot your computer now.{RESET}")
     except KeyboardInterrupt:
@@ -131,7 +131,7 @@ def install_dm_wm_de() -> None:
                              "dwm": "dwm",
                              "swm": "swm"
                              }
-    desktop_enviroments: dict = {"GNOME": "gnome",
+    desktop_environments: dict = {"GNOME": "gnome",
                                  "KDE Plasma": "",
                                  "XFCE": "",
                                  "LXDE": "",
@@ -148,8 +148,8 @@ def install_dm_wm_de() -> None:
         for dm in display_managers:
             print(f" - {dm}")
 
-        print("\nDesktop Enviroments:")
-        for de in desktop_enviroments:
+        print("\nDesktop Environments:")
+        for de in desktop_environments:
             print(f" - {de}")
 
         print("\nWindow Managers:")
@@ -157,7 +157,7 @@ def install_dm_wm_de() -> None:
             print(f" - {wm}")
         
         graphics_to_install: str = input("[==>] Enter package to install: ")
-        if graphics_to_install in [display_managers, window_managers, desktop_enviroments]:
+        if graphics_to_install in [display_managers, window_managers, desktop_environments]:
             tum.package_handling(distro, [graphics_to_install], "install")
     except KeyboardInterrupt:
         print("\n")
@@ -171,7 +171,6 @@ def desktop_setup() -> None:
 
     functions: dict = {
             "install_x11": install_x11,
-            "configure_x11": configure_x11,
             "install_dm_wm_de": install_dm_wm_de,
             "install_nvidia_free": install_nvidia_free,
             "install_nvidia_proprietary": install_nvidia_proprietary

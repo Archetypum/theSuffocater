@@ -24,6 +24,10 @@ except ModuleNotFoundError as import_error:
 
 
 def toggle_interfaces(state: str, interfaces: List[str]) -> None:
+    """
+
+    """
+
     for interface in interfaces:
         try:
             subprocess.run(["ifconfig", interface, state], check=True)
@@ -33,6 +37,10 @@ def toggle_interfaces(state: str, interfaces: List[str]) -> None:
 
 
 def toggle_gnulinux_firewall(enable: bool) -> None:
+    """
+
+    """
+
     action: str = "ACCEPT" if enable else "DROP"
     try:
         subprocess.run(["iptables", "-P", "INPUT", action], check=True)
@@ -43,8 +51,10 @@ def toggle_gnulinux_firewall(enable: bool) -> None:
 
 
 def drop_firewall() -> None:
-    tum.clear_screen()
-    
+    """
+
+    """
+
     interfaces: list = ["wlan0", "eth0"]
 
     try:
@@ -61,7 +71,9 @@ def drop_firewall() -> None:
 
 
 def accept_firewall() -> None:
-    tum.clear_screen()
+    """
+
+    """
 
     try:
         print("[<==] Enabling radio...")
@@ -76,7 +88,9 @@ def accept_firewall() -> None:
 
 
 def iptables_setup() -> None:
-    tum.clear_screen()
+    """
+
+    """
 
     print("We are going to set up basic iptables rules to secure your machine.")
     answer: str = input("[?] Proceed? (y/N): ").lower()
@@ -119,6 +133,10 @@ def iptables_setup() -> None:
 
 
 def handle_ufw(ip_addresses: list, action: str, init_system: str) -> None:
+    """
+
+    """
+
     try:
         for ip in ip_addresses:
             subprocess.run(["ufw", action, "out", "from", ip], check=True)
@@ -133,7 +151,9 @@ def handle_ufw(ip_addresses: list, action: str, init_system: str) -> None:
 
 
 def no_spying() -> None:
-    tum.clear_screen()
+    """
+
+    """
 
     init_system: str = tum.get_init_system()
     ip_addresses: list = [
@@ -177,10 +197,11 @@ def no_spying() -> None:
 
 
 def porter() -> None:
-    tum.clear_screen()
+    """
+
+    """
 
     active_ports: bytes = subprocess.check_output(["lsof", "-i", "-P", "-n", "|", "grep", "LISTEN"], shell=True)
-
     print(f"\nActive listening ports:\n{active_ports.strip().decode()}")
     answer: str = input("[?] Open/Close ports? (Open/Close): ").lower()
     if answer in ["o", "open"]:
@@ -206,7 +227,9 @@ def porter() -> None:
 
 
 def ultimate_firewall() -> None:
-    tum.clear_screen()
+    """
+
+    """
 
     profiles: dict = {
             "drop_all": drop_firewall,

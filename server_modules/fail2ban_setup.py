@@ -23,6 +23,10 @@ except ModuleNotFoundError as import_error:
 
 
 def reload_fail2ban() -> bool:
+    """
+
+    """
+
     init_system: str = tum.get_init_system()
 
     tum.init_system_handling(init_system, "reload", "fail2ban")
@@ -32,7 +36,9 @@ def reload_fail2ban() -> bool:
 
 	
 def create_jail_copy() -> None:
-    tum.clear_screen()
+    """
+
+    """
 
     print("We are going to create a copy of 'jail.conf' with name 'jail.local'.")
     if tum.prompt_user("[?] Proceed?"):
@@ -51,10 +57,11 @@ def create_jail_copy() -> None:
 
 
 def ssh_bruteforce() -> None:
-    tum.clear_screen()
-    
-    init_system: str = tum.get_init_system()
+    """
 
+    """
+
+    init_system: str = tum.get_init_system()
     print("We are going to configure fail2ban to prevent SSH bruteforce.")
     if tum.prompt_user("[?] Proceed?"):
         try:
@@ -84,7 +91,9 @@ def ssh_bruteforce() -> None:
 
 
 def ftp_bruteforce() -> None:
-    tum.clear_screen()
+    """
+
+    """
 
     print("We are going to configure fail2ban to prevent FTP bruteforce.")
     if tum.prompt_user("[?] Proceed?"):
@@ -107,7 +116,9 @@ def ftp_bruteforce() -> None:
 
 
 def fail2ban_setup() -> None:
-    tum.clear_screen()
+    """
+
+    """
 
     profiles: dict = {
             "create_jail_copy": create_jail_copy,

@@ -26,7 +26,7 @@ function passgen() {
 		local RANDOM_CHARS 
 		local CHARACTERS="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*-=_+"
 		for I in $(seq 1 "$PASSWORD_LENGTH"); do
-			local RANDOM_CHARS+=$(echo -n "$CHARACTERS" | fold -w1 | shuf | head -n1)
+			RANDOM_CHARS+=$(echo -n "$CHARACTERS" | fold -w1 | shuf | head -n1)
 		done
 		
 		local CREATED_PASSWORD="$RANDOM_CHARS"	
