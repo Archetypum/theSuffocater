@@ -16,11 +16,15 @@ declare TUM_PATH="/usr/bin/the_unix_manager.sh"
 if [[ -f "$TUM_PATH" ]]; then
 	if source "$TUM_PATH"; then
 		echo -e "${GREEN}[*] Successfully imported theUnixManager. Loading global variables...${RESET}"
+		declare DISTROS_COUNT
+		declare THE_SUFFOCATER_CONTRIBUTORS
+		declare THE_CARCASS_VERSION_STRING
+		declare THE_SUFFOCATER_VERSION_STRING
 
-		declare DISTROS_COUNT="52"
-		declare THE_SUFFOCATER_CONTRIBUTORS="3.5"
-		declare THE_SUFFOCATER_VERSION_STRING=$(cat /etc/tsf/versions/tsf_version.txt)
-		declare THE_CARCASS_VERSION_STRING=$(cat /etc/tsf/versions/tc_version.txt)
+		DISTROS_COUNT="52"
+		THE_SUFFOCATER_CONTRIBUTORS="3.5"
+		THE_SUFFOCATER_VERSION_STRING=$(cat /etc/tsf/versions/tsf_version.txt)
+		THE_CARCASS_VERSION_STRING=$(cat /etc/tsf/versions/tc_version.txt)
 
 		echo -e "${GREEN}[*] Variables are successfully initialized. Loading main function...${RESET}"	
 	else

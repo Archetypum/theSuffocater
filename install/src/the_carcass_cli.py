@@ -42,10 +42,24 @@ finally:
 
 
 def final_exit() -> None:
+    """
+    Exits theSuffocater.
+
+    Returns:
+        None: None.
+    """
+
     sys.exit(0)
 
 
 def the_suffocater_help() -> None:
+    """
+    Returns theSuffocater commands description and usage.
+
+    Returns:
+        None: None
+    """
+
     print("\nCommands:")
     print(" exit - exit theSuffocater.")
     print(" clear - clear the screen.")
@@ -61,32 +75,56 @@ def the_suffocater_help() -> None:
     print("\nFor more info, check 'documentation'.")
 
 
-def the_suffocater_version() -> None:
-    print(f"Current theSuffocater version - {the_suffocater_version_string}")
+def get_markdown(document: str = None) -> None:
+    """
+    Gets Markdown documents from '/etc/tsf/markdown' and prints them with 'less' command.
 
+    Args:
+        document (str): Document specified by user. 'LICENSE.md', 'DOCUMENTATION.md', 'CHANGELOG.md' are available.
+        None by default
 
-def the_suffocater_license() -> None:
+    Returns:
+        None: None.
+    """
+
     try:
-        run(["less", "LICENSE-GPL.md"], check=True)
+        if document is None:
+            print(f"{RED}[!] Error: Document not specified.{RESET}")
+        else:
+            run(["less", document], check=True)
     except (FileNotFoundError, CalledProcessError):
-        print(f"{RED}[!] Error: 'LICENSE.md' file not found. Broken installation?")
+        print(f"{RED}[!] Error: '{document}' file not found. Broken installation?{RESET}")
 
 
-def the_suffocater_changelog() -> None:
-    try:
-        run(["less", "CHANGELOG.md"], check=True)
-    except (FileNotFoundError, CalledProcessError):
-        print(f"{RED}[!] Error: 'CHANGELOG.md' file not found. Broken installation?")
+def get_version(component: str = None) -> None:
+    """
+    Gets version files from '/etc/tsf/versions' (at the top of theCarcass) and prints them.
 
+    Args:
+        component (str): theSuffocater component (theCarcass of theSuffocater itself).
 
-def the_suffocater_documentation() -> None:
-    try:
-        run(["less", "README.md"], check=True)
-    except (FileNotFoundError, CalledProcessError):
-        print(f"{RED}[!] Error: 'README.md' file not found. Broken installation?")
+    Returns:
+        None: None.
+    """
+
+    if component is None:
+        print(f"{RED}[!] Error: Component not specified.{RESET}")
+    
+    if component == "theSuffocater":
+        print(f"Current theSuffocater version - {the_suffocater_version_string}")
+
+    if component == "theCarcass":
+        print(f"Current theCarcass version - {the_carcass_version_string}")
 
 
 def the_suffocater_neofetch() -> None:
+    """
+    Prints brief theSuffocater stats.
+
+    Returns:
+        None: None.
+    """
+
     print(f"""
 {BLUE}
                  __________           {RESET}theSuffocater version - {GREEN}{the_suffocater_version_string}{BLUE}
@@ -113,11 +151,17 @@ def the_suffocater_neofetch() -> None:
 """)
 
 
-def the_carcass_version() -> None:
-    print(f"Current theCarcass version - {the_carcass_version_string}")
-
-
 def list_imported_modules(show_docs: bool = False) -> None:
+    """
+    Lists imported modules and docstrings.
+
+    Args:
+        show_docs (bool): If enabled, prints function docstrings too.
+
+    Returns:
+        None: None.
+    """
+
     print(f"+{'-' * 15} Imported modules {'-' * 15}+")
     for module_path, module_info in loaded_modules.items():
         print(f"\n  -> Path: {module_path}")
@@ -132,6 +176,13 @@ def list_imported_modules(show_docs: bool = False) -> None:
 
 
 def import_modules() -> None:
+    """
+    Gets path, then imports modules.
+
+    Returns:
+        None: None.
+    """
+
     directory_path: str = input("[==>] Enter modules directory path (e.g /home/$USER/Desktop/my_python_modules: ")
     if not os.path.isdir(directory_path):
         print(f"{RED}[!] Error: Not a directory.{RESET}")
@@ -141,6 +192,17 @@ def import_modules() -> None:
 
 
 def import_functions_from_directory(directory_path: str) -> None:
+    """
+    Imports python file functions and docstrings from specified directory
+    for futher usage in theSuffocater.
+
+    Args:
+        directory_path (str): Path to directory with .py files.
+
+    Returns:
+        None: None.
+    """
+
     for filename in os.listdir(directory_path):
         if filename.endswith(".py"):
             file_path: str = os.path.join(directory_path, filename)
@@ -169,6 +231,16 @@ def import_functions_from_directory(directory_path: str) -> None:
 
 
 def import_modules_from_config() -> None:
+    """
+    Import python modules from config file located in '/etc/tsf/module_configs/import_py.conf'
+    using their paths (if exists).
+    
+    Config file is empty by default.
+
+    Returns:
+        None: None.
+    """
+
     config_file_path: str = "/etc/tsf/module_configs/import_py.conf"
     if not os.path.exists(config_file_path):
         print(f"{RED}[!] Error: Configuration file 'import_py.conf' not found!{RESET}")
@@ -176,7 +248,7 @@ def import_modules_from_config() -> None:
     
     try:
         with open(config_file_path, "r") as config_file:
-            module_paths: str = config_file.readlines()
+            module_paths: list = config_file.readlines()
         
         module_paths: list = [path.strip() for path in module_paths if path.strip()] 
         if not module_paths:
@@ -194,6 +266,10 @@ def import_modules_from_config() -> None:
 
 
 def the_carcass(tsf_version_string: str, tc_version_string: str) -> None:
+    """
+    [*] MAIN FUNCTION [*]
+    """
+
     print(f"+{'-' * 16} Welcome to theSuffocater {'-' * 16}+\n")
     print(f" Current tSF version - {tsf_version_string}")
     print(f" Current tC version - {tc_version_string}\n")
@@ -223,13 +299,13 @@ if __name__ == "__main__":
             "help": the_suffocater_help,
             "import": import_modules,
             "modules": list_imported_modules,
-            "modules -d": lambda: list_imported_modules(show_docs=True),
             "neofetch": the_suffocater_neofetch,
-            "license": the_suffocater_license,
-            "changelog": the_suffocater_changelog,
-            "documentation": the_suffocater_documentation,
-            "tsf_version": the_suffocater_version,
-            "tc_version": the_carcass_version
+            "modules -d": lambda: list_imported_modules(show_docs=True),
+            "license": lambda: get_markdown(document="LICENSE-GPL.md"),
+            "changelog": lambda: get_markdown(document="CHANGELOG.md"),
+            "documentation": lambda: get_markdown(document="README.md"),
+            "tsf_version": lambda: get_version(component="theSuffocater"),
+            "tc_version": lambda: get_version(component="theCarcass")
     }
     
     tum.clear_screen()

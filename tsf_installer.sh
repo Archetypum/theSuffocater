@@ -66,7 +66,7 @@ function install_thesuffocater() {
 	if [[ -d "install/tsf" ]]; then
 		cp -r  install/tsf /etc/tsf && echo -e "${GREEN}[==>] Moving configurations directory to /etc/tsf...${RESET}"
 		mkdir /etc/tsf/markdown
-		cp CHANGELOG.md CODE_OF_CONDUCT.md CONTRIBUTING.md LICENSE-GPL.md LICENSE-MIT.md PULL_REQUEST_TEMPLATE.md README.md SECURITY.md /etc/tsf/markdown
+		cp AUTHORS.md CHANGELOG.md CODE_OF_CONDUCT.md CONTRIBUTING.md LICENSE-GPL.md LICENSE-MIT.md PULL_REQUEST_TEMPLATE.md README.md SECURITY.md /etc/tsf/markdown
 	fi
 
 	if [[ -f "$HOME/.bashrc" ]]; then

@@ -6,7 +6,8 @@ Installs and configures:
  - X11.
  - Any graphical environment.
  - Free/proprietary NVIDIA drivers.
-GNU/Linux supported, BSD supported.
+
+GNU/Linux supported.
 
 Author: iva
 Date: null
@@ -24,45 +25,63 @@ except ModuleNotFoundError as import_error:
     print(f"{RED}[!] Error: Modules not found:\n{import_error}{RESET}")
 
 
-def install_nvidia_free() -> bool:
+def install_nvidia_free() -> None:
     """
     Installs NVIDIA nouveau drivers.
 
     Returns:
-        bool: Installation status.
+        None: None.
     """
 
-    ...
+    distro: str = tum.get_user_distro()
+
+    try:
+        print("We are going to install free nouveau NVIDIA drivers.")
+        if tum.prompt_user("[?] Proceed?"):
+            tum.package_handling(distro, ["xserver-xorg-video-nouveau", "mesa-utils", "mesa", "libgl1-mesa-dri", "libgl1-mesa-glx"], "install")
+
+            if tum.prompt_user("[?] Install Vulkan?"):
+                tum.package_handling(distro, ["libvulkan1", "vulkan-utils"], "install")
+
+            if tum.prompt_user("[?] Update initramfs?"):
+                subprocess.run(["update-initramfs", "-u"], check=True)
+
+            print(f"{GREEN}[*] Success!{RESET}")
+    except subprocess.CalledProcessError as x11_installation_error:
+        print(f"{RED}[!] Error: {x11_installation_error}{RESET}")
+        pass
+
+    except KeyboardInterrupt:
+        print("\n")
+        pass
 
 
-def install_nvidia_proprietary() -> bool:
+def install_nvidia_proprietary() -> None:
     """
     Installs proprietary NVIDIA drivers.
 
     Returns:
-        bool: Installation status.
+        None: None.
     """
 
-    ...
+    distro: str = tum.get_user_distro()
+    nvidia_drivers: list = ["nvidia-detect", "nvidia-driver", ""]
+    try:
+        print("We are going to install proprietary NVIDIA drivers:")
+        if tum.prompt_user("[?] Proceed?"):
+            ...
+
+    except KeyboardInterrupt:
+        print("\n")
+        pass
 
 
-def configure_x11() -> bool:
-    """
-    Configures X11-server.
-
-    Returns:
-        bool: Configuration status.
-    """
-
-    ...
-
-
-def install_x11() -> bool:
+def install_x11() -> None:
     """
     Installs X11-server.
 
     Returns:
-        bool: Installation status.
+        None: None.
     """
     
     distro: str = tum.get_user_distro()
@@ -71,35 +90,46 @@ def install_x11() -> bool:
         print("We are going to install X Window System.")
         if tum.prompt_user("[?] Proceed?"):
             tum.package_handling(distro, ["xorg", "xinit", "xterm"], "install")
+
+            if tum.prompt_user("[?] Install ttf-fonts?"):
+                tum.package_handling(distro, ["ttf-mscorefonts-installer"], "install")
+
+            if tum.prompt_user("[?] Add user to video group?"):
+                user_to_add: str = input("[==>] Enter user: ")
+                try:
+                    subprocess.run(["usermod", "-aG", "video", user_to_add], check=True)
+                except subprocess.CalledProcessError as usermod_error:
+                    print(f"{RED}[!] Error: {usremod_error}")
+
+            print(f"{GREEN}[*] Success!{RESET}")
     except KeyboardInterrupt:
         print("\n")
         pass
 
 
-def install_dm_wm_de() -> bool:
+def install_dm_wm_de() -> None:
     """
     Installs popular Display Managers, Window Managers, and Desktop Enviroments.
 
     Returns:
-        bool: Installation status.
+        None: None.
     """
     
     distro: str = tum.get_user_distro()
-
     display_managers: list = ["LightDM", "GMD3", "SDDM", "XDM", "WDM", "LXDM", "CDM"]
     window_managers: list = ["Awesome", "i3", "Openbox", "Fluxbox", "Xmonad", "dwm", "swm"]
     desktop_enviroments: list = ["GNOME", "KDE Plasma", "XFCE", "LXDE", "LXQt", "MATE", "Cinnamon", "Budgie", "Lumina", "Equinox"]
     
     try:
-        print("Display Managers:")
+        print("\nDisplay Managers:")
         for dm in display_managers:
             print(f" - {dm}")
 
-        print("Desktop Enviroments:")
+        print("\nDesktop Enviroments:")
         for de in desktop_enviroments:
             print(f" - {de}")
 
-        print("Window Managers:")
+        print("\nWindow Managers:")
         for wm in window_managers:
             print(f" - {wm}")
         
@@ -113,10 +143,8 @@ def install_dm_wm_de() -> bool:
 
 def desktop_setup() -> None:
     """
-    Main function.
+    [*] MAIN FUNCTION [*]
     """
-
-    tum.clear_screen()
 
     functions: dict = {
             "install_x11": install_x11,

@@ -45,7 +45,7 @@ def generate_password(password_length: int = None, word_list: list = None, chara
 
 def passgen() -> None:
     """
-    Main function.
+    [*] MAIN FUNCTION [*]
     """
 
     print("\nWe are going to create a strong password.")

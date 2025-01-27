@@ -61,20 +61,20 @@ def get_ip_details(ip_address: str = None) -> None:
             return
     
         print(f"{GREEN}{values}{RESET}")
-    except urllib.error.URLError:
-        print(f"{RED}[!] Error: No Internet connection.{RESET}")
+    except Exception as unexpected_error:  # TODO: Understand how to track this connection error.
+        print(f"{RED}[!] Error: No Internet connection: {unexpected_error}{RESET}")
 
 
 def ip_resolver() -> None:
     """
-    Main function.
+    [*] MAIN FUNCTION [*]
     """
 
     ip_address: str = input("[==>] Enter target IP address: ")
     if is_valid_ip(ip_address):
         get_ip_details(ip_address)
     else:
-        print(f"{RED}[!] Error: IP is not valid.{RESET}")
+        print(f"{RED}[!] Error: IP address is not valid.{RESET}")
 
 
 if __name__ == "__main__":

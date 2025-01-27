@@ -20,7 +20,7 @@ except ModuleNotFoundError as import_error:
 
 def safe_geoclue_setup() -> None:
     """
-    Main function.
+    [*] MAIN FUNCTION [*]
     """
 
     print("This script is going to set all geoclue config variables to 'false'.")

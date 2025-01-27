@@ -44,6 +44,8 @@ Main changes:
 12) Added automatic imports to theCarcass:
     * Added _import_py.conf_ and _import_sh.conf_ for it.
 
+13) Added _AUTHORS.md_.
+
 *) Minor fixes:
     * DRY.
     * Bug fixes.
@@ -55,17 +57,17 @@ Main changes:
 ```text
       58 text files.
       54 unique files.                              
-      10 files ignored.
+      20 files ignored.
 
-github.com/AlDanial/cloc v 1.96  T=0.04 s (1434.4 files/s, 189581.6 lines/s)
+github.com/AlDanial/cloc v 1.96  T=0.04 s (1257.2 files/s, 168750.0 lines/s)
 -------------------------------------------------------------------------------
 Language                     files          blank        comment           code
 -------------------------------------------------------------------------------
-Bourne Shell                     9            327            176           2410
-Python                          15            549            258           1620
-Markdown                        14            352              0            970
+Bourne Shell                     9            326            176           2416
+Python                          15            573            313           1645
+Markdown                        14            353              0            971
 Text                            16             89              0            386
 -------------------------------------------------------------------------------
-SUM:                            54           1317            434           5386
+SUM:                            54           1341            489           5418
 -------------------------------------------------------------------------------
 ```
