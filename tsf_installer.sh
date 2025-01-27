@@ -115,7 +115,7 @@ function debug() {
 	echo -e "${PURPLE}tSF configs:${RESET}"
 	whereis tsf  # Should be /etc/tsf
 	echo -e "${PURPLE}TheUnixManager-bash:${RESET}"
-	whereis the_unix_manager.sh
+	whereis the_unix_manager.sh  # Should be /usr/bin/the_unix_manager.sh
 }
 
 function clone_unstable_repository() {

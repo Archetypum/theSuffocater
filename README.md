@@ -43,32 +43,36 @@ bash tsf_installer.sh --install
 CLI launch:
 
 ```bash
+thesuffocater_cli
+```
+
+Alternative launch option if direct fails:
+
+```bash
 sudo -E bash -c "source ~/.pkgenv/bin/activate && python3 /usr/bin/the_carcass_cli.py"
 ```
 
 GUI launch:
 
 ```bash
-sudo -E bash -c "source ~/.pkgenv/bin/activate && python3 /usr/bin/the_carcass_gui.py"
+thesuffocater_gui
 ```
 
-## Credits
+Alternative launch option if direct fails:
 
-theSuffocater is a project by Archetypum with:
- - Kinderfeld as the lead developer and creator.
-(https://github.com/Kinderfeld)
- - wazups as the junior developer, illustrator and GUI maintainer.
-(https://github.com/wazups)
- - Mxkxdxnski as... tester.
-(https://github.com/Mxkxdxnski)
- - WretchOfLights as the junior developer and documentation writer.
-(https://github.com/WretchOfLights)
+```bash
+sudo -E bash -c "source ~/.pkgenv/bin/activate && python3 /usr/bin/the_carcass_gui.py"
+```
 
 ## Goals
 
 Current goals of theSuffocater:
 - Reach 5.0.0-stable version until May.
 - Work hard, own nothing, be happy.
+
+## Credits
+
+Check _AUTHORS.md_
 
 ## Licenses
 

@@ -46,7 +46,7 @@ def install_nvidia_free() -> None:
             if tum.prompt_user("[?] Update initramfs?"):
                 subprocess.run(["update-initramfs", "-u"], check=True)
 
-            print(f"{GREEN}[*] Success!{RESET}")
+            print(f"{GREEN}[*] Success! You may reboot your computer now.{RESET}")
     except subprocess.CalledProcessError as x11_installation_error:
         print(f"{RED}[!] Error: {x11_installation_error}{RESET}")
         pass
@@ -101,7 +101,7 @@ def install_x11() -> None:
                 except subprocess.CalledProcessError as usermod_error:
                     print(f"{RED}[!] Error: {usremod_error}")
 
-            print(f"{GREEN}[*] Success!{RESET}")
+            print(f"{GREEN}[*] Success! You may reboot your computer now.{RESET}")
     except KeyboardInterrupt:
         print("\n")
         pass
@@ -116,9 +116,32 @@ def install_dm_wm_de() -> None:
     """
     
     distro: str = tum.get_user_distro()
-    display_managers: list = ["LightDM", "GMD3", "SDDM", "XDM", "WDM", "LXDM", "CDM"]
-    window_managers: list = ["Awesome", "i3", "Openbox", "Fluxbox", "Xmonad", "dwm", "swm"]
-    desktop_enviroments: list = ["GNOME", "KDE Plasma", "XFCE", "LXDE", "LXQt", "MATE", "Cinnamon", "Budgie", "Lumina", "Equinox"]
+    display_managers: dict = {"LightDM": ("lightdm", "lightdm-gtk-greeter"),
+                              "GDM3": "gdm3", 
+                              "SDDM": "sddm",
+                              "XDM": "xorg-xdm",
+                              "LXDM": ("lxdm", "lxdm-gtk3"),
+                              "SLiM": "slim"
+                              }
+    window_managers: dict = {"Awesome": "awesome",
+                             "i3": ("i3", "i3status", "i3lock"),
+                             "Openbox": ("openbox", "obconf"),
+                             "Fluxbox": ("fluxbox", "fbmenu"),
+                             "Xmonad": ("xmonad", "xmobar"),
+                             "dwm": "dwm",
+                             "swm": "swm"
+                             }
+    desktop_enviroments: dict = {"GNOME": "gnome",
+                                 "KDE Plasma": "",
+                                 "XFCE": "",
+                                 "LXDE": "",
+                                 "LXQt": "",
+                                 "MATE": "",
+                                 "Cinnamon": "",
+                                 "Budgie": "",
+                                 "Lumina": "",
+                                 "Equinox": ""
+                                 }
     
     try:
         print("\nDisplay Managers:")
