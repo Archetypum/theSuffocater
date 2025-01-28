@@ -234,32 +234,17 @@ def user_management() -> None:
         "remove_user_from_group": remove_user_from_group
     }
     
-    print("+---- User Management  ----+")
-    print("\nAvailable functions:")
-    for function in functions.keys():
-        print(f" - {function}")
-
-    your_function: str = input("[==>] Enter function name: ").lower()
-    
     try:
+        print("+---- User Management ----+")
+        print("\nAvailable functions:")
+        for function in functions.keys():
+            print(f" - {function}")
         while True:
+            your_function: str = input("[==>] Enter function: ").lower()
             if your_function in functions:
-                if your_function == "add_user":
-                    username: str = input("[==>] Enter username: ")
-                    password: str = getpass("[==>] Enter password (will not echo): ")
-                    group: str = input("[==>] Enter group (optional): ") or None
-                    functions[your_function](username, password, group)
-                elif your_function == "remove_user" or your_function == "change_group" or your_function == "view_groups":
-                    username: str = input("[==>] Enter username: ")
-                    functions[your_function](username)
-         
-                if your_function == "change_group":
-                    group: str = input("[==>] Enter group: ")
-                    functions[your_function](username, group)
-                else:
-                    functions[your_function](username)
-            elif your_function in ["list_users", "list_groups"]:
                 functions[your_function]()
+            else:
+                print(f"{RED}[!] Error: '{your_function}' not found.{RESET}")
     except KeyboardInterrupt:
         print("\n")
         pass

@@ -12,6 +12,7 @@ Date: 28.07.2024
 
 try:
     import os
+    import re
     import random
     import subprocess
     from sys import exit
@@ -22,9 +23,25 @@ except ModuleNotFoundError as import_error:
     exit(1)
 
 
+def is_valid_ip(ip_address: str = None) -> bool:
+    """
+    Args:
+        ip_address (str): target IP address.
+
+    Returns:
+        bool: If provided IP is valid
+    """
+
+    if ip_address is None:
+        ip_address: str = input("\n[==>] Enter target IP address: ")
+
+    pattern: str = r"^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$"
+    return re.match(pattern, ip_address) is not None
+
+
 def get_valid_interfaces() -> list:
     """
-    Gets user interfaces thru listing '/sys/class/net' or by user input.
+    Gets user interfaces through listing '/sys/class/net' or by user input.
 
     Returns:
         None: None.
@@ -89,8 +106,8 @@ def change_mac() -> None:
 
 def change_lan_ip() -> None:
     """
-    Changes local IP address of the machine (Not permament).
-    Requires 'ifconfig' or 'iproute2' installed onthe system.
+    Changes local IP address of the machine (Not permanent).
+    Requires 'ifconfig' or 'iproute2' installed on the system.
 
     Returns:
         None: None.
@@ -117,14 +134,14 @@ def change_lan_ip() -> None:
     if new_ip == "":
         new_ip: str = f"192.168.{random.randint(1, 254)}.{random.randint(1, 254)}"
         print(f"[*] Your new IP address: {new_ip}")
-    if not tum.is_valid_ip(new_ip):
+    if not is_valid_ip(new_ip):
         print(f"{RED}[!] Error: Invalid IP address: {new_ip}. Exiting.{RESET}")
         return
 
     subnet_mask: str = input("[==>] Enter subnet mask (e.g., 255.255.255.0): ").strip()
     if subnet_mask == "":
         subnet_mask: str = "255.255.255.0"
-    if not tum.is_valid_ip(subnet_mask):
+    if not is_valid_ip(subnet_mask):
         print(f"{RED}[!] Error: Invalid subnet mask: {subnet_mask}{RESET}")
         return
 
