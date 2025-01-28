@@ -247,8 +247,8 @@ def ultimate_firewall() -> None:
     try:
         while True:
             your_function: str = input("[==>] Enter function: ").lower()
-            if your_function in functions:
-                functions[your_function]()
+            if your_function in profiles:
+                profiles[your_function]()
             else:
                 print(f"{RED}[!] Error: '{your_function}' not found.{RESET}")
     except KeyboardInterrupt:
