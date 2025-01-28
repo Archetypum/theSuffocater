@@ -24,7 +24,10 @@ except ModuleNotFoundError as import_error:
 
 def backup_files() -> None:
     """
-    
+    Backs up files and directories from a source to a backup directory.
+
+    Returns:
+        None: None.
     """
 
     source_directory: str = input('[==>] Enter the source directory: ')
@@ -67,7 +70,10 @@ def backup_files() -> None:
             
 def backup_database() -> None:
     """
-    
+    Backs up a database file from a source to a backup directory.
+
+    Returns:
+        None: None.
     """
    
     database_path: str = input("[==>] Enter the path to the source database file: ")
