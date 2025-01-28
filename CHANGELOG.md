@@ -1,7 +1,18 @@
-# theSuffocater v2.0.0-testing
+# theSuffocater v2.1.0-stable
 
-This is going to be the REAL second stable release of theSuffocater, but before that - we need to do some tests.
-Features CLI and GUI stable versions of theCarcass, new functions, quality of life changes, and more!
+REAL second stable release of theSuffocater.
+Ladies and Gentleman, Omega and the Mechanical Animals, welcome - this is theSuffocater-v2.1.0-stable!
+
+Features stable theCarcassCLI, unfinished theCarcassGUI and unfinished theCarcass-bash, theUnixManger, new functions,
+a lot of bugfixes, documentation, quality of life changes, and more!
+
+BSD port still sucks. Neofetch is unfinished. New MACs and IPs from Address Managenent and not permanent.
+theCarcassGUI is unfinished. Tor Management is unfinished. VPN install scripts from angristan are still not rewritten...
+
+...And I don't want to give any promises, but we might change this is the third stable release. 
+Now we have much more time to focues on scripts and modules and not on the building libraries and other tSF components.
+
+See you at the end of february!
 
 Main changes:
     
@@ -61,15 +72,15 @@ Main changes:
       55 unique files.                              
       19 files ignored.
 
-github.com/AlDanial/cloc v 1.96  T=0.04 s (1303.9 files/s, 180389.2 lines/s)
+github.com/AlDanial/cloc v 1.96  T=0.04 s (1357.4 files/s, 193642.1 lines/s)
 -------------------------------------------------------------------------------
 Language                     files          blank        comment           code
 -------------------------------------------------------------------------------
-Bourne Shell                     9            326            176           2416
-Python                          15            685            408           1785
-Markdown                        15            358              0            980
+Bourne Shell                     9            333            188           2426
+Python                          15            694            515           1855
+Markdown                        15            367              0            993
 Text                            16             89              0            386
 -------------------------------------------------------------------------------
-SUM:                            55           1458            584           5567
+SUM:                            55           1483            703           5660
 -------------------------------------------------------------------------------
 ```
