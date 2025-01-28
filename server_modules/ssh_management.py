@@ -27,7 +27,12 @@ except ModuleNotFoundError as import_error:
 
 def ssh_keygen() -> None:
     """
+    Generates SSH keys.
 
+    Supported keys: rsa, dsa, ecdsa, ed25519.
+
+    Returns:
+        None: None.
     """
         
     key_type: str = input("[==>] Select key type (rsa, dsa, ecdsa, ed25519) [default]: ")
@@ -76,11 +81,14 @@ def ssh_keygen() -> None:
 
 def ssh_logging() -> None:
     """
+    Logs SSH connections to local machine.
 
+    Returns:
+        None: None.
     """
 
-    print("We are going to log SSH connections to your device.")
-    if tum.prompt_user("[?] Proceed?"):
+    print("\nWe are going to log SSH connections to your device.")
+    if tum.prompt_user("\n[?] Proceed?"):
         log_file_path: str = input("[==>] Enter log file path [default]: ")
         
         if log_file_path == "":
@@ -127,13 +135,16 @@ def ssh_logging() -> None:
 
 def safe_ssh_setup() -> None:
     """
+    Installs OpenSSH-Client and OpenSSH-server, and then modifies the /etc/ssh/sshd_config.
 
+    Returns:
+        None: None.
     """
 
     distro: str = tum.get_user_distro()
     init_system: str = tum.get_init_system()
 
-    print("After running this module, the following changes will be made:")
+    print("\nAfter running this module, the following changes will be made:")
     print("0. Install openssh-client and openssh-server.")
     print("1. Remove password authentication.")
     print("2. Add Pubkey authentication.")
@@ -142,7 +153,7 @@ def safe_ssh_setup() -> None:
     print("5. Change port value from 22 to 1984.")
     print("*. Many more.")
 
-    if tum.prompt_user("[?] Proceed?"):
+    if tum.prompt_user("\n[?] Proceed?"):
         if tum.is_debian_based(distro):
             tum.package_handling(distro, package_list=["openssh-client", "openssh-server"], command="install")
         elif distro in tum.FREEBSD_BASED or distro in tum.OPENBSD_BASED or distro in tum.NETBSD_BASED:
@@ -172,22 +183,27 @@ def ssh_management() -> None:
     [*] MAIN FUNCTION [*]
     """
 
-    tum.clear_screen()
-
     functions: dict = {
         "safe_ssh_setup": safe_ssh_setup,
         "ssh_logging": ssh_logging,
         "ssh_keygen": ssh_keygen
     }
 
-    print("+---- SSH Management ----+")
-    print("\nAvailable functions:")
-    for function in functions.keys():
-        print(f" - {function}")
-
-    your_function: str = input("[==>] Enter function: ").lower()
-    if your_function in functions:
-        functions[your_function]()
+    try:
+        print("+---- SSH Management ----+")
+        print("\nAvailable functions:")
+        for function in functions.keys():
+            print(f" - {function}")
+        
+        while True:
+            your_function: str = input("[==>] Enter function: ").lower()
+            if your_function in functions:
+                functions[your_function]()
+            else:
+                print(f"{RED}[!] Error: '{your_function}' not found.{RESET}")
+    except KeyboardInterrupt:
+        print("\n")
+        pass
 
 
 if __name__ == "__main__":

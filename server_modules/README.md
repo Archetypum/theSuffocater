@@ -21,7 +21,7 @@ Hardens your SSH by changing the config file, manages SSH keys and logs connecti
 
 Installs tor, adds tor devuan repositories, setups tor nodes. You know what you're doing.
 
-- **ultimate_firewall.p
+- **ultimate_firewall.py**
 
 Setups firewalls for you using pre-build profiles.
 

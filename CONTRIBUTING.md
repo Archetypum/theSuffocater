@@ -69,7 +69,7 @@ def module_function(arg: str = "default_value") -> None:
 
 def main_function() -> None:
     """
-    Main function.
+    [*] MAIN FUNCTION [*]
     """
     
     ...
@@ -134,6 +134,15 @@ Provide us next information about your issue:
 - Expected behavior
 
 - The thing you're encountered
+
+## AI Generated Code
+
+Archetypum has a very strict policy on the use of AI generated code and AI in particular.
+
+To make a long story short:
+
+If more than half of the code and its documentation are written with AI tools, then it needs to be rewritten
+with use of human brain. If requirements not met, the provided code can't be introduced in theSuffocater.
 
 ## License
 

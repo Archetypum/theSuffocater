@@ -190,6 +190,8 @@ function install_guix_based() {
 }
 
 function main() {
+	# [*] MAIN FUNCTION [*]
+
 	local DISTRO
 
 	read -rp "[==>] Enter your OS (GNU/Linux, BSD distro): " DISTRO

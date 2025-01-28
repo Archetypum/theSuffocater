@@ -78,7 +78,7 @@ def install_nvidia_proprietary() -> None:
 
 def install_x11() -> None:
     """
-    Installs X11-server.
+    Installs X11-server, install ttf-fonts and adds user to 'video' group if he wishes.
 
     Returns:
         None: None.
@@ -175,15 +175,21 @@ def desktop_setup() -> None:
             "install_nvidia_free": install_nvidia_free,
             "install_nvidia_proprietary": install_nvidia_proprietary
     }
-
-    print("+---- Desktop Setup ----+")
-    print("\nAvailable functions:")
-    for function in functions.keys():
-        print(f" - {function}")
-
-    your_function: str = input("[==>] Enter function: ").lower()
-    if your_function in functions:
-        functions[your_function]()
+    try:
+        print("+---- Desktop Setup ----+")
+        print("\nAvailable functions:")
+        for function in functions.keys():
+            print(f" - {function}")
+        
+        while True:
+            your_function: str = input("[==>] Enter function: ").lower()
+            if your_function in functions:
+                functions[your_function]()
+            else:
+                print(f"{RED}[!] Error: '{your_function}' not found.{RESET}")
+    except KeyboardInterrupt:
+        print("\n")
+        pass
 
 
 if __name__ == "__main__":

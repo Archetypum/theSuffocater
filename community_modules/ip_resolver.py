@@ -69,12 +69,15 @@ def ip_resolver() -> None:
     """
     [*] MAIN FUNCTION [*]
     """
-
-    ip_address: str = input("[==>] Enter target IP address: ")
-    if is_valid_ip(ip_address):
-        get_ip_details(ip_address)
-    else:
-        print(f"{RED}[!] Error: IP address is not valid.{RESET}")
+    try:
+        ip_address: str = input("[==>] Enter target IP address: ")
+        if is_valid_ip(ip_address):
+            get_ip_details(ip_address)
+        else:
+            print(f"{RED}[!] Error: IP address is not valid.{RESET}")
+    except KeyboardInterrupt:
+        print("\n")
+        pass
 
 
 if __name__ == "__main__":

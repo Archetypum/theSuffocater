@@ -24,15 +24,16 @@ except ModuleNotFoundError as import_error:
 
 def openvpn_server_setup() -> None:
     """
+    Setups OpenVPN server using preinstalled bash script.
 
+    Returns:
+        None: None.
     """
 
     distro: str = tum.get_user_distro()
     init_system: str = tum.get_init_system()
-
-    print("We are going to setup your server for OpenVPN.")
-    answer: str = input("\n[?] Proceed? (y/N): ").lower()
-    if answer in ["y", "yes"]:
+    print("\nWe are going to setup OpenVPN server.")
+    if tum.prompt_user("\n[?] Proceed?"):
         try:
             print("[<==] Updating the system...")
             tum.package_handling(distro, package_list=[], command="update")
@@ -40,11 +41,8 @@ def openvpn_server_setup() -> None:
             print("[<==] Installing OpenVPN...")
             tum.package_handling(distro, package_list=["openvpn"], command="install")
             
-            print("[<==] Installing Curl...")
-            tum.package_handling(distro, package_list=["curl"], command="install")
-
             print("[<==] Launching OpenVPN-Installer script...")
-            subprocess.run(["bash", "scripts/openvpn-install.sh"], check=True)
+            subprocess.run(["bash", "/root/.scripts/openvpn-install.sh"], check=True)
             sleep(1)
 
             print("[<==] Restarting OpenVPN service && Finishing installation...")
@@ -57,15 +55,17 @@ def openvpn_server_setup() -> None:
 
 def wireguard_server_setup() -> None:
     """
+    Setups Wireguard server using preinstalled bash script.
 
+    Returns:
+        None: None.
     """
 
     distro: str = tum.get_user_distro()
     init_system: str = tum.get_init_system()
 
-    print("We are going to setup your server for Wireguard.")
-    answer: str = input("\n[?] Proceed? (y/N): ").lower()
-    if answer in ["y", "yes"]:
+    print("\nWe are going to setup your server for Wireguard.")
+    if tum.prompt_user("\n[?] Proceed?"):
         try:
             print("[<==] Updating the system...")
             tum.package_handling(distro, package_list=[], command="update")
@@ -73,24 +73,24 @@ def wireguard_server_setup() -> None:
             print("[<==] Installing Wireguard...")
             tum.package_handling(distro, package_list=["wireguard", "wireguard-tools"], command="install")
 
-            print("[<==] Installing Curl...")
-            tum.package_handling(distro, package_list=["curl"], command="install")
-
             print("[<==] Launching Wireguard-Installer script...")
-            subprocess.run(["bash", "scripts/wireguard-install.sh"], check=True)
+            subprocess.run(["bash", "/root/.scripts/wireguard-install.sh"], check=True)
             sleep(1)
 
             print("[<==] Restarting Wireguard service && Finishing installation...")
             tum.init_system_handling(init_system, "start", "wireguard")
 
-            print("[*] Looks like you are locked and loaded.\n (...)")
+            print("[*] Looks like you are locked and loaded.\nEnjoy your freedom.")
         except subprocess.CalledProcessError as error:
             print(f"{RED} Error: {error}{RESET}")
 
 
 def outlinevpn_server_setup() -> None:
     """
+    Setups OutlineVPN server for you.
 
+    Returns:
+        None: None.
     """
 
     distro: str = tum.get_user_distro()
@@ -131,9 +131,16 @@ def vpn_server_setup() -> None:
     for function in functions.keys():
         print(f" - {function}")
 
-    your_function: str = input("[==>] Enter function name: ").lower()
-    if your_function in functions:
-        functions[your_function]()
+    try:
+        while True:
+            your_function: str = input("[==>] Enter function: ").lower()
+            if your_function in functions:
+                functions[your_function]()
+            else:
+                print(f"{RED}[!] Error: '{your_function}' not found.{RESET}")
+    except KeyboardInterrupt:
+        print("\n")
+        pass
 
 
 if __name__ == "__main__":

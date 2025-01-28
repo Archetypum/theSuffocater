@@ -46,6 +46,8 @@ Main changes:
 
 13) Added _AUTHORS.md_.
 
+14) Improved documentation.
+
 *) Minor fixes:
     * DRY.
     * Bug fixes.
@@ -55,19 +57,19 @@ Main changes:
 "cloc ." statistics:
 
 ```text
-      58 text files.
-      54 unique files.                              
-      20 files ignored.
+      59 text files.
+      55 unique files.                              
+      19 files ignored.
 
-github.com/AlDanial/cloc v 1.96  T=0.04 s (1257.2 files/s, 168750.0 lines/s)
+github.com/AlDanial/cloc v 1.96  T=0.04 s (1303.9 files/s, 180389.2 lines/s)
 -------------------------------------------------------------------------------
 Language                     files          blank        comment           code
 -------------------------------------------------------------------------------
 Bourne Shell                     9            326            176           2416
-Python                          15            573            313           1645
-Markdown                        14            353              0            971
+Python                          15            685            408           1785
+Markdown                        15            358              0            980
 Text                            16             89              0            386
 -------------------------------------------------------------------------------
-SUM:                            54           1341            489           5418
+SUM:                            55           1458            584           5567
 -------------------------------------------------------------------------------
 ```

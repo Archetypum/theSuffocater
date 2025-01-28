@@ -17,10 +17,8 @@ try:
     import tkinter as tk
     import importlib.util
     import the_unix_manager as tum
-    from tkinter import messagebox
-    from tkinter import scrolledtext
-    from tkinter import simpledialog
     from subprocess import run, CalledProcessError
+    from tkinter import messagebox, scrolledtext, simpledialog
     from the_unix_manager import GREEN, RED, PURPLE, BLACK, WHITE, YELLOW, ORANGE, BLUE, RESET
 except ModuleNotFoundError as import_error:
     print(f"[!] Error: Modules not found. Broken installation?\n\n{import_error}")
@@ -74,11 +72,11 @@ def the_suffocater_documentation(root) -> None:
 
     try:
         if "GNOME" in os.environ.get("XDG_CURRENT_DESKTOP", ""):
-            subprocess.run(["gnome-terminal", "--", "bash", "-c", "cat README.md; exec bash"], check=True)
+            run(["gnome-terminal", "--", "bash", "-c", "cat README.md; exec bash"], check=True)
         elif "KDE" in os.environ.get("XDG_CURRENT_DESKTOP", ""):
-            subprocess.run(["konsole", "-e", "bash", "-c", "cat README.md; exec bash"], check=True)
+            run(["konsole", "-e", "bash", "-c", "cat README.md; exec bash"], check=True)
         elif "XFCE" in os.environ.get("XDG_CURRENT_DESKTOP", ""):
-            subprocess.run(["xfce4-terminal", "-e", "bash -c 'cat README.md; exec bash'"], check=True)
+            run(["xfce4-terminal", "-e", "bash -c 'cat README.md; exec bash'"], check=True)
         else:
             messagebox.showerror(f"{RED}[!] Error: 'README.md' file not found. Broken installation?{RESET}")
     except (FileNotFoundError, CalledProcessError):
@@ -186,7 +184,7 @@ def create_module_buttons(root, left_frame) -> None:
 def the_carcass_gui(the_global_version: str) -> None:
     global root
     root = tk.Tk()
-    root.title("theSuffocater GUI")
+    root.title("theSuffocater")
     root.geometry("700x500")
     root.config(bg="grey24")
 

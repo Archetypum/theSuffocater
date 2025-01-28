@@ -228,7 +228,7 @@ def porter() -> None:
 
 def ultimate_firewall() -> None:
     """
-
+    [*] MAIN FUNCTION [*]
     """
 
     profiles: dict = {
@@ -244,9 +244,16 @@ def ultimate_firewall() -> None:
     for profile in profiles.keys():
         print(f" - {profile}")
     
-    your_profile: str = input("[==>] Enter function name: ")
-    if your_profile in profiles:
-        profiles[your_profile]()
+    try:
+        while True:
+            your_function: str = input("[==>] Enter function: ").lower()
+            if your_function in functions:
+                functions[your_function]()
+            else:
+                print(f"{RED}[!] Error: '{your_function}' not found.{RESET}")
+    except KeyboardInterrupt:
+        print("\n")
+        pass
 
 
 if __name__ == "__main__":

@@ -28,16 +28,20 @@ if [[ -f "$TUM_PATH" ]]; then
 
 		echo -e "${GREEN}[*] Variables are successfully initialized. Loading main function...${RESET}"	
 	else
-		echo -e "${RED}[!] Error: the_unix_manager.sh not imported. Exiting... ${RESET}"
+		echo -e "${RED}[!] Error: 'the_unix_manager.sh' not imported. Exiting... ${RESET}"
 		exit 1
 	fi
 fi
 
 function final_exit() {
+	# Exits theSuffocater.
+
 	exit 0
 }
 
 function the_suffocater_help() {
+	# Returns theSuffocater commands description and usage.
+	
 	echo -e "\nCommands:"
 	echo " exit - exit theSuffocater."
 	echo " clear - clear the screen."
@@ -53,31 +57,40 @@ function the_suffocater_help() {
 	echo -e "\nFor more info, check 'documentation'."
 }
 
-function the_suffocater_version() {
-	echo "Current theSuffocater version - $THE_SUFFOCATER_VERSION_STRING"
-}
+function get_markdown() {
+	# Gets Markdown documents from '/etc/tsf/markdown' and prints them with 'less' command.
+	#
+	# Args:
+	#     document (str): Document specified by user. 'LICENSE.md', 'README.md', 'CHANGELOG.md' are available#.
+	#     None by default
+	local DOCUMENT=$1
 
-function the_suffocater_license() {
-	if [[ -f "/etc/tsf/markdown/LICENSE.md" ]]; then
-		less /etc/tsf/markdown/LICENSE.md
+	if [[ -z "$1" ]]; then
+		COMPONENT="[null]"
+		echo -e "${RED}[!] Error: Component not specified.${RESET}"
 	else
-		echo -e "${RED}[!] Error: 'LICENSE.md' file not found. Broken installation?"
+		less /etc/tsf/markdown/$COMPONENT
 	fi
 }
 
-function the_suffocater_changelog() {
-	if [[ -f "/etc/tsf/markdown/CHANGELOG.md" ]]; then
-		less /etc/tsf/markdown/CHANGELOG.md
-	else
-		echo -e "${RED}[!] Error: 'CHANGELOG.md' file not found. Broken installation?"
-	fi	
-}
+function get_version() {
+	# Gets version files from '/etc/tsf/versions' (at the top of theCarcass) and prints them.
+	#
+        # Args:
+        #     component (str): theSuffocater component (theCarcass of theSuffocater itself).
+	local COMPONENT=$1
 
-function the_suffocater_documentation {
-	if [[ -f "/etc/tsf/markdown/README.md" ]]; then
-		less /etc/tsf/markdown/README.md
-	else
-		echo -e "${RED}[!] Error: 'README.md' file not found. Broken installation?"
+	if [[ -z "$1" ]]; then
+		COMPONENT="[null]"
+		echo -e "${RED}[!] Error: Component not specified.${RESET}"
+	fi
+
+	if [[ "$COMPONENT" == "theSuffocater" ]]; then
+		echo "Current theSuffocater version - $THE_SUFFOCATER_VERSION_STRING"
+	fi
+
+	if [[ "$COMPONENT" == "theCarcass" ]]; then
+		echo "Current theCarcass version - $THE_CARCASS_VERSION_STRING"
 	fi
 }
 

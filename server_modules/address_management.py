@@ -24,7 +24,10 @@ except ModuleNotFoundError as import_error:
 
 def get_valid_interfaces() -> list:
     """
+    Gets user interfaces thru listing '/sys/class/net' or by user input.
 
+    Returns:
+        None: None.
     """
 
     interfaces: list = []
@@ -44,7 +47,11 @@ def get_valid_interfaces() -> list:
 
 def change_mac() -> None:
     """
+    Changes MAC address of the machine.
+    Requires 'ifconfig' installed on the system.
 
+    Returns:
+        None: None.
     """
 
     print("We are going to change the system's MAC address.")
@@ -82,7 +89,11 @@ def change_mac() -> None:
 
 def change_lan_ip() -> None:
     """
+    Changes local IP address of the machine (Not permament).
+    Requires 'ifconfig' or 'iproute2' installed onthe system.
 
+    Returns:
+        None: None.
     """
 
     print("We are going to change the local IP address.")
@@ -141,12 +152,22 @@ def address_management() -> None:
         "change_mac": change_mac,
         "change_lan_ip": change_lan_ip
     }
+    
+    try:
+        print("+---- Address Management ----+")
+        print("\nAvailable functions:")
+        for function in functions.keys():
+            print(f" - {function}")
+        while True:
+            your_function: str = input("[==>] Enter function: ").lower()
+            if your_function in functions:
+                functions[your_function]()
+            else:
+                print(f"{RED}[!] Error: '{your_function}' not found.{RESET}")
+    except KeyboardInterrupt:
+        print("\n")
+        pass
 
-    print("+---- Address Management ----+")
-    print("\nAvailable functions:")
-    for function in functions.keys():
-        print(f" - {function}")
 
-    your_function: str = input("[==>] Enter function: ").lower()
-    if your_function in functions:
-        functions[your_function]()
+if __name__ == "__main__":
+    address_management()

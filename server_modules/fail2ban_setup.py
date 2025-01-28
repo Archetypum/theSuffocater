@@ -117,7 +117,7 @@ def ftp_bruteforce() -> None:
 
 def fail2ban_setup() -> None:
     """
-
+    [*] MAIN FUNCTION [*]
     """
 
     profiles: dict = {
@@ -131,15 +131,16 @@ def fail2ban_setup() -> None:
     for profile in profiles.keys():
         print(f" - {profile}")
     
-    while True:
-        try:
+    try:
+        while True:
             your_profile: str = input("[==>] Enter profile: ").lower()
             if your_profile in profiles:
                 profiles[your_profile]()
             else:
-                print(f"{RED}[!] Error: {your_profile} is not defined.{RESET}")
-        except KeyboardInterrupt:
-            break
+                print(f"{RED}[!] Error: '{your_profile}' not found.{RESET}")
+    except KeyboardInterrupt:
+        print("\n")
+        pass
 
 
 if __name__ == "__main__":

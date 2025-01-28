@@ -91,7 +91,7 @@ def get_markdown(document: str = None) -> None:
         if document is None:
             print(f"{RED}[!] Error: Document not specified.{RESET}")
         else:
-            run(["less", document], check=True)
+            run(["less", f"/etc/tsf/markdown/{document}"], check=True)
     except (FileNotFoundError, CalledProcessError):
         print(f"{RED}[!] Error: '{document}' file not found. Broken installation?{RESET}")
 

@@ -105,7 +105,7 @@ def backup_database() -> None:
 
 def backup_management() -> None:
     """
-    Main function.
+    [*] MAIN FUNCTION [*]
     """
     
     tum.clear_screen()
@@ -120,11 +120,17 @@ def backup_management() -> None:
     for function in functions.keys():
         print(f" - {function}")
 
-    your_function: str = input("[==>] Enter function: ").lower()
-    if your_function in functions:
-        functions[your_function]()
+    try:
+        while True:
+            your_function: str = input("[==>] Enter function: ").lower()
+            if your_function in functions:
+                functions[your_function]()
+            else:
+                print(f"{RED}[!] Error: '{your_function}' not found.{RESET}")
+    except KeyboardInterrupt:
+        print("\n")
+        pass
 
 
 if __name__ == "__main__":
     backup_management()
-

@@ -23,14 +23,17 @@ except ModuleNotFoundError as import_error:
 
 def enable_auto_updates() -> None:
     """
-    Enables autoupdates on Debian based systems via unattended-upgrades package.
+    Enables automatic updates by installing and configuring unattended-upgrades via dpkg.
+    Debian-based distro required.
+
+    Returns:
+        None: None.
     """
 
     print("\nAutomatic updates help ensure your system is always protected with the latest security patches and improvements.")
     print("By enabling automatic updates, your system will regularly check for updates and install them without manual intervention.")
     print("This reduces the risk of vulnerabilities being exploited and helps keep your system stable and secure.")
-
-    if tum.prompt_user("[?] Proceed?"):
+    if tum.prompt_user("\n[?] Proceed?"):
         print(f"[<==] Enabling automatic updates...")
         subprocess.run(["apt", "update"], check=True)
         subprocess.run(["apt", "install", "unattended-upgrades", "-y"], check=True)
@@ -50,13 +53,16 @@ def enable_auto_updates() -> None:
 
 def disable_auto_updates() -> None:
     """
-    Disable autoupdates on Debian based systems.
+    Disables automatic updates by changing the '20auto-upgrades'.
+    Debian-based distro required.
+
+    Returns:
+        None: None.
     """
 
-    print("Disabling automatic updates will stop your system from automatically checking for and installing updates.")
+    print("\nDisabling automatic updates will stop your system from automatically checking for and installing updates.")
     print("This may leave your system vulnerable to unpatched security issues.")
-
-    if tum.prompt_user("[?] Proceed?"):
+    if tum.prompt_user("\n[?] Proceed?"):
         print("[<==] Disabling automatic updates...")
         try:
             with open("/etc/tsf/module_configs/disable_auto_update_config.txt", "r") as config_file:
@@ -72,13 +78,16 @@ def disable_auto_updates() -> None:
 
 def enable_debian_backports() -> None:
     """
+    Adds Debian 12 Bookworm backports repos to the '/etc/apt/sources.list'.
+    Debian-based distro required.
 
+    Returns:
+        None: None.
     """
 
-    print("Backports are packages taken from the next Debian release (called 'testing'), adjusted and recompiled for usage on Debian stable.")
+    print("\nBackports are packages taken from the next Debian release (called 'testing'), adjusted and recompiled for usage on Debian stable.")
     print("By adding Debian Backports, you can gradually increase the number of fresh/completely new packages on your system.")
-
-    if tum.prompt_user("[?] Enable Backports?"):
+    if tum.prompt_user("\n[?] Enable Backports?"):
         print("[<==] Enabling Backports...")
         try:
             with open("/etc/tsf/module_configs/apt_debian_backports.txt", "r") as config_file:
@@ -97,11 +106,15 @@ def enable_debian_backports() -> None:
 
 def add_i386() -> None:
     """
+    Adds 32-bit libraries support by adding architecture via dpkg.
+    Debian-based distro required.
 
+    Returns:
+        None: None.
     """
 
-    print("Some specific software requires 32-bit libraries to work.")
-    if tum.prompt_user("[?] Add i386 support?"):
+    print("\nSome specific software requires 32-bit libraries to work.")
+    if tum.prompt_user("\n[?] Add i386 support?"):
         print("[<==] Adding architecture...")
         try:
             subprocess.run(["dpkg", "--add-architecture", "i386"], check=True)
@@ -120,6 +133,7 @@ def apt_management() -> None:
     debian: bool = tum.is_debian_based(distro)
     if not debian:
         print(f"{RED}[!] Error: Your OS {distro} is not Debian based.{RESET}")
+        pass
 
     functions: dict = {
             "enable_auto_updates": enable_auto_updates,
@@ -132,10 +146,17 @@ def apt_management() -> None:
     print("\nAvailable functions:")
     for function in functions.keys():
         print(f" - {function}")
-
-    your_function: str = input("[==>] Enter function: ").lower()
-    if your_function in functions:
-        functions[your_function]()
+    
+    try:
+        while True:
+            your_function: str = input("[==>] Enter function: ").lower()
+            if your_function in functions:
+                functions[your_function]()
+            else:
+                print(f"{RED}[!] Error: '{your_function}' not found.{RESET}")
+    except KeyboardInterrupt:
+        print("\n")
+        pass
 
 
 if __name__ == "__main__":

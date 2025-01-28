@@ -2,7 +2,7 @@
 
 """
 ---------------------------------------
-Unix user management for noobs.
+UNIX user management for noobs.
 GNU/Linux and BSD supported.
 
 Author: iva
@@ -19,14 +19,31 @@ try:
     import the_unix_manager as tum
     from the_unix_manager import GREEN, RED, RESET
 except ModuleNotFoundError as import_error:
-    print(f"[!] Error: modules not found:\n{import_error}")
+    print(f"{RED}[!] Error: modules not found:\n{import_error}{RESET}")
     exit(1)
 
 
-def add_user(username: str, password: str, group: str = None) -> None:
+def add_user(username: str = None, password: str = None, group: str = None) -> None:
+    """
+    Adds user to the system.
+
+    Args:
+        username (str): Name of the new user. None by default.
+        password (password): Password for the new user. None by default.
+        group (str): Group for new user. None by default.
+
+    Returns:
+        None: None.
     """
 
-    """
+    if username is None:
+        username: str = input("\n[==>] Enter username: ")
+
+    if password is None:
+        password: str = input("\n[==>] Enter password: ")
+
+    if group is None:
+        group: str = input("\n[==>] Enter group: ")
 
     try:
         if group:
@@ -51,10 +68,16 @@ def add_user(username: str, password: str, group: str = None) -> None:
         print(f"{RED}[!] Error adding user '{username}': {error}{RESET}")
 
 
-def remove_user(username: str) -> None:
+def remove_user(username: str = None) -> None:
     """
+    Removes user from the system.
 
+    Args:
+        username (str): User to remove. None by default.
     """
+    
+    if username is None:
+        username: str = input("\n[==>] Enter username: ")
 
     try:
         subprocess.run(["userdel", "-r", username], check=True)
@@ -64,10 +87,23 @@ def remove_user(username: str) -> None:
         print(f"{RED}[!] Error removing user '{username}': {error}{RESET}")
 
 
-def change_group(username: str, group: str) -> None:
+def change_group(username: str = None, group: str = None) -> None:
+    """
+    Changes user groups.
+
+    Args:
+        username (str): Target user to add to group. None by default.
+        group (str): Target group. None by default.
+
+    Returns:
+        None: None.
     """
 
-    """
+    if username is None:
+        username: str = input("\n[==>] Enter username: ")
+
+    if group is None:
+        group: str = input("\n[==>] Enter group: ")
 
     try:
         subprocess.run(["usermod", "-g", group, username], check=True)
@@ -79,38 +115,42 @@ def change_group(username: str, group: str) -> None:
 
 def list_users() -> None:
     """
+    Lists users in the system.
 
+    Returns:
+        None: None.
     """
 
-    try:
-        users: list = [user.pw_name for user in pwd.getpwall()]
-        print("Users in the system:")
-        for user in users:
-            print(f" {user}")
-        user_management()
-    except Exception as error:
-        print(f"{RED}[!] Error: {error}{RESET}")
+    users: list = [user.pw_name for user in pwd.getpwall()]
+    print("Users in the system:")
+    for user in users:
+        print(f" - {user}")
 
 
 def list_groups() -> None:
     """
-
+    Lists groups in the system.
+    
+    Returns:
+        None: None.
     """
 
-    try:
-        groups: list = [g.gr_name for g in grp.getgrall()]
-        print("Groups in the system:")
-        for group in groups:
-            print(f" {group}")
-        user_management()
-    except Exception as error:
-        print(f"{RED}[!] Error: {error}{RESET}")
+    groups: list = [g.gr_name for g in grp.getgrall()]
+    print("Groups in the system:")
+    for group in groups:
+        print(f" - {group}")
 
 
-def view_groups(username: str) -> None:
+def view_groups(username: str = None) -> None:
     """
+    Returns list of groups that user belongs to.
 
+    Returns:
+        None: None.
     """
+    
+    if username is None:
+        username: str = input("\n[==>] Enter user: ")
 
     try:
         user_info: pwd.struct_passwd = pwd.getpwnam(username)
@@ -122,16 +162,27 @@ def view_groups(username: str) -> None:
                 print(group)
         else:
             print(f"{RED}[!] User '{username}' does not belong to any groups.{RESET}")
-
-        user_management()
     except KeyError:
         print(f"{RED}[!] User '{username}' not found.{RESET}")
 
 
-def add_user_to_group(username: str, group: str) -> None:
+def add_user_to_group(username: str = None, group: str = None) -> None:
+    """
+    Adds user to group via usermod.
+
+    Args:
+        username (str): User to add. None by default.
+        group (str): Group to add user. None by default.
+
+    Returns:
+        None: None.
     """
 
-    """
+    if username is None:
+        username: str = input("\n[==>] Enter user: ")
+
+    if group is None:
+        group: str = input("[==>] Enter group: ")
 
     try:
         subprocess.run(["usermod", "-aG", group, username], check=True)
@@ -140,10 +191,24 @@ def add_user_to_group(username: str, group: str) -> None:
     except subprocess.CalledProcessError as error:
         print(f"{RED}[!] Error adding '{username}' to group '{group}': {error}{RESET}")
 
-def remove_user_from_group(username: str, group: str) -> None:
-    """
 
+def remove_user_from_group(username: str = None, group: str = None) -> None:
     """
+    Removes user from group via gpasswd.
+
+    Args:
+        username (str): User to remove from group. None by default.
+        group (str): Group to remove user from. None by default.
+
+    Returns:
+        None: None.
+    """
+    
+    if username is None:
+        username: str = input("\n[==>] Enter user: ")
+
+    if group is None:
+        group: str = input("[==>] Enter group: ")
 
     try:
         subprocess.run(["gpasswd", "-d", username, group], check=True)
@@ -175,24 +240,30 @@ def user_management() -> None:
         print(f" - {function}")
 
     your_function: str = input("[==>] Enter function name: ").lower()
-
-    if your_function in functions:
-        if your_function == "add_user":
-            username: str = input("[==>] Enter username: ")
-            password: str = getpass("[==>] Enter password (will not echo): ")
-            group: str = input("[==>] Enter group (optional): ") or None
-            functions[your_function](username, password, group)
-        elif your_function == "remove_user" or your_function == "change_group" or your_function == "view_groups":
-            username: str = input("[==>] Enter username: ")
-            if your_function == "change_group":
-                group: str = input("[==>] Enter group: ")
-                functions[your_function](username, group)
-            else:
-                functions[your_function](username)
-        elif your_function in ["list_users", "list_groups"]:
-            functions[your_function]()
+    
+    try:
+        while True:
+            if your_function in functions:
+                if your_function == "add_user":
+                    username: str = input("[==>] Enter username: ")
+                    password: str = getpass("[==>] Enter password (will not echo): ")
+                    group: str = input("[==>] Enter group (optional): ") or None
+                    functions[your_function](username, password, group)
+                elif your_function == "remove_user" or your_function == "change_group" or your_function == "view_groups":
+                    username: str = input("[==>] Enter username: ")
+                    functions[your_function](username)
+         
+                if your_function == "change_group":
+                    group: str = input("[==>] Enter group: ")
+                    functions[your_function](username, group)
+                else:
+                    functions[your_function](username)
+            elif your_function in ["list_users", "list_groups"]:
+                functions[your_function]()
+    except KeyboardInterrupt:
+        print("\n")
+        pass
 
 
 if __name__ == "__main__":
     user_management()
-

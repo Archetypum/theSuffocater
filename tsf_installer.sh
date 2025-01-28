@@ -12,13 +12,11 @@ fi
 source "$TUM_PATH"
 
 function main() {
-	# Main function
+	# [*] MAIN FUNCTION [*]
 	#
 	# Provides functions to install or remove tSF.
 	# Planning to add update && upgrade functionality later.
 	
-	clear
-
 	local OPTION
 
 	echo "+------ Welcome to theSuffocater installer ------+"
@@ -32,7 +30,7 @@ function main() {
 	elif [[ "$OPTION" == "2" ]]; then
 		remove_thesuffocater
 	else
-		echo -e "${RED} Invalid option: $OPTION${RESET}"
+		echo -e "${RED}[!] Invalid option: $OPTION${RESET}"
 		return 1
 	fi
 }
@@ -56,32 +54,42 @@ function install_thesuffocater() {
 	check_privileges
 
 	if [[ -f "install/src/the_carcass_cli.py" ]]; then
-		cp install/src/the_carcass_cli.py /usr/bin/the_carcass_cli.py && echo -e "${GREEN}[==>] Moving theCarcassCLI to /usr/bin...${RESET}"
+		cp install/src/the_carcass_cli.py /usr/bin/the_carcass_cli.py && echo -e "${GREEN}[<==] Moving theCarcassCLI to /usr/bin...${RESET}"
 	fi
 
 	if [[ -f "install/src/the_carcass_gui.py" ]]; then
-		cp install/src/the_carcass_gui.py /usr/bin/the_carcass_gui.py && echo -e "${GREEN}[==>] Moving theCarcassGUI to /usr/bin...${RESET}"
+		cp install/src/the_carcass_gui.py /usr/bin/the_carcass_gui.py && echo -e "${GREEN}[<==] Moving theCarcassGUI to /usr/bin...${RESET}"
+	fi
+
+	if [[ -f "install/src/the_carcass.sh" ]]; then
+		cp install/src/the_carcass.sh /usr/bin/the_carcass.sh && echo -e "${GREEN}[<==] Moving theCarcass-bash to /usr/bin...${RESET}"
 	fi
 	
+	if [[ -d "scripts" ]]; then
+		cp -r scripts ~/.scripts && echo -e "${GREEN}[<==] Moving scripts/ to ~/.scripts...${RESET}"
+	fi
+
 	if [[ -d "install/tsf" ]]; then
-		cp -r  install/tsf /etc/tsf && echo -e "${GREEN}[==>] Moving configurations directory to /etc/tsf...${RESET}"
+		cp -r  install/tsf /etc/tsf && echo -e "${GREEN}[<==] Moving configurations directory to /etc/tsf...${RESET}"
 		mkdir /etc/tsf/markdown
 		cp AUTHORS.md CHANGELOG.md CODE_OF_CONDUCT.md CONTRIBUTING.md LICENSE-GPL.md LICENSE-MIT.md PULL_REQUEST_TEMPLATE.md README.md SECURITY.md /etc/tsf/markdown
 	fi
-
+	
 	if [[ -f "$HOME/.bashrc" ]]; then
 		echo -e "${GREEN}[<==] Creating aliases in ~/.bashrc...${RESET}"
 		echo "alias thesuffocater_cli='bash -c \"source ~/.pkgenv/bin/activate && python3 /usr/bin/the_carcass_cli.py\"'" >> ~/.bashrc
 		echo "alias thesuffocater_gui='bash -c \"source ~/.pkgenv/bin/activate && python3 /usr/bin/the_carcass_gui.py\"'" >> ~/.bashrc
+		echo "alias thesuffocater_bash='bash /usr/bin/the_carcass.sh'" >> ~/.bashrc
 	fi
 
 	if [[ -f "$HOME/.zshrc" ]]; then
 		echo -e "${GREEN}[<==] Creating aliases in ~/.zshrc${RESET}"
 		echo "alias thesuffocater_cli='bash -c \"source ~/.pkgenv/bin/activate && python3 /usr/bin/the_carcass_cli.py\"'" >> ~/.zshrc
 		echo "alias thesuffocater_gui='bash -c \"source ~/.pkgenv/bin/activate && python3 /usr/bin/the_carcass_gui.py\"'" >> ~/.zshrc
+		echo "alias thesuffocater_bash='bash /usr/bin/the_carcass.sh'" >> ~/.bashrc
 	fi
 
-	echo -e "${GREEN}[*] Success!${RESET}"
+	echo -e "${GREEN}\n[*] Successfully installed theSuffocater!${RESET}"
 	return 0
 }
 
@@ -91,10 +99,13 @@ function remove_thesuffocater() {
 	check_privileges
 
 	if prompt_user "[?] Are you sure you want to remove theSuffocater from your system?"; then
-		rm -rf ~/.pkgenv && echo -e "${GREEN}\n[<==] Removing python venv...${RESET}"
-		rm -rf /etc/tsf && echo -e "${GREEN}[<==] Purging configuration files...${RESET}"
-		rm -f /usr/bin/the_carcass_cli.py && echo -e "${GREEN}[<==] Removing theCarcass CLI from /usr/bin...${RESET}"
-		rm -f /usr/bin/the_carcass_gui.py && echo -e "${GREEN}[<==] Removing theCarcass GUI from /usr/bin...${RESET}"
+		rm -rf ~/.pkgenv && echo -e "${BLUE}\n[<==] Removing python venv...${RESET}"
+		rm -rf ~/.scripts && echo -e "${BLUE}[<==] Removing .scripts from $HOME${RESET}"
+		rm -rf /etc/tsf && echo -e "${BLUE}[<==] Purging configuration files...${RESET}"
+		rm -f /usr/bin/the_carcass_cli.py && echo -e "${BLUE}[<==] Removing theCarcassCLI from /usr/bin...${RESET}"
+		rm -f /usr/bin/the_carcass_gui.py && echo -e "${BLUE}[<==] Removing theCarcassGUI from /usr/bin...${RESET}"
+		rm -f /usr/bin/the_carcass.sh && echo -e "${BLUE}[<==] Removing theCarcass-bash from /usr/bin...${RESET}"
+
 		echo -e "\n${GREEN}[*] Successfully removed theSuffocater from your system.${RESET}"
 		echo -e "${GREEN}[*] Don't forget to remove aliases from ~/.bashrc and ~/.zshrc${RESET}"
 	else
@@ -108,14 +119,17 @@ function debug() {
 	#
 	# On Alpine Linux needs 'util-linux' package installed.
 	
-	echo -e "${PURPLE}CLI theCarcass:${RESET}"
+	echo -e "${PURPLE}\ntheCarcassCLI:${RESET}"
 	whereis the_carcass_cli.py  # Should be /usr/bin/the_carcass_cli.py
-	echo -e "${PURPLE}GUI theCarcass:${RESET}"
+	echo -e "${PURPLE}theCarcassGUI:${RESET}"
 	whereis the_carcass_gui.py  # Should be /usr/bin/the_carcass_gui.py
 	echo -e "${PURPLE}tSF configs:${RESET}"
 	whereis tsf  # Should be /etc/tsf
+	echo -e "${PURPLE}theCarcass-bash:${RESET}"
+	whereis the_carcass.sh  # Should be /usr/bin/the_carcass.sh
 	echo -e "${PURPLE}TheUnixManager-bash:${RESET}"
 	whereis the_unix_manager.sh  # Should be /usr/bin/the_unix_manager.sh
+	echo ""
 }
 
 function clone_unstable_repository() {
@@ -123,7 +137,7 @@ function clone_unstable_repository() {
 	#
 	# Requires git. Huh.
 	
-	echo -e "${GREEN}\n[==>] Cloning repository...\n${RESET}"
+	echo -e "${BLUE}\n[==>] Cloning repository...\n${RESET}"
 	git clone https://github.com/Archetypum/theSuffocater theSuffocater-unstable && echo -e "${GREEN}\n[*] Success!${RESET}"
 }
 
