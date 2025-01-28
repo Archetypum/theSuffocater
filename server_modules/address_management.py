@@ -44,7 +44,7 @@ def get_valid_interfaces() -> list:
     Gets user interfaces through listing '/sys/class/net' or by user input.
 
     Returns:
-        None: None.
+        list: List of interfaces.
     """
 
     interfaces: list = []
