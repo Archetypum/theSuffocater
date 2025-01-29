@@ -68,7 +68,7 @@ def change_mac() -> None:
     Requires 'ifconfig' installed on the system.
 
     Returns:
-        None: None.
+        None: [null].
     """
 
     print("We are going to change the system's MAC address.")
@@ -110,7 +110,7 @@ def change_lan_ip() -> None:
     Requires 'ifconfig' or 'iproute2' installed on the system.
 
     Returns:
-        None: None.
+        None: [null].
     """
 
     print("We are going to change the local IP address.")
