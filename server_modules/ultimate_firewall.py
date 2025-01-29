@@ -25,7 +25,14 @@ except ModuleNotFoundError as import_error:
 
 def toggle_interfaces(state: str, interfaces: List[str]) -> None:
     """
+    Toggles provided interface with provided state.
 
+    Args:
+        state (str): State which interface needs to be in.
+        interfaces (List[str]): Provided system interfaces.
+
+    Returns:
+        None: [null].
     """
 
     for interface in interfaces:
@@ -38,7 +45,13 @@ def toggle_interfaces(state: str, interfaces: List[str]) -> None:
 
 def toggle_gnulinux_firewall(enable: bool) -> None:
     """
+    Toggles the default iptables policy for INPUT and OUTPUT.
 
+    Args:
+        enable (bool): True to set policy to ACCEPT, False to set to DROP.
+
+    Returns:
+        None: [null].
     """
 
     action: str = "ACCEPT" if enable else "DROP"
@@ -52,7 +65,10 @@ def toggle_gnulinux_firewall(enable: bool) -> None:
 
 def drop_firewall() -> None:
     """
+    Drops all network traffic and disables radio interfaces.
 
+    Returns:
+        None: [null].
     """
 
     interfaces: list = ["wlan0", "eth0"]
@@ -72,7 +88,10 @@ def drop_firewall() -> None:
 
 def accept_firewall() -> None:
     """
+    Enables network traffic and radio interfaces.
 
+    Returns:
+        None: [null].
     """
 
     try:
@@ -89,7 +108,10 @@ def accept_firewall() -> None:
 
 def iptables_setup() -> None:
     """
+    Sets up basic iptables rules to secure a machine.
 
+    Returns:
+        None: [null].
     """
 
     print("We are going to set up basic iptables rules to secure your machine.")
@@ -134,7 +156,15 @@ def iptables_setup() -> None:
 
 def handle_ufw(ip_addresses: list, action: str, init_system: str) -> None:
     """
+    Adds or removes UFW rules for IP addresses, enables the UFW service, and reloads it.
 
+    Args:
+        ip_addresses (list): List of IP addresses to apply rules to.
+        action (str): The UFW action to perform.
+        init_system (str): The system init system.
+
+    Returns:
+        None: [null]
     """
 
     try:
@@ -152,7 +182,10 @@ def handle_ufw(ip_addresses: list, action: str, init_system: str) -> None:
 
 def no_spying() -> None:
     """
+    Blocks connections to known IP addresses of big companies, datacenters, and ISPs.
 
+    Returns:
+        None: [null].
     """
 
     init_system: str = tum.get_init_system()
@@ -198,7 +231,10 @@ def no_spying() -> None:
 
 def porter() -> None:
     """
+    Manages ports using UFW.
 
+    Returns:
+        None: [null].
     """
 
     active_ports: bytes = subprocess.check_output(["lsof", "-i", "-P", "-n", "|", "grep", "LISTEN"], shell=True)
