@@ -45,7 +45,7 @@ def get_ip_details(ip_address: str = None) -> None:
         ip_address (str): Target IP address. 
 
     Returns:
-        None: Nothing.
+        None: [null].
     """
 
     if ip_address is None:
