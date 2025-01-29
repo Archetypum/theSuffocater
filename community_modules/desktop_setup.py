@@ -30,7 +30,7 @@ def install_nvidia_free() -> None:
     Installs NVIDIA nouveau drivers.
 
     Returns:
-        None: None.
+        None: [null].
     """
 
     distro: str = tum.get_user_distro()
@@ -61,7 +61,7 @@ def install_nvidia_proprietary() -> None:
     Installs proprietary NVIDIA drivers.
 
     Returns:
-        None: None.
+        None: [null].
     """
 
     distro: str = tum.get_user_distro()
@@ -81,7 +81,7 @@ def install_x11() -> None:
     Installs X11-server, install ttf-fonts and adds user to 'video' group if he wishes.
 
     Returns:
-        None: None.
+        None: [null].
     """
     
     distro: str = tum.get_user_distro()
@@ -112,7 +112,7 @@ def install_dm_wm_de() -> None:
     Installs popular Display Managers, Window Managers, and Desktop Enviroments.
 
     Returns:
-        None: None.
+        None: [null].
     """
     
     distro: str = tum.get_user_distro()
