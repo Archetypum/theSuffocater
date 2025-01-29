@@ -27,7 +27,7 @@ def backup_files() -> None:
     Backs up files and directories from a source to a backup directory.
 
     Returns:
-        None: None.
+        None: [null].
     """
 
     source_directory: str = input('[==>] Enter the source directory: ')
@@ -73,7 +73,7 @@ def backup_database() -> None:
     Backs up a database file from a source to a backup directory.
 
     Returns:
-        None: None.
+        None: [null].
     """
    
     database_path: str = input("[==>] Enter the path to the source database file: ")
