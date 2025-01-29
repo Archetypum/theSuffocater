@@ -29,7 +29,7 @@ def install_tor() -> None:
     Installs Tor and Tor Browser on the user's machine.
 
     Returns:
-        None: None.
+        None: [null].
     """
 
     distro: str = tum.get_user_distro()
@@ -57,7 +57,7 @@ def snowflake_setup_debian() -> None:
     Sets up a Snowflake proxy on Debian-based systems.
 
     Returns:
-        None: None.
+        None: [null].
     """
 
     distro: str = tum.get_user_distro()
@@ -94,7 +94,7 @@ def snowflake_setup_freebsd() -> None:
     Sets up a Snowflake proxy on FreeBSD-based systems.
 
     Returns:
-        None: None.
+        None: [null].
     """
 
     distro: str = tum.get_user_distro()
@@ -125,7 +125,7 @@ def snowflake_setup_docker() -> None:
     Sets up a Snowflake proxy using Docker.
 
     Returns:
-        None: None.
+        None: [null].
     """
 
     distro: str = tum.get_user_distro()
@@ -164,7 +164,7 @@ def torify_apt_devuan() -> None:
     Configures apt to use Tor on Devuan-based systems.
 
     Returns:
-        None: None.
+        None: [null].
     """
 
     distro: str = tum.get_user_distro()
@@ -203,7 +203,7 @@ def torify_apt_debian() -> None:
     Configures apt to use Tor on Debian-based systems.
 
     Returns:
-        None: None.
+        None: [null].
     """
 
     distro: str = tum.get_user_distro()
@@ -233,7 +233,7 @@ def obfs4_bridge_debian() -> None:
     Sets up an obfs4 bridge on Debian-based systems.
 
     Returns:
-        None: None.
+        None: [null].
     """
 
     print("We are going to setup docker obfs4 bridge to help censored users connect to the Tor network.")
@@ -273,7 +273,7 @@ def obfs4_bridge_arch() -> None:
     Sets up an obfs4 bridge on Arch-based systems.
 
     Returns:
-        None: None.
+        None: [null].
     """
 
     print("We are going to setup docker obfs4 bridge to help censored users connect to the Tor network.")
@@ -318,7 +318,7 @@ def obfs4_bridge_void() -> None:
     Sets up an obfs4 bridge on Void-based systems.
 
     Returns:
-        None: None.
+        None: [null].
     """
 
     print("We are going to setup docker obfs4 bridge to help censored users connect to the Tor network.")
@@ -358,7 +358,7 @@ def obfs4_bridge_freebsd() -> None:
     Sets up an obfs4 bridge on FreeBSD-based systems.
 
     Returns:
-        None: None.
+        None: [null].
     """
 
     print("We are going to setup docker obfs4 bridge to help censored users connect to the Tor network.")
@@ -402,7 +402,7 @@ def obfs4_bridge_openbsd() -> None:
     Sets up an obfs4 bridge on OpenBSD-based systems.
 
     Returns:
-        None: None.
+        None: [null].
     """
 
     print("We are going to setup docker obfs4 bridge to help censored users connect to the Tor network.")
@@ -451,7 +451,7 @@ def obfs4_bridge_netbsd() -> None:
     Sets up an obfs4 bridge on NetBSD-based systems.
 
     Returns:
-        None: None.
+        None: [null].
     """
 
     print("We are going to setup docker obfs4 bridge to help censored users connect to the Tor network.")
@@ -497,7 +497,7 @@ def obfs4_bridge_docker() -> None:
     Sets up an obfs4 bridge using Docker.
 
     Returns:
-        None: None.
+        None: [null].
     """
 
     distro: str = tum.get_user_distro()
