@@ -27,7 +27,7 @@ def enable_auto_updates() -> None:
     Debian-based distro required.
 
     Returns:
-        None: None.
+        None: [null].
     """
 
     print("\nAutomatic updates help ensure your system is always protected with the latest security patches and improvements.")
@@ -57,7 +57,7 @@ def disable_auto_updates() -> None:
     Debian-based distro required.
 
     Returns:
-        None: None.
+        None: [null].
     """
 
     print("\nDisabling automatic updates will stop your system from automatically checking for and installing updates.")
@@ -82,7 +82,7 @@ def enable_debian_backports() -> None:
     Debian-based distro required.
 
     Returns:
-        None: None.
+        None: [null].
     """
 
     print("\nBackports are packages taken from the next Debian release (called 'testing'), adjusted and recompiled for usage on Debian stable.")
@@ -110,7 +110,7 @@ def add_i386() -> None:
     Debian-based distro required.
 
     Returns:
-        None: None.
+        None: [null].
     """
 
     print("\nSome specific software requires 32-bit libraries to work.")
