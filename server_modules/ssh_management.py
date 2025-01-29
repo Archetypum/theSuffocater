@@ -32,7 +32,7 @@ def ssh_keygen() -> None:
     Supported keys: rsa, dsa, ecdsa, ed25519.
 
     Returns:
-        None: None.
+        None: [null].
     """
         
     key_type: str = input("[==>] Select key type (rsa, dsa, ecdsa, ed25519) [default]: ")
@@ -84,7 +84,7 @@ def ssh_logging() -> None:
     Logs SSH connections to local machine.
 
     Returns:
-        None: None.
+        None: [null].
     """
 
     print("\nWe are going to log SSH connections to your device.")
@@ -138,7 +138,7 @@ def safe_ssh_setup() -> None:
     Installs OpenSSH-Client and OpenSSH-server, and then modifies the /etc/ssh/sshd_config.
 
     Returns:
-        None: None.
+        None: [null].
     """
 
     distro: str = tum.get_user_distro()
