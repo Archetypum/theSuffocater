@@ -43,7 +43,7 @@ def create_jail_copy() -> None:
     Creates a copy of 'jail.conf' named 'jail.local'.
 
     Returns:
-        None: None.
+        None: [null].
     """
 
     print("We are going to create a copy of 'jail.conf' with name 'jail.local'.")
@@ -64,10 +64,10 @@ def create_jail_copy() -> None:
 
 def ssh_bruteforce() -> None:
     """
-    Configures fail2ban to prevent SSH brute force attacks.
+    Configures fail2ban to prevent SSH bruteforce attacks.
 
     Returns:
-        None: None.
+        None: [null].
     """
 
     init_system: str = tum.get_init_system()
@@ -104,7 +104,7 @@ def ftp_bruteforce() -> None:
     Configures fail2ban to prevent FTP brute force attacks.
 
     Returns:
-        None: None.
+        None: [null].
     """
 
     print("We are going to configure fail2ban to prevent FTP bruteforce.")
