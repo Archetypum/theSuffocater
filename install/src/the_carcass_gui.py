@@ -15,7 +15,6 @@ try:
     import sys
     import inspect
     import tkinter as tk
-    from tkinter import *
     import importlib.util
     import the_unix_manager as tum
     from subprocess import run, CalledProcessError
