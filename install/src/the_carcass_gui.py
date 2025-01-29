@@ -15,6 +15,7 @@ try:
     import sys
     import inspect
     import tkinter as tk
+    from tkinter import *
     import importlib.util
     import the_unix_manager as tum
     from subprocess import run, CalledProcessError
@@ -83,13 +84,13 @@ def the_suffocater_documentation(root) -> None:
         messagebox.showerror(f"{RED}[!] Error: Could not open terminal.{RESET}")          
 
 
-def import_modules(root, left_frame) -> None:
-    directory_path = simpledialog.askstring("Enter modules directory path (e.g /home/$USER/Desktop/my_python_modules)", "[==>] ", parent=root)
+def import_modules(root, left_frame, right_frame, top_frame) -> None:
+    directory_path: str = simpledialog.askstring("Enter modules directory path (e.g /home/$USER/Desktop/my_python_modules)", "[==>] ", parent=root)
     if not os.path.isdir(directory_path):
         messagebox.showerror(f"{RED}[!] Error: Not a directory.{RESET}", parent=root)
     
     import_functions_from_directory(root, directory_path)
-    create_module_buttons(root, left_frame)
+    create_module_buttons(root, left_frame, right_frame, top_frame)
 
 
 def list_imported_modules(root, show_docs: bool = False) -> None:
@@ -119,7 +120,7 @@ def list_imported_modules(root, show_docs: bool = False) -> None:
 
 
 def import_functions_from_directory(root, directory_path: str) -> None:
-    for filename in os.listdir(directory_path):
+   for filename in os.listdir(directory_path):
         if filename.endswith(".py"):
             file_path: str = os.path.join(directory_path, filename)
             try:
@@ -145,18 +146,41 @@ def import_functions_from_directory(root, directory_path: str) -> None:
                 messagebox.showerror(f"{RED}[!] Error: Can't import module from {file_path}:\n{module_import_error}{RESET}", parent=root)
 
 
-def show_module_info(root, left_frame, module_name: str) -> None:
+def import_modules_from_config() -> None:
+    config_file_path: str = "/etc/tsf/module_configs/import_py.conf"
+    if not os.path.exists(config_file_path):
+        messagebox.showerror(f"[!]", "Configuration file 'import_py.conf' not found!")
+        return
+    
+    try:
+        with open(config_file_path, "r") as config_file:
+            module_paths: list = config_file.readlines()
+        
+        module_paths: list = [path.strip() for path in module_paths if path.strip()] 
+        if not module_paths:
+           messagebox.showerror(f"[!]", "No module paths found in 'import_py.conf'.")
+
+        for directory_path in module_paths:
+            if not os.path.isdir(directory_path):
+               messagebox.showerror(f"[!]", '{directory_path}' "is not a valid directory.")
+
+            import_functions_from_directory(directory_path)
+    except IOError as processing_error:
+        messagebox.showerror(f"[!]", "Error while reading or processing the config file: {processing_error}")
+
+
+def show_module_info(root, left_frame, right_frame, top_frame, module_name: str) -> None:
     for widget in root.winfo_children():
-        if isinstance(widget, tk.Frame) and widget != left_frame:
+        if isinstance(widget, tk.Frame) and widget != left_frame and widget != right_frame and widget != top_frame:
             widget.destroy()
 
     central_frame = tk.Frame(root, bg="grey24")
-    central_frame.pack(side="top", expand=True)
+    central_frame.pack(side="left", fill="both", expand=True)
 
     module_label = tk.Label(central_frame, text=f"Module: {module_name}", font=("Helvetica", 18), fg="white", bg="grey24")
     module_label.pack(pady=20)
 
-    launch_button = tk.Button(central_frame, text="Launch", bg="green", fg="white", command=lambda: launch_module(module_name))
+    launch_button = tk.Button(central_frame, text="Launch", width=30, bg="green", fg="white", command=lambda: launch_module(module_name))
     launch_button.pack(pady=20)
 
 
@@ -170,14 +194,15 @@ def launch_module(module_name: str) -> None:
             break
 
 
-def create_module_buttons(root, left_frame) -> None:
-
+def create_module_buttons(root, left_frame, right_frame, top_frame) -> None:
     for widget in left_frame.winfo_children():
         widget.destroy()
 
     for module_path, module_info in loaded_modules.items():
         module_name = os.path.basename(module_path)
-        button = tk.Button(left_frame, text=module_name, width=20, bg="grey24", fg="white", command=lambda m=module_name: show_module_info(root, left_frame, m))
+        
+        button = tk.Button(left_frame, text=module_name, width=20, bg="grey24", fg="white",
+            command=lambda m=module_name: show_module_info(root, left_frame, right_frame, top_frame, m))
         button.pack(side="top", padx=5, pady=5)
 
 
@@ -185,12 +210,12 @@ def the_carcass_gui(the_global_version: str) -> None:
     global root
     root = tk.Tk()
     root.title("theSuffocater")
-    root.geometry("700x500")
+    root.geometry("800x500")
     root.config(bg="grey24")
-
     
+
     def import_m() -> None:
-        import_modules(root, left_frame)
+        import_modules(root, left_frame, right_frame, top_frame)
 
     
     def exit() -> None:
@@ -247,5 +272,6 @@ if __name__ == "__main__":
             "documentation": the_suffocater_documentation,
             "global_version": the_suffocater_version_string and the_carcass_version_string
     }
-    tum.clear_screen()
+
+    import_modules_from_config()
     the_carcass_gui(the_global_version)
