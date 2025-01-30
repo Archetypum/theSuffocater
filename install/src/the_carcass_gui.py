@@ -70,18 +70,6 @@ def the_suffocater_documentation(root) -> None:
     except (FileNotFoundError, CalledProcessError):
         print(f"{RED}[!] Error: 'README.md' file not found. Broken installation?")
 
-    try:
-        if "GNOME" in os.environ.get("XDG_CURRENT_DESKTOP", ""):
-            run(["gnome-terminal", "--", "bash", "-c", "cat README.md; exec bash"], check=True)
-        elif "KDE" in os.environ.get("XDG_CURRENT_DESKTOP", ""):
-            run(["konsole", "-e", "bash", "-c", "cat README.md; exec bash"], check=True)
-        elif "XFCE" in os.environ.get("XDG_CURRENT_DESKTOP", ""):
-            run(["xfce4-terminal", "-e", "bash -c 'cat README.md; exec bash'"], check=True)
-        else:
-            messagebox.showerror(f"{RED}[!] Error: 'README.md' file not found. Broken installation?{RESET}")
-    except (FileNotFoundError, CalledProcessError):
-        messagebox.showerror(f"{RED}[!] Error: Could not open terminal.{RESET}")          
-
 
 def import_modules(root, left_frame, right_frame, top_frame) -> None:
     directory_path: str = simpledialog.askstring("Enter modules directory path (e.g /home/$USER/Desktop/my_python_modules)", "[==>] ", parent=root)
