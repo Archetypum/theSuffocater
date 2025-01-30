@@ -236,7 +236,7 @@ def the_carcass_gui(the_global_version: str) -> None:
     try:
         icon = PhotoImage(file=icon_path)
         root.iconphoto(True, icon) 
-    except Exception as e:
+    except FileNotFoundError as error:
         messagebox.showerror("[!]", "Error can't find the icon.")
 
 
