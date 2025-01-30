@@ -18,7 +18,7 @@ try:
     import importlib.util
     import the_unix_manager as tum
     from subprocess import run, CalledProcessError
-    from tkinter import messagebox, scrolledtext, simpledialog
+    from tkinter import messagebox, scrolledtext, simpledialog, PhotoImage
     from the_unix_manager import GREEN, RED, PURPLE, BLACK, WHITE, YELLOW, ORANGE, BLUE, RESET
 except ModuleNotFoundError as import_error:
     print(f"[!] Error: Modules not found. Broken installation?\n\n{import_error}")
@@ -184,12 +184,17 @@ def show_module_info(root, left_frame, right_frame, top_frame, module_name: str)
 
 
 def launch_module(module_name: str) -> None:
-    for module_path, module_info in loaded_modules.items():
+   for module_path, module_info in loaded_modules.items():
+       
         if os.path.basename(module_path) == module_name:
             print(f"Launching {module_name}")
 
-            for func_name, func_doc in module_info["functions"].items():
-                default_modules[func_name]() 
+            main_func_name = os.path.splitext(module_name)[0]
+           
+            if main_func_name in module_info["functions"]:
+                default_modules[main_func_name]()
+            else:
+                messagebox.showerror("[!]", "Main function not found.")
             break
 
 
@@ -197,12 +202,26 @@ def create_module_buttons(root, left_frame, right_frame, top_frame) -> None:
     for widget in left_frame.winfo_children():
         widget.destroy()
 
+    canvas = tk.Canvas(left_frame, bg="grey20", width=200)
+    canvas.pack(side="left", fill="y")
+
+    scrollbar = tk.Scrollbar(left_frame, bg="grey20", orient="vertical", command=canvas.yview)
+    scrollbar.pack(side="right", fill="y")
+
+    canvas.config(yscrollcommand=scrollbar.set)
+
+    button_frame = tk.Frame(canvas, bg="grey24")
+    canvas.create_window((0, 0), window=button_frame, anchor="nw")
+
     for module_path, module_info in loaded_modules.items():
         module_name = os.path.basename(module_path)
         
-        button = tk.Button(left_frame, text=module_name, width=20, bg="grey24", fg="white",
+        button = tk.Button(button_frame, text=module_name, width=20, bg="grey24", fg="white",
             command=lambda m=module_name: show_module_info(root, left_frame, right_frame, top_frame, m))
         button.pack(side="top", padx=5, pady=5)
+
+    button_frame.update_idletasks()
+    canvas.config(scrollregion=canvas.bbox("all"))
 
 
 def the_carcass_gui(the_global_version: str) -> None:
@@ -212,6 +231,14 @@ def the_carcass_gui(the_global_version: str) -> None:
     root.geometry("800x500")
     root.config(bg="grey24")
     
+    icon_path = "/etc/tsf/media/thesuffocater_logo.png"
+    
+    try:
+        icon = PhotoImage(file=icon_path)
+        root.iconphoto(True, icon) 
+    except Exception as e:
+        messagebox.showerror("[!]", "Error can't find the icon.")
+
 
     def import_m() -> None:
         import_modules(root, left_frame, right_frame, top_frame)
