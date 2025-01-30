@@ -31,8 +31,10 @@ try:
     the_suffocater_contributors: float = 3.5
     current_directory: str = os.path.dirname(__file__)
     loaded_modules: dict = {}
+
     with open("/etc/tsf/versions/tsf_version.txt", "r") as tsf_version_file:
         the_suffocater_version_string: str = tsf_version_file.read().strip()
+
     with open("/etc/tsf/versions/tc_version.txt", "r") as tc_version_file:
         the_carcass_version_string: str = tc_version_file.read().strip()
 except FileNotFoundError as variable_error:
@@ -46,36 +48,26 @@ def final_exit(root) -> None:
     root.quit()
 
 
+def get_markdown(preferred_text_editor, document: str = None) -> None:
+    try:
+        if document is None:
+            print(f"{RED}[!] Error: Document not specified.{RESET}")
+        else:
+            run([f"{preferred_text_editor}", f"/etc/tsf/markdown/{document}"], check=True)
+    except (FileNotFoundError, CalledProcessError):
+        messagebox.showerror(f"{RED}[!] Error{RESET}", "'{document}' file not found. Broken installation?")
+
+
 def the_global_version(root) -> None:
-    messagebox.showinfo("version", f"Current theSuffocater version - {the_suffocater_version_string} \nCurrent theCarcass version - {the_carcass_version_string}")
-
-
-def the_suffocater_license(root) -> None:
-    try:
-        run(["less", "LICENSE-GPL.md"], check=True)
-    except (FileNotFoundError, CalledProcessError):
-        print(f"{RED}[!] Error: 'LICENSE.md' file not found. Broken installation?")
-
-
-def the_suffocater_changelog(root) -> None:
-    try:
-        run(["less", "CHANGELOG.md"], check=True)
-    except (FileNotFoundError, CalledProcessError):
-        print(f"{RED}[!] Error: 'CHANGELOG.md' file not found. Broken installation?")
-
-
-def the_suffocater_documentation(root) -> None:
-    try:
-        run(["less", "README.md"], check=True)
-    except (FileNotFoundError, CalledProcessError):
-        print(f"{RED}[!] Error: 'README.md' file not found. Broken installation?")
+    messagebox.showinfo("Version", f"Current theSuffocater version - {the_suffocater_version_string} \nCurrent theCarcass version - {the_carcass_version_string}")
 
 
 def import_modules(root, left_frame, right_frame, top_frame) -> None:
     directory_path: str = simpledialog.askstring("Enter modules directory path (e.g /home/$USER/Desktop/my_python_modules)", "[==>] ", parent=root)
     if not os.path.isdir(directory_path):
         messagebox.showerror(f"{RED}[!] Error: Not a directory.{RESET}", parent=root)
-    
+        return
+
     import_functions_from_directory(root, directory_path)
     create_module_buttons(root, left_frame, right_frame, top_frame)
 
@@ -173,12 +165,10 @@ def show_module_info(root, left_frame, right_frame, top_frame, module_name: str)
 
 def launch_module(module_name: str) -> None:
    for module_path, module_info in loaded_modules.items():
-       
-        if os.path.basename(module_path) == module_name:
+       if os.path.basename(module_path) == module_name:
             print(f"Launching {module_name}")
 
             main_func_name = os.path.splitext(module_name)[0]
-           
             if main_func_name in module_info["functions"]:
                 default_modules[main_func_name]()
             else:
@@ -244,16 +234,28 @@ def the_carcass_gui(the_global_version: str) -> None:
         the_global_version(root)
 
     
+    def text_editor() -> str:
+        editor = simpledialog.askstring("[==>]", "Enter the preferred text editor:")
+        return editor if editor else "less"
+
+
     def documentation() -> None:
-        the_suffocater_documentation(root)
+        preferred_text_editor = text_editor()
+        document = "README.md"
+        get_markdown(preferred_text_editor, document)
 
-    
+
     def license() -> None:
-        the_suffocater_license(root)
+        preferred_text_editor = text_editor()
+        document = "LICENSE-GPL.md"
+        get_markdown(preferred_text_editor, document)
 
-    
-    def changelod() -> None:
-        the_suffocater_changelog(root)
+
+    def changelog() -> None:
+        preferred_text_editor = text_editor()
+        document = "CHANGELOG.md"
+        get_markdown(preferred_text_editor, document)
+
 
     top_frame = tk.Frame(root, bg="grey29")
     top_frame.pack(side="top", fill="x")
@@ -270,7 +272,7 @@ def the_carcass_gui(the_global_version: str) -> None:
     tk.Button(right_frame, text="Version", width=20, command=version).pack(side="top",padx=5, pady=5)
     tk.Button(right_frame, text="Documentation", width=20, command=documentation).pack(side="top",padx=5, pady=5)
     tk.Button(right_frame, text="License", width=20, command=license).pack(side="top",padx=5, pady=5)
-    tk.Button(right_frame, text="Changelog", width=20, command=changelod).pack(side="top",padx=5, pady=5)
+    tk.Button(right_frame, text="Changelog", width=20, command=changelog).pack(side="top",padx=5, pady=5)
 
     root.mainloop()
 
@@ -281,9 +283,9 @@ if __name__ == "__main__":
             "import": import_modules,
             "modules": list_imported_modules,
             "modules -d": lambda: list_imported_modules(show_docs=True),
-            "license": the_suffocater_license,
-            "changelog": the_suffocater_changelog,
-            "documentation": the_suffocater_documentation,
+            "license": lambda: get_markdown(document="LICENSE-GPL.md"),
+            "changelog": lambda: get_markdown(document="CHANGELOG.md"),
+            "documentation": lambda: get_markdown(document="README.md"),
             "global_version": the_suffocater_version_string and the_carcass_version_string
     }
 
