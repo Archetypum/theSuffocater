@@ -73,7 +73,7 @@ def get_markdown(preferred_text_editor, document: str = None) -> None:
         else:
             run([f"{preferred_text_editor}", f"/etc/tsf/markdown/{document}"], check=True)
     except (FileNotFoundError, CalledProcessError):
-        messagebox.showerror(f"[!] Error", "File not found. Broken installation?")
+        messagebox.showerror("[!] Error", "File not found. Broken installation?")
 
 
 def the_global_version(root) -> None:
