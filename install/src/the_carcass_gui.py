@@ -45,34 +45,82 @@ finally:
 
 
 def final_exit(root) -> None:
+    """
+    Exits theSuffocater.
+
+    Returns:
+        None: None.
+    """
+
     root.quit()
 
 
 def get_markdown(preferred_text_editor, document: str = None) -> None:
+    """
+    Gets Markdown documents from '/etc/tsf/markdown' and prints them with 'less' command.
+
+    Args:
+        document (str): Document specified by user. 'LICENSE.md', 'DOCUMENTATION.md', 'CHANGELOG.md' are available.
+        None by default
+
+    Returns:
+        None: None.
+    """
+
     try:
         if document is None:
             print(f"{RED}[!] Error: Document not specified.{RESET}")
         else:
             run([f"{preferred_text_editor}", f"/etc/tsf/markdown/{document}"], check=True)
     except (FileNotFoundError, CalledProcessError):
-        messagebox.showerror("[!] Error", "File not found. Broken installation?")
+        messagebox.showerror(f"[!] Error", "File not found. Broken installation?")
 
 
 def the_global_version(root) -> None:
+    """
+    Gets version files from '/etc/tsf/versions' (at the top of theCarcass) and prints them.
+
+    Args:
+        the_suffocater_version_string and the_carcass_version_string.
+
+    Returns:
+        None: None.
+    """
+
     messagebox.showinfo("Version", f"Current theSuffocater version - {the_suffocater_version_string} \nCurrent theCarcass version - {the_carcass_version_string}")
 
 
 def import_modules(root, left_frame, right_frame, top_frame) -> None:
+    """
+    Gets path, then imports modules.
+    
+    Args:
+        root, left_frame, right_frame, top_frame: parts of graphics.
+
+    Returns:
+        None: None.
+    """
+
     directory_path: str = simpledialog.askstring("Enter modules directory path (e.g /home/$USER/Desktop/my_python_modules)", "[==>] ", parent=root)
     if not os.path.isdir(directory_path):
-        messagebox.showerror(f"{RED}[!] Error: Not a directory.{RESET}", parent=root)
+        messagebox.showerror("[!] Error", "Not a directory.", parent=root)
         return
 
     import_functions_from_directory(root, directory_path)
-    create_module_buttons(root, left_frame, right_frame, top_frame)
+    module_buttons(root, left_frame, right_frame, top_frame)
 
 
 def list_imported_modules(root, show_docs: bool = False) -> None:
+    """
+    Lists imported modules and docstrings.
+
+    Args:
+        root, show_docs (bool): If enabled, prints function docstrings too.
+
+    Returns:
+        None: None.
+    """
+
     info_window = tk.Toplevel(root)
     info_window.title("Imported Modules")
 
@@ -99,7 +147,18 @@ def list_imported_modules(root, show_docs: bool = False) -> None:
 
 
 def import_functions_from_directory(root, directory_path: str) -> None:
-   for filename in os.listdir(directory_path):
+    """
+    Imports python file functions and docstrings from specified directory
+    for further usage in theSuffocater.
+
+    Args:
+        root, directory_path (str): Path to directory with .py files.
+
+    Returns:
+        None: None.
+    """
+    
+    for filename in os.listdir(directory_path):
         if filename.endswith(".py"):
             file_path: str = os.path.join(directory_path, filename)
             try:
@@ -122,10 +181,21 @@ def import_functions_from_directory(root, directory_path: str) -> None:
                        default_modules[name] = obj
 
             except FileNotFoundError as module_import_error:
-                messagebox.showerror(f"{RED}[!] Error: Can't import module from {file_path}:\n{module_import_error}{RESET}", parent=root)
+                messagebox.showerror("[!] Error", "Can't import module.", parent=root)
+                return
 
 
 def import_modules_from_config() -> None:
+    """
+    Import python modules from config file located in '/etc/tsf/module_configs/import_py.conf'
+    using their paths (if exists).
+    
+    Config file is empty by default.
+
+    Returns:
+        None: None.
+    """
+
     config_file_path: str = "/etc/tsf/module_configs/import_py.conf"
     if not os.path.exists(config_file_path):
         messagebox.showerror(f"[!]", "Configuration file 'import_py.conf' not found!")
@@ -137,7 +207,8 @@ def import_modules_from_config() -> None:
         
         module_paths: list = [path.strip() for path in module_paths if path.strip()] 
         if not module_paths:
-           messagebox.showerror(f"[!]", "No module paths found in 'import_py.conf'.")
+            print(f"{RED}[!] Error: No module paths found in 'import_py.conf'.{RESET}")
+            return
 
         for directory_path in module_paths:
             if not os.path.isdir(directory_path):
@@ -146,9 +217,20 @@ def import_modules_from_config() -> None:
             import_functions_from_directory(directory_path)
     except IOError as processing_error:
         messagebox.showerror(f"[!]", "Error while reading or processing the config file: {processing_error}")
+        return
 
 
 def show_module_info(root, left_frame, right_frame, top_frame, module_name: str) -> None:
+    """
+    Displays modules and information about them in the GUI.
+
+    Args:
+        root, left_frame, right_frame, top_frame, module_name (str).
+    
+    Returns:
+        None: None.
+    """
+
     for widget in root.winfo_children():
         if isinstance(widget, tk.Frame) and widget != left_frame and widget != right_frame and widget != top_frame:
             widget.destroy()
@@ -164,7 +246,17 @@ def show_module_info(root, left_frame, right_frame, top_frame, module_name: str)
 
 
 def launch_module(module_name: str) -> None:
-   for module_path, module_info in loaded_modules.items():
+    """
+    Launches modules and their main functions.
+
+    Args:
+        module_name (str)
+    
+    Returns:
+        None: None.
+    """
+
+    for module_path, module_info in loaded_modules.items():
        if os.path.basename(module_path) == module_name:
             print(f"Launching {module_name}")
 
@@ -176,7 +268,17 @@ def launch_module(module_name: str) -> None:
             break
 
 
-def create_module_buttons(root, left_frame, right_frame, top_frame) -> None:
+def module_buttons(root, left_frame, right_frame, top_frame) -> None:
+    """
+    Creates module buttons, slider and many other graphic elements.
+
+    Args:
+        root, left_frame, right_frame, top_frame.
+    
+    Returns:
+        None: None.
+    """
+
     for widget in left_frame.winfo_children():
         widget.destroy()
 
@@ -203,6 +305,10 @@ def create_module_buttons(root, left_frame, right_frame, top_frame) -> None:
 
 
 def the_carcass_gui(the_global_version: str) -> None:
+    """
+    [*] MAIN FUNCTION [*]
+    """
+
     global root
     root = tk.Tk()
     root.title("theSuffocater")
@@ -216,6 +322,7 @@ def the_carcass_gui(the_global_version: str) -> None:
         root.iconphoto(True, icon) 
     except FileNotFoundError as error:
         messagebox.showerror("[!]", "Error can't find the icon.")
+        return
 
 
     def import_m() -> None:
