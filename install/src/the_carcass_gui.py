@@ -49,7 +49,7 @@ def final_exit(root) -> None:
     Exits theSuffocater.
 
     Returns:
-        None: None.
+        None: [null].
     """
 
     root.quit()
@@ -64,7 +64,7 @@ def get_markdown(preferred_text_editor, document: str = None) -> None:
         None by default
 
     Returns:
-        None: None.
+        None: [null].
     """
 
     try:
@@ -84,7 +84,7 @@ def the_global_version(root) -> None:
         the_suffocater_version_string and the_carcass_version_string.
 
     Returns:
-        None: None.
+        None: [null].
     """
 
     messagebox.showinfo("Version", f"Current theSuffocater version - {the_suffocater_version_string} \nCurrent theCarcass version - {the_carcass_version_string}")
@@ -98,7 +98,7 @@ def import_modules(root, left_frame, right_frame, top_frame) -> None:
         root, left_frame, right_frame, top_frame: parts of graphics.
 
     Returns:
-        None: None.
+        None: [null].
     """
 
     directory_path: str = simpledialog.askstring("Enter modules directory path (e.g /home/$USER/Desktop/my_python_modules)", "[==>] ", parent=root)
@@ -118,7 +118,7 @@ def list_imported_modules(root, show_docs: bool = False) -> None:
         root, show_docs (bool): If enabled, prints function docstrings too.
 
     Returns:
-        None: None.
+        None: [null].
     """
 
     info_window = tk.Toplevel(root)
@@ -155,7 +155,7 @@ def import_functions_from_directory(root, directory_path: str) -> None:
         root, directory_path (str): Path to directory with .py files.
 
     Returns:
-        None: None.
+        None: [null].
     """
     
     for filename in os.listdir(directory_path):
@@ -193,7 +193,7 @@ def import_modules_from_config() -> None:
     Config file is empty by default.
 
     Returns:
-        None: None.
+        None: [null].
     """
 
     config_file_path: str = "/etc/tsf/module_configs/import_py.conf"
@@ -228,7 +228,7 @@ def show_module_info(root, left_frame, right_frame, top_frame, module_name: str)
         root, left_frame, right_frame, top_frame, module_name (str).
     
     Returns:
-        None: None.
+        None: [null].
     """
 
     for widget in root.winfo_children():
@@ -253,7 +253,7 @@ def launch_module(module_name: str) -> None:
         module_name (str)
     
     Returns:
-        None: None.
+        None: [null].
     """
 
     for module_path, module_info in loaded_modules.items():
@@ -276,7 +276,7 @@ def module_buttons(root, left_frame, right_frame, top_frame) -> None:
         root, left_frame, right_frame, top_frame.
     
     Returns:
-        None: None.
+        None: [null].
     """
 
     for widget in left_frame.winfo_children():
