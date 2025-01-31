@@ -37,7 +37,7 @@ Please consider next rules of writing if you want to help theSuffocater:
 "What OS your code supports here"
 
 Author: "Type author here"
-Date: "Type  date here"
+Date: "Type date here"
 ---------------------------------------
 """
 ```

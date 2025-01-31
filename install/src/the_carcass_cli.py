@@ -252,12 +252,12 @@ def import_modules_from_config() -> None:
         
         module_paths: list = [path.strip() for path in module_paths if path.strip()] 
         if not module_paths:
-            print(f"{RED}[!] Error: No module paths found in 'import_py.conf'.{RESET}")
+            print(f"{ORANGE}[!] Error: No module paths found in 'import_py.conf'.{RESET}")
             return
 
         for directory_path in module_paths:
             if not os.path.isdir(directory_path):
-                print(f"{RED}[!] Error: '{directory_path}' is not a valid directory.{RESET}")
+                print(f"{ORANGE}[!] Error: '{directory_path}' is not a valid directory.{RESET}")
                 continue
             
             import_functions_from_directory(directory_path)

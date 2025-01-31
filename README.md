@@ -10,6 +10,11 @@ but supports systemd, s6, openrc, and launchd as well.
 
 ## Installation of theSuffocater-unstable (as root):
 
+First of all, you need to install **theUnixManager (bash)**.
+Instructions at _https://github.com/Archetypum/theUnixManager-bash_
+
+Then you cant install theSuffocater
+
 ```bash
 git clone https://github.com/Archetypum/theSuffocater
 ```

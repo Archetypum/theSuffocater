@@ -59,6 +59,8 @@ Main changes:
 
 14) Improved documentation.
 
+15) Renamed every .txt file in _install/tsf/module_configs_ with .conf
+
 *) Minor fixes:
     * DRY.
     * Bug fixes.
@@ -72,15 +74,15 @@ Main changes:
       55 unique files.                              
       19 files ignored.
 
-github.com/AlDanial/cloc v 1.96  T=0.04 s (1357.4 files/s, 193642.1 lines/s)
+github.com/AlDanial/cloc v 1.96  T=0.04 s (1254.2 files/s, 184187.3 lines/s)
 -------------------------------------------------------------------------------
 Language                     files          blank        comment           code
 -------------------------------------------------------------------------------
 Bourne Shell                     9            333            188           2426
-Python                          15            694            515           1855
-Markdown                        15            367              0            993
+Python                          15            741            660           1887
+Markdown                        15            370              0            997
 Text                            16             89              0            386
 -------------------------------------------------------------------------------
-SUM:                            55           1483            703           5660
+SUM:                            55           1533            848           5696
 -------------------------------------------------------------------------------
 ```
