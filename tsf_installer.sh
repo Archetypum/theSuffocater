@@ -7,9 +7,9 @@ declare TUM_PATH="/usr/bin/the_unix_manager.sh"
 if [[ ! -f "$TUM_PATH" ]]; then
 	echo "[!] Error: the_unix_manager.sh not found at $TUM_PATH. Please provide the correct path."
 	exit 1
+else
+	source "$TUM_PATH"
 fi
-
-source "$TUM_PATH"
 
 function main() {
 	# [*] MAIN FUNCTION [*]
@@ -54,36 +54,36 @@ function install_thesuffocater() {
 	check_privileges
 
 	if [[ -f "install/src/the_carcass_cli.py" ]]; then
-		cp install/src/the_carcass_cli.py /usr/bin/the_carcass_cli.py && echo -e "${GREEN}[<==] Moving theCarcassCLI to /usr/bin...${RESET}"
+		cp install/src/the_carcass_cli.py /usr/bin/the_carcass_cli.py && echo -e "${BLUE}[<==] Moving theCarcassCLI to /usr/bin...${RESET}"
 	fi
 
 	if [[ -f "install/src/the_carcass_gui.py" ]]; then
-		cp install/src/the_carcass_gui.py /usr/bin/the_carcass_gui.py && echo -e "${GREEN}[<==] Moving theCarcassGUI to /usr/bin...${RESET}"
+		cp install/src/the_carcass_gui.py /usr/bin/the_carcass_gui.py && echo -e "${BLUE}[<==] Moving theCarcassGUI to /usr/bin...${RESET}"
 	fi
 
 	if [[ -f "install/src/the_carcass.sh" ]]; then
-		cp install/src/the_carcass.sh /usr/bin/the_carcass.sh && echo -e "${GREEN}[<==] Moving theCarcass-bash to /usr/bin...${RESET}"
+		cp install/src/the_carcass.sh /usr/bin/the_carcass.sh && echo -e "${BLUE}[<==] Moving theCarcass-bash to /usr/bin...${RESET}"
 	fi
 	
 	if [[ -d "scripts" ]]; then
-		cp -r scripts ~/.scripts && echo -e "${GREEN}[<==] Moving scripts/ to ~/.scripts...${RESET}"
+		cp -r scripts ~/.scripts && echo -e "${BLUE}[<==] Moving scripts/ to ~/.scripts...${RESET}"
 	fi
 
 	if [[ -d "install/tsf" ]]; then
-		cp -r  install/tsf /etc/tsf && echo -e "${GREEN}[<==] Moving configurations directory to /etc/tsf...${RESET}"
+		cp -r  install/tsf /etc/tsf && echo -e "${BLUE}[<==] Moving configurations directory to /etc/tsf...${RESET}"
 		mkdir /etc/tsf/markdown
 		cp AUTHORS.md CHANGELOG.md CODE_OF_CONDUCT.md CONTRIBUTING.md LICENSE-GPL.md LICENSE-MIT.md PULL_REQUEST_TEMPLATE.md README.md SECURITY.md /etc/tsf/markdown
 	fi
 	
 	if [[ -f "$HOME/.bashrc" ]]; then
-		echo -e "${GREEN}[<==] Creating aliases in ~/.bashrc...${RESET}"
+		echo -e "${BLUE}[<==] Creating aliases in ~/.bashrc...${RESET}"
 		echo "alias thesuffocater_cli='bash -c \"source ~/.pkgenv/bin/activate && python3 /usr/bin/the_carcass_cli.py\"'" >> ~/.bashrc
 		echo "alias thesuffocater_gui='bash -c \"source ~/.pkgenv/bin/activate && python3 /usr/bin/the_carcass_gui.py\"'" >> ~/.bashrc
 		echo "alias thesuffocater_bash='bash /usr/bin/the_carcass.sh'" >> ~/.bashrc
 	fi
 
 	if [[ -f "$HOME/.zshrc" ]]; then
-		echo -e "${GREEN}[<==] Creating aliases in ~/.zshrc${RESET}"
+		echo -e "${BLUE}[<==] Creating aliases in ~/.zshrc${RESET}"
 		echo "alias thesuffocater_cli='bash -c \"source ~/.pkgenv/bin/activate && python3 /usr/bin/the_carcass_cli.py\"'" >> ~/.zshrc
 		echo "alias thesuffocater_gui='bash -c \"source ~/.pkgenv/bin/activate && python3 /usr/bin/the_carcass_gui.py\"'" >> ~/.zshrc
 		echo "alias thesuffocater_bash='bash /usr/bin/the_carcass.sh'" >> ~/.bashrc

@@ -175,9 +175,12 @@ def list_imported_modules(show_docs: bool = False) -> None:
                 print(f"    - {func_name}")
 
 
-def import_modules() -> None:
+def import_modules(edit_config: bool = False) -> None:
     """
     Gets path, then imports modules.
+    
+    Args:
+        edit_config (bool): If enabled, enables edit mode.
 
     Returns:
         None: None.
@@ -250,7 +253,7 @@ def import_modules_from_config() -> None:
         with open(config_file_path, "r") as config_file:
             module_paths: list = config_file.readlines()
         
-        module_paths: list = [path.strip() for path in module_paths if path.strip()] 
+        module_paths: list = [path.strip() for path in module_paths if path.strip() and not path.strip().startswith("#")] 
         if not module_paths:
             print(f"{ORANGE}[!] Error: No module paths found in 'import_py.conf'.{RESET}")
             return
@@ -301,6 +304,7 @@ if __name__ == "__main__":
             "modules": list_imported_modules,
             "neofetch": the_suffocater_neofetch,
             "modules -d": lambda: list_imported_modules(show_docs=True),
+            "import -e": lambda: import_modules(edit_config=True)
             "license": lambda: get_markdown(document="LICENSE-GPL.md"),
             "changelog": lambda: get_markdown(document="CHANGELOG.md"),
             "documentation": lambda: get_markdown(document="README.md"),
