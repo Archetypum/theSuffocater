@@ -212,7 +212,7 @@ def import_modules_from_config() -> None:
 
         for directory_path in module_paths:
             if not os.path.isdir(directory_path):
-               messagebox.showerror(f"[!]", '{directory_path}' "is not a valid directory.")
+               messagebox.showerror(directory_path)
 
             import_functions_from_directory(root, directory_path)
     except IOError as processing_error:
