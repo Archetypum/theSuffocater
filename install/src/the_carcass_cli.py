@@ -255,7 +255,7 @@ def import_modules_from_config() -> None:
         
         module_paths: list = [path.strip() for path in module_paths if path.strip() and not path.strip().startswith("#")] 
         if not module_paths:
-            print(f"{ORANGE}[!] Error: No module paths found in 'import_py.conf'.{RESET}")
+            print(f"{BLUE}[*] {config_file_path} is empty. Enter '[...]' to edit it.{RESET}")
             return
 
         for directory_path in module_paths:
@@ -266,6 +266,7 @@ def import_modules_from_config() -> None:
             import_functions_from_directory(directory_path)
     except IOError as processing_error:
         print(f"{RED}[!] Error while reading or processing the config file: {processing_error}{RESET}")
+
 
 
 def the_carcass(tsf_version_string: str, tc_version_string: str) -> None:
@@ -304,7 +305,7 @@ if __name__ == "__main__":
             "modules": list_imported_modules,
             "neofetch": the_suffocater_neofetch,
             "modules -d": lambda: list_imported_modules(show_docs=True),
-            "import -e": lambda: import_modules(edit_config=True)
+            "import -e": lambda: import_modules(edit_config=True),
             "license": lambda: get_markdown(document="LICENSE-GPL.md"),
             "changelog": lambda: get_markdown(document="CHANGELOG.md"),
             "documentation": lambda: get_markdown(document="README.md"),
