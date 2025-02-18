@@ -4,7 +4,5 @@ _theSuffocater_ and _theCarcass_ were created by **Archetypum**, with:
 (https://github.com/Kinderfeld)
  - **wazups** as the middle developer, illustrator and GUI maintainer.
 (https://github.com/wazups)
- - **Mxkxdxnski** as... tester.
-(https://github.com/Mxkxdxnski)
  - **WretchOfLights** as the junior developer and documentation writer.
 (https://github.com/WretchOfLights)

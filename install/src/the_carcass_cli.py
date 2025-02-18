@@ -27,7 +27,7 @@ finally:
 
 try:
     distros_count: int = 52
-    the_suffocater_contributors: float = 3.5
+    the_suffocater_contributors: float = 3
     current_directory: str = os.path.dirname(__file__)
     loaded_modules: dict = {}
     with open("/etc/tsf/versions/tsf_version.txt", "r") as tsf_version_file:
@@ -65,7 +65,7 @@ def the_suffocater_help() -> None:
     print(" clear - clear the screen.")
     print(" help - display this message.")
     print(" neofetch - brief theSuffocater statistics.")
-    print(" import - for importing modules from directories.")
+    print(" import [-e] - for importing modules from directories. '-e' argument for editing configs.")
     print(" modules [-d] - list imported modules. '-d' argument for documentation.")
     print(" tsf_version - get current version of theSuffocater.")
     print(" tc_version - get current version of theCarcass.")
@@ -186,12 +186,18 @@ def import_modules(edit_config: bool = False) -> None:
         None: None.
     """
 
-    directory_path: str = input("[==>] Enter modules directory path (e.g /home/$USER/Desktop/my_python_modules: ")
-    if not os.path.isdir(directory_path):
-        print(f"{RED}[!] Error: Not a directory.{RESET}")
-        return
+    import_py_path: str = "/etc/tsf/module_configs/import_py.conf"
 
-    import_functions_from_directory(directory_path)
+    if edit_config:
+        user_editor: str = tum.get_preferred_editor()
+        run([user_editor, import_py_path], check=True)
+    else:
+        directory_path: str = input("[==>] Enter modules directory path (e.g /home/$USER/Desktop/my_python_modules: ")
+        if not os.path.isdir(directory_path):
+            print(f"{RED}[!] Error: Not a directory.{RESET}")
+            return
+
+        import_functions_from_directory(directory_path)
 
 
 def import_functions_from_directory(directory_path: str) -> None:
@@ -233,7 +239,7 @@ def import_functions_from_directory(directory_path: str) -> None:
                 print(f"{RED}[!] Error: Can't import module from {file_path}:\n{module_import_error}")
 
 
-def import_modules_from_config() -> None:
+def import_modules_from_config(edit_config: bool = None) -> None:
     """
     Import python modules from config file located in '/etc/tsf/module_configs/import_py.conf'
     using their paths (if exists).

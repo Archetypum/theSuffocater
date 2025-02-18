@@ -27,14 +27,15 @@ finally:
     print(f"{GREEN}[*] Python modules are successfully imported. Loading theSuffocater global variables...{RESET}")
 
 try:
+    icon_path: str = "/etc/tsf/media/thesuffocater_logo.png"
     distros_count: int = 52
     the_suffocater_contributors: float = 3.5
     current_directory: str = os.path.dirname(__file__)
     loaded_modules: dict = {}
-
+    
     with open("/etc/tsf/versions/tsf_version.txt", "r") as tsf_version_file:
         the_suffocater_version_string: str = tsf_version_file.read().strip()
-
+    
     with open("/etc/tsf/versions/tc_version.txt", "r") as tc_version_file:
         the_carcass_version_string: str = tc_version_file.read().strip()
 except FileNotFoundError as variable_error:
@@ -44,7 +45,7 @@ finally:
     print(f"{GREEN}[*] Variables are successfully initialized. Loading main function...{RESET}")
 
 
-def final_exit(root) -> None:
+def final_exit() -> None:
     """
     Exits theSuffocater.
 
@@ -55,48 +56,10 @@ def final_exit(root) -> None:
     root.quit()
 
 
-def get_markdown(preferred_text_editor, document: str = None) -> None:
-    """
-    Gets Markdown documents from '/etc/tsf/markdown' and prints them with 'less' command.
-
-    Args:
-        document (str): Document specified by user. 'LICENSE.md', 'DOCUMENTATION.md', 'CHANGELOG.md' are available.
-        None by default
-
-    Returns:
-        None: [null].
-    """
-
-    try:
-        if document is None:
-            print(f"{RED}[!] Error: Document not specified.{RESET}")
-        else:
-            run([f"{preferred_text_editor}", f"/etc/tsf/markdown/{document}"], check=True)
-    except (FileNotFoundError, CalledProcessError):
-        messagebox.showerror("[!] Error", "File not found. Broken installation?")
-
-
-def the_global_version(root) -> None:
-    """
-    Gets version files from '/etc/tsf/versions' (at the top of theCarcass) and prints them.
-
-    Args:
-        the_suffocater_version_string and the_carcass_version_string.
-
-    Returns:
-        None: [null].
-    """
-
-    messagebox.showinfo("Version", f"Current theSuffocater version - {the_suffocater_version_string} \nCurrent theCarcass version - {the_carcass_version_string}")
-
-
-def import_modules(root, left_frame, right_frame, top_frame) -> None:
+def import_modules() -> None:
     """
     Gets path, then imports modules.
     
-    Args:
-        root, left_frame, right_frame, top_frame: parts of graphics.
-
     Returns:
         None: [null].
     """
@@ -106,16 +69,16 @@ def import_modules(root, left_frame, right_frame, top_frame) -> None:
         messagebox.showerror("[!] Error", "Not a directory.", parent=root)
         return
 
-    import_functions_from_directory(root, directory_path)
-    module_buttons(root, left_frame, right_frame, top_frame)
+    import_functions_from_directory(directory_path)
+    module_buttons()
 
 
-def list_imported_modules(root, show_docs: bool = False) -> None:
+def list_imported_modules(show_docs: bool = False) -> None:
     """
     Lists imported modules and docstrings.
 
     Args:
-        root, show_docs (bool): If enabled, prints function docstrings too.
+        show_docs (bool): If enabled, prints function docstrings too.
 
     Returns:
         None: [null].
@@ -143,16 +106,16 @@ def list_imported_modules(root, show_docs: bool = False) -> None:
     text_area.config(state=tk.DISABLED)
 
     ok_button = tk.Button(info_window, text="ok", command=info_window.destroy)
-    ok_button.pack(pady=10)                    
+    ok_button.pack(pady=10)
 
 
-def import_functions_from_directory(root, directory_path: str) -> None:
+def import_functions_from_directory(directory_path: str) -> None:
     """
     Imports python file functions and docstrings from specified directory
     for further usage in theSuffocater.
 
     Args:
-        root, directory_path (str): Path to directory with .py files.
+        directory_path (str): Path to directory with .py files.
 
     Returns:
         None: [null].
@@ -182,7 +145,6 @@ def import_functions_from_directory(root, directory_path: str) -> None:
 
             except FileNotFoundError as module_import_error:
                 messagebox.showerror("[!] Error", "Can't import module.", parent=root)
-                return
 
 
 def import_modules_from_config() -> None:
@@ -198,7 +160,7 @@ def import_modules_from_config() -> None:
 
     config_file_path: str = "/etc/tsf/module_configs/import_py.conf"
     if not os.path.exists(config_file_path):
-        messagebox.showerror(f"[!]", "Configuration file 'import_py.conf' not found!")
+        print(f"[!] Error: Configuration file 'import_py.conf' not found!")
         return
     
     try:
@@ -212,37 +174,42 @@ def import_modules_from_config() -> None:
 
         for directory_path in module_paths:
             if not os.path.isdir(directory_path):
-               messagebox.showerror(directory_path)
+               print(f"{RED}[!] Error: '{directory_path}' is not a valid directory.{RESET}")
 
-            import_functions_from_directory(root, directory_path)
+            import_functions_from_directory(directory_path)
     except IOError as processing_error:
-        messagebox.showerror(f"[!]", "Error while reading or processing the config file: {processing_error}")
-        return
+        print(f"{RED}[!] Error: Error while reading or processing the config file: {processing_error}{RESET}")
 
 
-def show_module_info(root, left_frame, right_frame, top_frame, module_name: str) -> None:
+def show_module_info(module_name: str) -> None:
     """
     Displays modules and information about them in the GUI.
 
     Args:
-        root, left_frame, right_frame, top_frame, module_name (str).
+        module_name (str).
     
     Returns:
         None: [null].
     """
 
     for widget in root.winfo_children():
-        if isinstance(widget, tk.Frame) and widget != left_frame and widget != right_frame and widget != top_frame:
+        if isinstance(widget, tk.Frame) and widget != left_frame and widget != top_frame:
             widget.destroy()
 
     central_frame = tk.Frame(root, bg="grey24")
     central_frame.pack(side="left", fill="both", expand=True)
 
     module_label = tk.Label(central_frame, text=f"Module: {module_name}", font=("Helvetica", 18), fg="white", bg="grey24")
-    module_label.pack(pady=20)
+    module_label.pack(pady=20, expand=True)
 
-    launch_button = tk.Button(central_frame, text="Launch", width=30, bg="green", fg="white", command=lambda: launch_module(module_name))
-    launch_button.pack(pady=20)
+    for module_path, module_info in loaded_modules.items():
+        if os.path.basename(module_path) == module_name:
+            module_docstring = module_info['docstring']
+            docstring_label = tk.Label(central_frame, text=f"Docstring: {module_docstring or 'None'}", font=("Helvetica", 12), fg="lightgrey", bg="grey24")
+            docstring_label.pack(pady=10, expand=True)
+
+    launch_button = tk.Button(central_frame, text="Launch", width=50, bg="green", fg="white", command=lambda: launch_module(module_name))
+    launch_button.pack(pady=20, expand=True)
 
 
 def launch_module(module_name: str) -> None:
@@ -257,7 +224,7 @@ def launch_module(module_name: str) -> None:
     """
 
     for module_path, module_info in loaded_modules.items():
-       if os.path.basename(module_path) == module_name:
+        if os.path.basename(module_path) == module_name:
             print(f"Launching {module_name}")
 
             main_func_name = os.path.splitext(module_name)[0]
@@ -265,16 +232,12 @@ def launch_module(module_name: str) -> None:
                 default_modules[main_func_name]()
             else:
                 messagebox.showerror("[!]", "Main function not found.")
-            break
 
 
-def module_buttons(root, left_frame, right_frame, top_frame) -> None:
+def module_buttons() -> None:
     """
     Creates module buttons, slider and many other graphic elements.
 
-    Args:
-        root, left_frame, right_frame, top_frame.
-    
     Returns:
         None: [null].
     """
@@ -297,94 +260,55 @@ def module_buttons(root, left_frame, right_frame, top_frame) -> None:
         module_name = os.path.basename(module_path)
         
         button = tk.Button(button_frame, text=module_name, width=20, bg="grey24", fg="white",
-            command=lambda m=module_name: show_module_info(root, left_frame, right_frame, top_frame, m))
+            command=lambda m=module_name: show_module_info(m))
         button.pack(side="top", padx=5, pady=5)
 
     button_frame.update_idletasks()
     canvas.config(scrollregion=canvas.bbox("all"))
 
 
-def the_carcass_gui(the_global_version: str) -> None:
+def get_markdown(preferred_text_editor, document: str) -> None:
     """
-    [*] MAIN FUNCTION [*]
+    Gets Markdown documents from '/etc/tsf/markdown' and prints them with 'less' command.
+
+    Args:
+        document (str): Document specified by user. 'LICENSE.md', 'DOCUMENTATION.md', 'CHANGELOG.md' are available.
+        None by default
+
+    Returns:
+        None: [null].
     """
 
-    global root
-    root = tk.Tk()
-    root.title("theSuffocater")
-    root.geometry("800x500")
-    root.config(bg="grey24")
-    
-    icon_path = "/etc/tsf/media/thesuffocater_logo.png"
-    
+    editor = simpledialog.askstring("[==>]", "Enter the preferred text editor:")
+    preferred_text_editor = editor if editor else "less"
+
     try:
-        icon = PhotoImage(file=icon_path)
-        root.iconphoto(True, icon) 
-    except FileNotFoundError as error:
-        messagebox.showerror("[!]", "Error can't find the icon.")
-        return
+        if document is None:
+            print(f"{RED}[!] Error: Document not specified.{RESET}")
+        else:
+            run([f"{preferred_text_editor}", f"/etc/tsf/markdown/{document}"], check=True)
+    except (FileNotFoundError, CalledProcessError):
+        messagebox.showerror("[!] Error", "File not found. Broken installation?")
 
 
-    def import_m() -> None:
-        import_modules(root, left_frame, right_frame, top_frame)
+def get_version(component: str = None) -> None:
+    """
+    Gets version files from '/etc/tsf/versions' (at the top of theCarcass) and prints them.
 
+    Args:
+        component (str).
     
-    def exit() -> None:
-        final_exit(root)
+    Returns:
+        None: [null].
+    """
 
-    
-    def list() -> None:
-        list_imported_modules(root)
-
-    
-    def version() -> None:
-        the_global_version(root)
-
-    
-    def text_editor() -> str:
-        editor = simpledialog.askstring("[==>]", "Enter the preferred text editor:")
-        return editor if editor else "less"
-
-
-    def documentation() -> None:
-        preferred_text_editor = text_editor()
-        document = "README.md"
-        get_markdown(preferred_text_editor, document)
-
-
-    def license() -> None:
-        preferred_text_editor = text_editor()
-        document = "LICENSE-GPL.md"
-        get_markdown(preferred_text_editor, document)
-
-
-    def changelog() -> None:
-        preferred_text_editor = text_editor()
-        document = "CHANGELOG.md"
-        get_markdown(preferred_text_editor, document)
-
-
-    top_frame = tk.Frame(root, bg="grey29")
-    top_frame.pack(side="top", fill="x")
-    
-    left_frame = tk.Frame(root, width=190, bg="grey20")
-    left_frame.pack(side="left", fill="y")
-
-    right_frame = tk.Frame(root, width=130, bg="grey20")
-    right_frame.pack(side="right", fill="y")
-
-    tk.Button(top_frame, text="Import modules", width=20, command=import_m,  bg="grey24", fg="white").pack(side="left", fill="x", padx=5, pady=5)
-    tk.Button(top_frame, text="Exit", width=3, bg="grey20", fg="white", activeforeground="red", command=exit).pack(side="right", padx=5, pady=5)
-    tk.Button(right_frame, text="list", width=20, command=list).pack(side="top",padx=5, pady=5)
-    tk.Button(right_frame, text="Version", width=20, command=version).pack(side="top",padx=5, pady=5)
-    tk.Button(right_frame, text="Documentation", width=20, command=documentation).pack(side="top",padx=5, pady=5)
-    tk.Button(right_frame, text="License", width=20, command=license).pack(side="top",padx=5, pady=5)
-    tk.Button(right_frame, text="Changelog", width=20, command=changelog).pack(side="top",padx=5, pady=5)
-
-    root.mainloop()
+    messagebox.showinfo("Version", f"Current theSuffocater version - {the_suffocater_version_string} \nCurrent theCarcass version - {the_carcass_version_string}")
 
 
 if __name__ == "__main__":
+    """
+    [*] MAIN FUNCTION [*]
+    """
     default_modules: dict = {
             "exit": final_exit,
             "import": import_modules,
@@ -393,8 +317,48 @@ if __name__ == "__main__":
             "license": lambda: get_markdown(document="LICENSE-GPL.md"),
             "changelog": lambda: get_markdown(document="CHANGELOG.md"),
             "documentation": lambda: get_markdown(document="README.md"),
-            "global_version": the_suffocater_version_string and the_carcass_version_string
+            "get_version": the_suffocater_version_string and the_carcass_version_string
     }
-
+    
     import_modules_from_config()
-    the_carcass_gui(the_global_version)
+
+    root = tk.Tk()
+    root.title("theSuffocater")
+    root.geometry("850x600")
+    root.config(bg="grey24")
+
+    try:
+        icon = PhotoImage(file=icon_path)
+        root.iconphoto(True, icon)
+    except FileNotFoundError:
+        messagebox.showerror("[!]", "Error: Can't find the icon.")
+
+
+    top_frame = tk.Frame(root, bg="grey29")
+    top_frame.pack(side="top", fill="x")
+
+    left_frame = tk.Frame(root, width=190, bg="grey20")
+    left_frame.pack(side="left", fill="y")
+
+    import_modules_button = tk.Button(top_frame, text="Import modules", width=20, activeforeground="blue", command=import_modules,  bg="grey24", fg="white")
+    import_modules_button.pack(side="left", fill="x", padx=5, pady=5)
+
+    exit_button = tk.Button(top_frame, text="Exit", width=3, bg="grey20", fg="white", activeforeground="red", command=final_exit)
+    exit_button.pack(side="right", padx=5, pady=5)
+    
+    list_button = tk.Button(top_frame, text="list", width=10, command=list_imported_modules)
+    list_button.pack(side="left", padx=5, pady=10)
+
+    versions_button = tk.Button(top_frame, text="Version", width=10, command=get_version)
+    versions_button.pack(side="left", padx=5, pady=10)
+
+    documentation_button = tk.Button(top_frame, text="Documentation", width=10, command=lambda: get_markdown(preferred_text_editor="less", document="README.md"))
+    documentation_button.pack(side="left", padx=5, pady=10)
+
+    license_button = tk.Button(top_frame, text="License", width=10, command=lambda: get_markdown(preferred_text_editor="less", document="LICENSE-GPL.md"))
+    license_button.pack(side="left", padx=5, pady=5)
+
+    changelog_button = tk.Button(top_frame, text="Changelog", width=10, command=lambda: get_markdown(preferred_text_editor="less", document="CHANGELOG.md"))
+    changelog_button.pack(side="left", padx=5, pady=5)
+    
+    root.mainloop()
