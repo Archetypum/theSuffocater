@@ -261,7 +261,7 @@ def import_modules_from_config(edit_config: bool = None) -> None:
         
         module_paths: list = [path.strip() for path in module_paths if path.strip() and not path.strip().startswith("#")] 
         if not module_paths:
-            print(f"{BLUE}[*] {config_file_path} is empty. Enter '[...]' to edit it.{RESET}")
+            print(f"{BLUE}[*] {config_file_path} is empty. Enter 'import -e' to edit it.{RESET}")
             return
 
         for directory_path in module_paths:
