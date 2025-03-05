@@ -3,7 +3,7 @@ name: Feature request
 about: Suggest an idea for this project
 title: [SUGGESTION]
 labels: documentation, enhancement, question
-assignees: Kinderfeld, Mxkxdxnski, wazups, WretchOfLights
+assignees: Kinderfeld, wazups, WretchOfLights
 
 ---
 
